@@ -12,11 +12,12 @@ export function ContactForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setPending(true);
     setMessage(null);
     setError(null);
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const payload = contactMessageSchema.safeParse({
       name: String(formData.get("name") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
@@ -42,7 +43,7 @@ export function ContactForm() {
       }
 
       setMessage("Mensagem enviada com sucesso.");
-      event.currentTarget.reset();
+      form.reset();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Falha ao enviar mensagem.");
     } finally {

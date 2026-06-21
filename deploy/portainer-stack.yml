@@ -45,7 +45,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bizu-hub_postgres:5432/${POSTGRES_DB}
     deploy:
       mode: replicated
       replicas: 1
@@ -71,8 +71,8 @@ services:
         - traefik.http.routers.bizu-hub-www.tls=true
         - traefik.http.routers.bizu-hub-www.tls.certresolver=letsencryptresolver
         - traefik.http.routers.bizu-hub-www.middlewares=bizu-hub-www-redirect
-        - traefik.http.middlewares.bizu-hub-www-redirect.redirectregex.regex=^https://www\.brunogoulart\.com\.br/(.*)
-        - traefik.http.middlewares.bizu-hub-www-redirect.redirectregex.replacement=https://brunogoulart.com.br/$${1}
+        - traefik.http.middlewares.bizu-hub-www-redirect.redirectregex.regex=^https://www\.brunogoulart\.com\.br(.*)
+        - traefik.http.middlewares.bizu-hub-www-redirect.redirectregex.replacement=https://brunogoulart.com.br$${1}
         - traefik.http.middlewares.bizu-hub-www-redirect.redirectregex.permanent=true
 
 volumes:

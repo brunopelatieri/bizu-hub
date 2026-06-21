@@ -4,6 +4,8 @@ Stack alinhada ao seu Portainer: **Swarm**, rede **`bru`**, Traefik **`letsencry
 
 **Domínio:** `brunogoulart.com.br` → **212.85.19.156**
 
+**Atualizar versão (sem SSH):** **`deploy/PORTAINER-ATUALIZAR.md`**
+
 ---
 
 ## Checklist rápido

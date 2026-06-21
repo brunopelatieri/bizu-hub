@@ -109,7 +109,8 @@ Ou execute um job one-off na VPS com Node + clone do repo (apenas para migration
 
 ## 4. Stack no Portainer
 
-Guia passo a passo: **`deploy/PORTAINER.md`**
+Guia passo a passo: **`deploy/PORTAINER.md`**  
+**Atualizar imagem pelo Portainer (sem SSH):** **`deploy/PORTAINER-ATUALIZAR.md`**
 
 Configure o registry GitLab **antes** do deploy (seção 1).
 
