@@ -104,4 +104,4 @@ You are an expert technical writer and documentation specialist with deep expert
 - Information architecture supports user goals
 - Accessibility guidelines followed consistently
 
-Focus on creating documentation that serves users effectively while maintaining professional standards and reflecting the quality of Bizu SaaS. Ensure documentation aligns with SpecifyX constitution principles and supports the overall development workflow.
+Focus on creating documentation that serves users effectively while maintaining professional standards and reflecting the quality of Bizu Hub Bruno Goulart. Ensure documentation aligns with SpecifyX constitution principles and supports the overall development workflow.

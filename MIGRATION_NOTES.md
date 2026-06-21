@@ -135,21 +135,23 @@ NODE_ENV=production PORT=3000 node build/server/index.js
 
 ## 10. Deploy (VPS + Docker + Portainer)
 
-Demo em **https://bizu.bru.ia.br** (Vercel). Repositório Vercel: **https://github.com/brunopelatieri/bizu-saas-vercel**. Este repo principal: VPS + Docker + Node único.
+Produção em **https://brunogoulart.com.br** — VPS Ubuntu, Docker, Portainer, imagem no GitLab Container Registry.
+
+Guia completo: **`deploy/README.md`**
 
 ```bash
-docker build -t bizu-saas .
-docker run -d --name bizu-saas \
-  -p 3000:3000 \
-  -e DATABASE_URL="postgres://user:pass@host:5432/db" \
-  -e NODE_ENV=production \
-  bizu-saas
+cp deploy/.env.docker.example deploy/.env.docker
+docker login registry.gitlab.com
+npm run docker:push
 ```
 
-- O container expõe a porta **3000** (override via `-e PORT=...`).
+Stack Portainer: `deploy/portainer-stack.yml` (Traefik) ou `deploy/portainer-stack.npm.yml` (NPM).
+
+- O container expõe a porta **3000** internamente.
 - O `HEALTHCHECK` usa `GET /api/health`.
-- O `docker-compose.yml` atual provê apenas o Postgres local para dev; em
-  produção aponte `DATABASE_URL` para o seu Postgres gerenciado/registry.
+- `VITE_*` são passados no **docker build** (não no runtime).
+- Migrations: rodar `npm run db:migrate` apontando para o Postgres da VPS (ver deploy/README.md).
+- Supabase Auth: Site URL e redirect `https://brunogoulart.com.br/auth/callback`.
 
 ---
 

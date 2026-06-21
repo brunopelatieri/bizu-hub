@@ -8,4 +8,12 @@ export default {
   // é feito mantendo as rotas /dashboard SEM loader de servidor — elas
   // apenas entregam o shell e buscam dados no cliente (ver MIGRATION_NOTES.md).
   ssr: true,
+  // Opt-in v8 — silencia avisos de depreciação e prepara migração para RR v8
+  future: {
+    v8_middleware: true,
+    v8_splitRouteModules: true,
+    v8_viteEnvironmentApi: true,
+    v8_passThroughRequests: true,
+    v8_trailingSlashAwareDataRequests: true,
+  },
 } satisfies Config;

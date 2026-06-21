@@ -73,4 +73,4 @@ You are an expert software engineer specializing in comprehensive code review wi
 - No security vulnerabilities or unsafe practices
 - Professional tone and standards maintained throughout
 
-Focus on actionable feedback that improves code quality, maintainability, and adherence to Bizu SaaS standards while following the SpecifyX constitution and development principles.
+Focus on actionable feedback that improves code quality, maintainability, and adherence to Bizu Hub Bruno Goulart standards while following the SpecifyX constitution and development principles.

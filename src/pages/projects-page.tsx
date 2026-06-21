@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { PageHero } from "@/components/layout/page-hero";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,52 +9,52 @@ import {
 } from "@/components/ui/card";
 import { siteConfig } from "@/lib/constants/navigation";
 
-const targetProjects = [
-  "SaaS",
-  "Portal de clientes",
-  "Site institucional",
-  "Landing page",
-  "Blog com SSR",
-  "Dashboard / Admin",
-  "Sistemas web de aplicação",
+const platformAreas = [
+  "Site pessoal (SSR)",
+  "Blog com SEO",
+  "Hub de clientes",
+  "Formulário de contato",
+  "Auth Supabase",
+  "API Hono + Drizzle",
 ];
 
 const readyModules = [
   {
-    title: "Páginas públicas com SSR",
+    title: "Site e blog públicos",
     body: "Landing, sobre, projetos, contato e blog renderizados no servidor, com meta tags e Open Graph dinâmico por rota.",
+  },
+  {
+    title: "Hub de clientes",
+    body: "Dashboard autenticado client-side em /dashboard/** — login via Supabase Auth, sem dados sensíveis no HTML inicial.",
   },
   {
     title: "API Hono integrada",
     body: "Endpoints em /api/* no mesmo processo do SSR, validados com Zod e persistindo no Postgres via Drizzle.",
   },
   {
-    title: "Auth + dashboard",
-    body: "Login com Supabase Auth e área autenticada client-side, sem dados sensíveis no HTML inicial.",
-  },
-  {
-    title: "Base de produto",
-    body: "shadcn/ui + Tailwind v4, tema dark/light, formulários, estado com Zustand e ferramentas prontas para Stripe e e-mail.",
+    title: "Base técnica",
+    body: "shadcn/ui + Tailwind v4, tema dark/light, formulários, estado com Zustand e deploy Docker para VPS.",
   },
 ];
 
 const docs = [
   {
-    label: "Repositório principal (VPS/Docker)",
+    label: "Produção",
     description:
-      "Código focado em Node único: react-router-hono-server + Hono + SSR + Docker.",
+      "Site em brunogoulart.com.br — VPS Ubuntu, Docker, Portainer e imagem no GitLab Container Registry.",
+    href: siteConfig.url,
+  },
+  {
+    label: "Código-fonte",
+    description:
+      "Repositório e imagem Docker no GitLab — React Router v7, Hono, Drizzle e Supabase auxiliar.",
     href: siteConfig.links.repo,
   },
   {
-    label: "Repositório Vercel",
+    label: "Guia de deploy",
     description:
-      "Arquitetura otimizada para deploy na Vercel — base da demo em bizu.bru.ia.br.",
-    href: siteConfig.links.repoVercel,
-  },
-  {
-    label: "Demo ao vivo",
-    description: "Referência visual em https://bizu.bru.ia.br (Vercel).",
-    href: siteConfig.links.demo,
+      "Build, push GitLab Registry e stack Portainer documentados em deploy/README.md.",
+    href: `${siteConfig.links.repo}/-/tree/main/deploy`,
   },
 ];
 
@@ -61,17 +62,17 @@ export function ProjectsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Projeto em destaque"
-        title="Bizu SaaS"
-        description="Boilerplate full-stack para iniciar projetos web rápido, com base robusta, documentação viva e metodologia de AI Software Engineering."
+        eyebrow="A plataforma"
+        title={siteConfig.name}
+        description={siteConfig.description}
         actions={
           <>
-            <a href={siteConfig.links.repo} target="_blank" rel="noreferrer">
-              <Button>Ver no GitHub</Button>
-            </a>
             <a href={siteConfig.links.demo} target="_blank" rel="noreferrer">
-              <Button variant="outline">Abrir demo</Button>
+              <Button>Ver ao vivo</Button>
             </a>
+            <Link to="/contato">
+              <Button variant="outline">Falar comigo</Button>
+            </Link>
           </>
         }
       />
@@ -82,18 +83,16 @@ export function ProjectsPage() {
             O propósito
           </h2>
           <p>
-            O <strong className="text-foreground">Bizu SaaS</strong> é uma base
-            moderna, robusta e reutilizável para acelerar a criação de produtos
-            web de diferentes portes. Em vez de gastar semanas montando a
-            fundação, você começa com SSR, API, banco, autenticação, UI e deploy
-            já integrados — e foca no que diferencia o seu produto.
+            O <strong className="text-foreground">{siteConfig.name}</strong> é a
+            plataforma pessoal de Bruno Pelatieri Goulart — reúne presença
+            profissional pública, blog e portal autenticado para clientes na
+            mesma base técnica full-stack.
           </p>
           <p>
-            O diferencial é a metodologia de{" "}
-            <strong className="text-foreground">AI Software Engineering</strong>:
-            especificação antes da implementação, contexto técnico vivo e
-            mudanças pequenas e documentadas. Assim, humanos e agentes de IA
-            tomam decisões com o mesmo mapa técnico, reduzindo retrabalho.
+            A arquitetura separa o que é indexável (site e blog com SSR) do que
+            é privado (hub de clientes client-side), mantendo segurança e
+            evolução rápida com metodologia de{" "}
+            <strong className="text-foreground">AI Software Engineering</strong>.
           </p>
         </div>
       </section>
@@ -101,13 +100,13 @@ export function ProjectsPage() {
       <section className="border-t border-border/50 bg-muted/30 px-6 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-4 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Para que tipo de projeto
+            O que compõe a plataforma
           </h2>
           <p className="mb-8 max-w-2xl text-muted-foreground">
-            Uma base genérica o suficiente para se adaptar ao seu produto.
+            Três frentes integradas na mesma stack.
           </p>
           <div className="flex flex-wrap gap-2">
-            {targetProjects.map((item) => (
+            {platformAreas.map((item) => (
               <span
                 key={item}
                 className="rounded-full border border-border/60 bg-card px-4 py-1.5 text-sm text-muted-foreground"
@@ -160,22 +159,12 @@ export function ProjectsPage() {
       <section className="border-t border-border/50 bg-muted/30 px-6 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-4 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Repositório e demo
+            Deploy e repositório
           </h2>
           <p className="mb-8 max-w-2xl text-muted-foreground">
-            Este repositório é focado em <strong className="text-foreground">VPS + Docker + Node único</strong>{" "}
-            (react-router-hono-server + Hono + SSR). A demo pública roda na{" "}
-            <strong className="text-foreground">Vercel</strong> — a arquitetura
-            otimizada para esse deploy está no repositório{" "}
-            <a
-              href={siteConfig.links.repoVercel}
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary underline-offset-4 hover:underline"
-            >
-              bizu-saas-vercel
-            </a>
-            .
+            Produção em{" "}
+            <strong className="text-foreground">brunogoulart.com.br</strong> —
+            VPS Ubuntu com Docker, Portainer e imagem no GitLab Container Registry.
           </p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {docs.map((doc) => (

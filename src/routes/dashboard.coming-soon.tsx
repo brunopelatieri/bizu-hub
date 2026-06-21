@@ -1,9 +1,10 @@
 import type { MetaFunction } from "react-router";
 import { useLocation } from "react-router";
 import { dashboardTitleFromPath } from "@/lib/constants/dashboard-nav";
+import { siteConfig } from "@/lib/constants/navigation";
 
 export const meta: MetaFunction = () => [
-  { title: "Em breve — Bizu SaaS" },
+  { title: `Em breve — ${siteConfig.name}` },
   { name: "robots", content: "noindex" },
 ];
 

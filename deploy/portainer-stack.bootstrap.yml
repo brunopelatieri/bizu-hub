@@ -1,0 +1,63 @@
+version: "3.8"
+
+## Bootstrap — só se precisar testar ANTES do DNS/Traefik
+## http://212.85.19.156:3000  (remova esta stack quando usar portainer-stack.yml)
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - bizu_hub_postgres_data:/var/lib/postgresql/data
+    networks:
+      - bru
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+
+  app:
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG:-latest}
+    ports:
+      - "${APP_HOST_PORT:-3000}:3000"
+    networks:
+      - bru
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+
+volumes:
+  bizu_hub_postgres_data:
+    name: bizu_hub_postgres_data
+
+networks:
+  bru:
+    external: true
+    name: bru

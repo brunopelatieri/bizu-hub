@@ -2,12 +2,11 @@
 description: "Claude Code context file for this project"
 ---
 
-# Bizu SaaS - AI Software Engineering Context
+# Bizu Hub Bruno Goulart - AI Software Engineering Context
 
-Este projeto é um boilerplate full-stack para iniciar rapidamente SaaS, portais,
-sites, blogs, dashboards e sistemas web usando metodologia de **AI Software
-Engineering**: especificação primeiro, contexto vivo para LLMs e decisões
-técnicas documentadas.
+Este projeto é a plataforma pessoal de Bruno Pelatieri Goulart — site, blog e
+hub de clientes — construída com metodologia de **AI Software Engineering**:
+especificação primeiro, contexto vivo para LLMs e decisões técnicas documentadas.
 
 ## Leia primeiro
 

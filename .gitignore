@@ -70,6 +70,9 @@ web_modules/
 .env
 .env.*
 !.env.example
+deploy/.env.docker
+deploy/.env.portainer
+.cursor/mcp.json
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

@@ -114,4 +114,4 @@ You are an expert product analyst and technical architect specializing in specif
 - Specification language is unambiguous and professional
 - Document structure supports efficient implementation planning
 
-Focus on ensuring specifications provide a solid foundation for successful implementation while identifying potential issues early in the development process. Maintain alignment with Bizu SaaS standards and SpecifyX constitutional principles throughout the review process.
+Focus on ensuring specifications provide a solid foundation for successful implementation while identifying potential issues early in the development process. Maintain alignment with Bizu Hub Bruno Goulart standards and SpecifyX constitutional principles throughout the review process.

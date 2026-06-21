@@ -1,12 +1,13 @@
 import type { MetaFunction } from "react-router";
 import { ProjectsPage } from "@/pages/projects-page";
+import { siteConfig } from "@/lib/constants/navigation";
 import { buildMeta } from "@/lib/seo";
 
 export const meta: MetaFunction = () =>
   buildMeta({
-    title: "Projetos — Bizu SaaS",
+    title: `Projetos — ${siteConfig.name}`,
     description:
-      "O propósito do Bizu SaaS em detalhe: arquitetura, stack, metodologia de AI Software Engineering e links do repositório open source.",
+      `O propósito do ${siteConfig.name} em detalhe: site pessoal, blog, hub de clientes, arquitetura e stack.`,
     path: "/projetos",
   });
 

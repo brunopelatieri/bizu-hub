@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { getPostBySlug } from "@/lib/content/posts";
+import { siteConfig } from "@/lib/constants/navigation";
 import { absoluteAsset } from "@/lib/seo";
 import type { Route } from "./+types/blog-post";
 
@@ -17,13 +18,13 @@ export function loader({ params }: Route.LoaderArgs) {
 
 export const meta: Route.MetaFunction = ({ data }) => {
   if (!data?.post) {
-    return [{ title: "Post não encontrado — Bizu SaaS" }];
+    return [{ title: `Post não encontrado — ${siteConfig.name}` }];
   }
 
   const { post } = data;
 
   return [
-    { title: `${post.title} — Bizu SaaS` },
+    { title: `${post.title} — ${siteConfig.name}` },
     { name: "description", content: post.excerpt },
     { property: "og:title", content: post.title },
     { property: "og:description", content: post.excerpt },

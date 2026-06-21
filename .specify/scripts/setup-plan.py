@@ -136,7 +136,7 @@ def setup_plan_structure(
                         "branch_name": result["BRANCH"],
                         "author_name": "",
                         "creation_date": "2026-05-22",
-                        "project_name": "bizu-saas",
+                        "project_name": "bizu-hub",
                     },
                     output_path=impl_plan,
                 )
@@ -167,7 +167,7 @@ def setup_plan_structure(
                         "branch_name": result["BRANCH"],
                         "author_name": "",
                         "creation_date": "2026-05-22",
-                        "project_name": "bizu-saas",
+                        "project_name": "bizu-hub",
                     },
                     output_path=feature_spec,
                 )

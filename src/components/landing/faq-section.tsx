@@ -3,34 +3,34 @@ import { siteConfig } from "@/lib/constants/navigation";
 
 const faqs = [
   {
-    question: "O Bizu SaaS é open source?",
+    question: `O que é o ${siteConfig.name}?`,
     answer:
-      "Sim. O código está no GitHub e pode ser clonado para iniciar seus projetos. A ideia é ser um ponto de partida sólido, não uma caixa-preta.",
+      "É a plataforma pessoal de Bruno Pelatieri Goulart: site profissional, blog e hub autenticado onde clientes acompanham projetos e entregas — tudo integrado em uma única base técnica.",
   },
   {
-    question: "Que tipo de projeto posso criar com ele?",
+    question: "Como acesso a área de clientes?",
     answer:
-      "SaaS, portal de clientes, site institucional, landing page, blog, dashboard/admin e sistemas web de aplicação. A base é genérica o suficiente para se adaptar ao seu produto.",
+      "Clientes ativos recebem credenciais de acesso. Use o botão 'Área do cliente' ou acesse /login para entrar com e-mail e senha via Supabase Auth.",
   },
   {
-    question: "O que é a metodologia de AI Software Engineering aqui?",
+    question: "Que serviços o Bruno oferece?",
     answer:
-      "Especificar antes de implementar, manter contexto técnico vivo (AI_CONTEXT e spec) e fazer mudanças pequenas e documentadas. Assim humanos e agentes de IA decidem com o mesmo mapa técnico.",
+      "Automação enterprise com n8n, arquitetura de IA e agentes autônomos, integrações, DevOps e desenvolvimento full-stack — do MVP à produção em VPS.",
   },
   {
-    question: "Por que Supabase e Postgres juntos?",
+    question: "O blog é atualizado com frequência?",
     answer:
-      "O Supabase é auxiliar — Auth, Storage, Functions e Realtime. Os dados da aplicação ficam no seu próprio Postgres via Drizzle, mantendo controle e portabilidade.",
+      "Sim. Artigos sobre produtividade, tecnologia, negócios e ferramentas para profissionais digitais. Acesse /blog para ver os posts publicados.",
   },
   {
-    question: "Onde faço o deploy?",
+    question: "Onde a plataforma roda?",
     answer:
-      "Este repositório é focado em VPS + Docker + Node único (react-router-hono-server + Hono + SSR). A demo em bizu.bru.ia.br roda na Vercel; a arquitetura otimizada para esse deploy está em github.com/brunopelatieri/bizu-saas-vercel. Use a demo como referência visual, não como espelho 1:1 deste código.",
+      "Deploy em VPS com Docker + Portainer em brunogoulart.com.br.",
   },
   {
-    question: "Preciso saber IA para usar?",
+    question: "Como contratar um projeto?",
     answer:
-      "Não. O projeto funciona como um boilerplate tradicional. A metodologia de IA é um acelerador opcional, mas o contexto documentado ajuda qualquer pessoa a se situar rápido.",
+      "Pelo formulário de contato em /contato, WhatsApp ou e-mail. Descreva o desafio e retorno com os próximos passos.",
   },
 ];
 
@@ -87,7 +87,7 @@ export function FaqSection() {
               rel="noreferrer"
               className="text-primary underline-offset-4 hover:underline"
             >
-              Fale com a gente
+              Fale comigo
             </a>
             .
           </p>

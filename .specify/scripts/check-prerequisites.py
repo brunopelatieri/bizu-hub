@@ -216,7 +216,7 @@ def check(
     ),
     debug: bool = typer.Option(False, "--debug", help="Enable debug output"),
 ):
-    """Check task prerequisites and return available design documents for Bizu SaaS.
+    """Check task prerequisites and return available design documents for Bizu Hub Bruno Goulart.
 
     Scans for design documents in the current feature directory and validates
     that prerequisites are met before proceeding with task generation.

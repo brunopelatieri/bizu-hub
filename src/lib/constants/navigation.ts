@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Bizu SaaS",
+  name: "Bizu Hub Bruno Goulart",
   description:
-    "Boilerplate full-stack para criar SaaS, portais e sistemas web rápido, com metodologia de AI Software Engineering.",
+    "Site pessoal, blog e hub de clientes de Bruno Pelatieri Goulart — automação, IA e arquitetura full-stack.",
   locale: "pt-BR",
-  url: "https://bizu.bru.ia.br",
+  url: "https://brunogoulart.com.br",
   logo: "/bizu_bru_ia.png",
   favicon: "/favicon.ico",
   screenshot: "/bizu_bru_ia_screenshot.webp",
@@ -15,11 +15,9 @@ export const siteConfig = {
     photo: "/bruno_pelatieri_goulart_bizu_bru_ia.webp",
   },
   links: {
-    demo: "https://bizu.bru.ia.br",
-    repo: "https://github.com/brunopelatieri/bizu-saas",
-    repoVercel: "https://github.com/brunopelatieri/bizu-saas-vercel",
+    demo: "https://brunogoulart.com.br",
+    repo: "https://gitlab.com/brunopelatieri/bizu-hub",
     github: "https://github.com/brunopelatieri",
-    site: "https://brunogoulart.com.br",
     linkedin: "https://www.linkedin.com/in/bruno-pelatieri-goulart/",
     youtube: "https://www.youtube.com/@devgalactico",
     x: "https://x.com/brunopelatieri",
@@ -41,10 +39,8 @@ export type NavItem = (typeof navItems)[number];
 
 export const socialLinks = [
   { label: "GitHub", href: siteConfig.links.github },
-  { label: "Repositório", href: siteConfig.links.repo },
-  { label: "Repo Vercel", href: siteConfig.links.repoVercel },
+  { label: "GitLab", href: siteConfig.links.repo },
   { label: "LinkedIn", href: siteConfig.links.linkedin },
-  { label: "Site", href: siteConfig.links.site },
   { label: "YouTube", href: siteConfig.links.youtube },
   { label: "X", href: siteConfig.links.x },
   { label: "Instagram", href: siteConfig.links.instagram },

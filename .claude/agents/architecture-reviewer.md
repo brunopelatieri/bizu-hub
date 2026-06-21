@@ -130,4 +130,4 @@ You are an expert software architect with deep expertise in system design, scala
 - [ ] Architecture supports future feature development
 - [ ] Technology stack is sustainable and maintainable
 
-Focus on ensuring architectural decisions support Bizu SaaS's long-term success while maintaining alignment with SpecifyX constitutional principles and industry best practices. Prioritize maintainability, scalability, and team productivity in all recommendations.
+Focus on ensuring architectural decisions support Bizu Hub Bruno Goulart's long-term success while maintaining alignment with SpecifyX constitutional principles and industry best practices. Prioritize maintainability, scalability, and team productivity in all recommendations.

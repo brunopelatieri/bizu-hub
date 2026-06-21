@@ -1,24 +1,17 @@
-# AI Context — Bizu SaaS
+# AI Context — Bizu Hub Bruno Goulart
 
 Este arquivo é o ponto de entrada rápido para qualquer LLM/AI Agent entender o
 projeto antes de propor ou executar mudanças.
 
 ## Objetivo
 
-Boilerplate full-stack para iniciar projetos rapidamente com metodologia de
-**AI Software Engineering**: contexto explícito, decisões documentadas,
-desenvolvimento guiado por especificação e stack moderna para entregar projetos
-com velocidade, precisão e escalabilidade.
+Projeto pessoal de **Bruno Pelatieri Goulart** que reúne em uma única plataforma:
 
-Projetos-alvo:
+- **Site pessoal** — landing, sobre, projetos, contato e presença profissional.
+- **Blog** — artigos com SSR, SEO e Open Graph.
+- **Hub de clientes** — área autenticada (`/dashboard/**`) para clientes acompanharem projetos, entregas e recursos.
 
-- SaaS
-- portal de clientes
-- site institucional
-- landing page
-- blog
-- dashboard/admin
-- sistemas web de aplicação
+Stack full-stack com metodologia de **AI Software Engineering**: contexto explícito, decisões documentadas e desenvolvimento guiado por especificação.
 
 ## Arquivos Que Devem Ser Lidos Primeiro
 
@@ -76,20 +69,21 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 
 ## Status Atual
 
-- Demo em [https://bizu.bru.ia.br](https://bizu.bru.ia.br) — hospedada na **Vercel**.
-- Repositório principal (este): **VPS + Docker + Node único** (`react-router-hono-server` + Hono + SSR).
-- Repositório Vercel (arquitetura otimizada para demo/serverless): [bizu-saas-vercel](https://github.com/brunopelatieri/bizu-saas-vercel).
+- Produção: [https://brunogoulart.com.br](https://brunogoulart.com.br) — VPS Ubuntu + Docker + Portainer.
+- Repositório: [gitlab.com/brunopelatieri/bizu-hub](https://gitlab.com/brunopelatieri/bizu-hub).
+- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`).
+- Supabase (Auth auxiliar): project ref **`kpersdlqtrxlytwbuvvv`** — MCP em `.cursor/mcp.json` (só neste repo).
 - React Router Framework Mode com `ssr: true`.
 - Hono integrado via `react-router-hono-server`.
 - Blog SSR com fonte estática em `src/lib/content/posts.ts`.
-- Dashboard inicial protegido no cliente.
-- Tema dark/light com Zustand e script anti-flash.
-- Sonner montado globalmente.
-- Dockerfile multi-stage para VPS.
+- Hub de clientes protegido no cliente (`/dashboard/**`).
+- Stack Portainer em `deploy/portainer-stack.yml` e `deploy/portainer-stack.npm.yml`.
+- Scripts `npm run docker:build` / `docker:push` em `scripts/docker-build.mjs`.
+- CI/CD GitLab (`.gitlab-ci.yml`) — build + push automático na branch principal.
 
 ## Pendências Técnicas Conhecidas
 
 - Evoluir blog estático para tabela Drizzle quando virar feature real.
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
 - Adicionar providers prontos para TanStack Query quando houver server state real.
-- Criar stack Portainer completa para app + Postgres + reverse proxy.
+- Job de migrations documentado em `deploy/README.md` (fora do container runtime).

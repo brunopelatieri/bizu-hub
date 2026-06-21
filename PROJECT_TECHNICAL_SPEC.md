@@ -1,23 +1,20 @@
-# Bizu SaaS — Especificacao Tecnica do Template
+# Bizu Hub Bruno Goulart — Especificacao Tecnica
 
-Este documento descreve o estado tecnico atual do projeto `bizu-saas` como
-boilerplate full-stack para iniciar rapidamente projetos de diferentes portes:
-SaaS, portal de clientes, site institucional, landing page, blog, dashboard
-admin e sistemas web de aplicacao.
+Este documento descreve o estado tecnico atual do projeto `bizu-hub` — plataforma
+pessoal de Bruno Pelatieri Goulart com site, blog e hub de clientes.
 
-O objetivo do template e ser uma base moderna, robusta e reutilizavel, com boa
-separacao de responsabilidades, SSR nas rotas publicas, area autenticada
-client-side, API server-side e deploy simples em VPS propria com Ubuntu Linux,
+O objetivo e reunir presenca publica profissional e portal autenticado para
+clientes em uma unica base full-stack, com SSR nas rotas publicas, area
+autenticada client-side, API server-side e deploy em VPS com Ubuntu Linux,
 Docker e Portainer.
 
 ---
 
 ## 1. Visao Geral
 
-### Proposta do Template
+### Proposta do Projeto
 
-O projeto e um template full-stack opinativo para acelerar criacao de produtos
-web com:
+Plataforma pessoal com tres frentes integradas:
 
 - Landing page pronta e responsiva.
 - Blog com SSR e meta tags/Open Graph.
@@ -436,7 +433,7 @@ Home atual (`src/pages/home-page.tsx`) compoe secoes em
 
 Objetivo:
 
-- Posicionar o Bizu SaaS como boilerplate full-stack com AI Software Engineering.
+- Posicionar o Bizu Hub Bruno Goulart como plataforma pessoal (site, blog e hub de clientes).
 - Destacar tecnologias, metodologia e publico-alvo (empresas, investidores, empreendedores e devs).
 - Servir como base para landing pages de projetos derivados.
 
@@ -634,23 +631,31 @@ Objetivo:
 
 ## 14. Deploy em VPS Ubuntu + Docker + Portainer
 
-### Demo em Producao
+### Producao
 
-- URL: `https://bizu.bru.ia.br`
-- Hospedagem: **Vercel** (demo publica).
-- Repositório Vercel (arquitetura otimizada para serverless): `https://github.com/brunopelatieri/bizu-saas-vercel`
-- Repositório principal (este repo): **VPS + Docker + Node unico** via `react-router-hono-server` + Hono + SSR.
-- Objetivo: demo como referencia visual; codigo de producao self-hosted permanece neste template.
+- URL: `https://brunogoulart.com.br`
+- Hospedagem: **VPS propria** (Ubuntu + Docker + Portainer).
+- Repositorio: **GitLab** (`gitlab.com/brunopelatieri/bizu-hub`).
+- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`).
+- Guia operacional: `deploy/README.md`.
 
 ### Modelo de Deploy
 
-Destino planejado:
+```text
+Dev local → docker build (VITE_* no build) → docker push → GitLab Container Registry
+                                                              ↓
+VPS Portainer Stack → pull imagem → app:3000 ← Traefik/NPM + TLS
+                                      ↓
+                                 postgres:5432
+```
+
+Destino:
 
 - VPS propria.
 - Ubuntu Linux.
 - Docker Engine.
 - Portainer para gerenciar containers/stacks.
-- Reverse proxy recomendado: Traefik, Caddy ou Nginx Proxy Manager.
+- Reverse proxy: Traefik (`deploy/portainer-stack.yml`) ou NPM (`deploy/portainer-stack.npm.yml`).
 
 ### Container da Aplicacao
 
@@ -658,56 +663,70 @@ Destino planejado:
 
 1. Stage `build`
    - Node 22 Alpine.
-   - `npm ci`.
-   - `npm run build`.
+   - `ARG VITE_SUPABASE_URL`, `ARG VITE_SUPABASE_PUBLISHABLE_KEY`.
+   - `npm ci` + `npm run build`.
 2. Stage `runtime`
    - Node 22 Alpine.
    - `npm ci --omit=dev`.
    - Copia `build/`.
-   - Expõe `3000`.
+   - Expoe `3000`.
    - Healthcheck em `/api/health`.
    - `CMD ["node", "build/server/index.js"]`.
 
-### Compose Atual
+Build/push via `npm run docker:build` / `npm run docker:push` ou CI GitLab (`.gitlab-ci.yml`).
 
-`docker-compose.yml` atual contem apenas Postgres local:
+### Compose Local (dev)
+
+`docker-compose.yml` contem apenas Postgres local:
 
 - `postgres:16-alpine`
 - Porta local `15432` publicada para `5432` dentro do container.
 - Usuario/senha/db: `portal`.
 - Volume `postgres_data`.
 
-Para producao via Portainer, recomenda-se stack com:
+### Stack Portainer (producao)
 
-- Container app (`bizu-saas`).
-- Container Postgres ou Postgres externo/gerenciado.
-- Rede Docker compartilhada.
-- Reverse proxy com TLS.
+Arquivos em `deploy/`:
+
+- `portainer-stack.yml` — app + postgres + labels Traefik para `brunogoulart.com.br`.
+- `portainer-stack.npm.yml` — app + postgres (proxy manual no NPM).
+- `.env.portainer.example` — variaveis da stack (sem secrets no git).
+
+Servicos:
+
+- Container app (imagem GitLab Container Registry).
+- Container Postgres 16.
+- Rede interna `bizu-hub` + rede externa `proxy` (Traefik).
 - Variaveis injetadas pelo Portainer (nunca comitar secrets).
 
 ### Variaveis de Ambiente
 
-Runtime:
+Build (docker build / `deploy/.env.docker`):
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `DOCKER_IMAGE`, `DOCKER_TAG`
+
+Runtime (container app):
 
 - `NODE_ENV=production`
 - `PORT=3000`
-- `DATABASE_URL`
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `DATABASE_URL` (montada pela stack: `postgresql://...@postgres:5432/...`)
 
-Migrations:
+Migrations (fora do container):
 
 - `DIRECT_URL`
+
+Supabase Auth (dashboard Supabase):
+
+- Site URL: `https://brunogoulart.com.br`
+- Redirect: `https://brunogoulart.com.br/auth/callback`
 
 Pagamentos/e-mail futuros:
 
 - `STRIPE_SECRET_KEY`
 - `VITE_STRIPE_PUBLISHABLE_KEY`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `MAIL_FROM`
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`
 
 ---
 

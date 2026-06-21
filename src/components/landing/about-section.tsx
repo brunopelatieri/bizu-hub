@@ -1,18 +1,20 @@
+import { siteConfig } from "@/lib/constants/navigation";
+
 const painPoints = [
   {
-    icon: "🧱",
-    title: "Semanas montando a base",
-    body: "Autenticação, SSR, API, banco, deploy, tema, formulários. Antes de escrever a primeira regra de negócio, já se foi um mês.",
+    icon: "🌐",
+    title: "Presença profissional fragmentada",
+    body: "Site, blog, portfólio e contato espalhados em ferramentas diferentes dificultam a experiência de quem quer conhecer seu trabalho.",
   },
   {
-    icon: "🧭",
-    title: "Decisões de arquitetura sem padrão",
-    body: "Cada projeto reinventa estrutura de pastas, camadas e convenções. O resultado é dívida técnica desde o início.",
+    icon: "🔑",
+    title: "Clientes sem um portal central",
+    body: "Entregas, status e recursos compartilhados por e-mail ou links soltos geram retrabalho e falta de visibilidade.",
   },
   {
-    icon: "🤖",
-    title: "IA sem contexto produz código fora do padrão",
-    body: "Sem um mapa técnico claro, agentes de IA chutam decisões e geram retrabalho em vez de acelerar a entrega.",
+    icon: "⚙️",
+    title: "Stack desconectada",
+    body: "Manter site público e área logada em plataformas separadas aumenta custo, complexidade e tempo de evolução.",
   },
 ];
 
@@ -25,11 +27,12 @@ export function AboutSection() {
             O problema
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Todo projeto novo começa do zero — de novo.
+            Presença pública e portal de clientes precisam conviver.
           </h2>
           <p className="mb-12 max-w-2xl text-muted-foreground">
-            A parte difícil raramente é a ideia. É a fundação técnica repetitiva
-            que separa você de validar o produto e gerar valor.
+            Quem presta serviços de tecnologia precisa de um lugar para se
+            apresentar ao mundo e outro para entregar valor aos clientes — sem
+            duplicar esforço.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             {painPoints.map((p) => (
@@ -54,13 +57,13 @@ export function AboutSection() {
             A solução
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Uma base pronta, pensada para humanos e IA.
+            Um hub unificado: público por fora, privado por dentro.
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            O <strong className="text-foreground">Bizu SaaS</strong> entrega
-            arquitetura moderna, módulos essenciais e documentação viva. Você
-            parte de uma fundação confiável e foca no que diferencia o seu
-            produto — com agentes de IA que entendem o projeto antes de mexer.
+            O <strong className="text-foreground">{siteConfig.name}</strong>{" "}
+            concentra site pessoal, blog e área autenticada para clientes na
+            mesma base técnica — evoluindo com arquitetura moderna e contexto
+            vivo para desenvolvimento assistido por IA.
           </p>
         </div>
       </div>

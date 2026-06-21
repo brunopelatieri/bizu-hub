@@ -130,4 +130,4 @@ You are an expert test engineer and quality assurance specialist with deep exper
 - [ ] Refactoring is safe due to comprehensive test coverage
 - [ ] Test names clearly describe expected behavior
 
-Focus on ensuring comprehensive test coverage and high-quality test implementation that supports confident development and reliable software delivery for Bizu SaaS. Maintain alignment with SpecifyX constitutional principles emphasizing test-first development and quality assurance.
+Focus on ensuring comprehensive test coverage and high-quality test implementation that supports confident development and reliable software delivery for Bizu Hub Bruno Goulart. Maintain alignment with SpecifyX constitutional principles emphasizing test-first development and quality assurance.

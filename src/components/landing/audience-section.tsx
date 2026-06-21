@@ -1,23 +1,23 @@
 const audiences = [
   {
+    icon: "👋",
+    title: "Visitantes",
+    body: "Conheça meu trabalho em automação, IA, n8n e arquitetura full-stack — e entre em contato para novos projetos.",
+  },
+  {
+    icon: "📖",
+    title: "Leitores do blog",
+    body: "Artigos sobre produtividade, tecnologia, negócios e ferramentas — conteúdo prático para profissionais digitais.",
+  },
+  {
+    icon: "🤝",
+    title: "Clientes ativos",
+    body: "Acesse o hub autenticado para acompanhar entregas, status de projetos e materiais compartilhados.",
+  },
+  {
     icon: "🏢",
-    title: "Empresas",
-    body: "Reduza o tempo de descoberta ao MVP. Uma base padronizada acelera squads, facilita onboarding e diminui dívida técnica desde o dia um.",
-  },
-  {
-    icon: "📈",
-    title: "Investidores",
-    body: "Execução comprovada em tecnologias emergentes — IA, automação e arquitetura escalável — com visão de produto e capacidade de entrega.",
-  },
-  {
-    icon: "🚀",
-    title: "Empreendedores",
-    body: "Transforme a ideia em produto sem travar na fundação. Comece pelo que diferencia o negócio e valide mais rápido.",
-  },
-  {
-    icon: "🧠",
-    title: "Devs AI Software Engineer",
-    body: "Contexto vivo, TypeScript estrito e convenções claras. Os agentes de IA entendem o projeto e entregam dentro do padrão.",
+    title: "Empresas e parceiros",
+    body: "Busca por automação enterprise, agentes de IA, integrações e arquitetura escalável com execução comprovada.",
   },
 ];
 
@@ -30,11 +30,11 @@ export function AudienceSection() {
             Para quem é
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Feito para quem precisa entregar com velocidade e robustez
+            Público aberto, relacionamento privado
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
-            Da validação de uma ideia ao produto em produção, com um fluxo que
-            une engenharia consolidada e inteligência artificial.
+            A parte pública atrai e informa; o hub de clientes entrega valor
+            exclusivo para quem já trabalha comigo.
           </p>
         </div>
 

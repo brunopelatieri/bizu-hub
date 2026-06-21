@@ -3,20 +3,16 @@ description: Escopo do template multiuso para AI Software Engineering
 alwaysApply: true
 ---
 
-# Escopo do template
+# Escopo do projeto
 
-Este projeto é um boilerplate full-stack para iniciar projetos rapidamente com
-metodologia de **AI Software Engineering**: especificação clara, contexto vivo
+Plataforma pessoal de **Bruno Pelatieri Goulart** com três frentes:
+
+- **Site pessoal** — landing, bio, projetos e contato.
+- **Blog** — conteúdo com SSR e SEO.
+- **Hub de clientes** — área autenticada para clientes (`/dashboard/**`).
+
+Metodologia de **AI Software Engineering**: especificação clara, contexto vivo
 para LLMs, arquitetura moderna e deploy em VPS.
-
-Tipos de projeto-alvo:
-- SaaS
-- portal de clientes
-- site institucional
-- landing page
-- blog
-- dashboard/admin
-- sistemas web de aplicação
 
 Rotas base:
 - `/` — landing
@@ -26,7 +22,7 @@ Rotas base:
 - `/blog` — lista de posts com SSR
 - `/blog/:slug` — post com SSR e Open Graph dinâmico
 - `/login` — auth Supabase (e-mail/senha)
-- `/dashboard/**` — área autenticada client-side
+- `/dashboard/**` — hub de clientes (área autenticada client-side)
 
 Regras:
 - Navbar e footer compartilhados via layout

@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/layout/page-hero";
 import { getAllPosts } from "@/lib/content/posts";
+import { siteConfig } from "@/lib/constants/navigation";
 import type { Route } from "./+types/blog";
 
 export function loader() {
@@ -12,13 +13,13 @@ export function loader() {
 }
 
 export const meta: Route.MetaFunction = () => [
-  { title: "Blog — Bizu SaaS" },
+  { title: `Blog — ${siteConfig.name}` },
   {
     name: "description",
     content:
       "Insights para profissionais digitais: produtividade, negócios e ferramentas.",
   },
-  { property: "og:title", content: "Blog — Bizu SaaS" },
+  { property: "og:title", content: `Blog — ${siteConfig.name}` },
   { property: "og:type", content: "website" },
 ];
 

@@ -1,8 +1,8 @@
 {
-  "name": "bizu-saas",
+  "name": "bizu-hub",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://bizu.bru.ia.br",
+  "homepage": "https://brunogoulart.com.br",
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
@@ -12,7 +12,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "docker:build": "node scripts/docker-build.mjs",
+    "docker:push": "node scripts/docker-build.mjs --push"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

@@ -1,126 +1,204 @@
-# Bizu SaaS
+# Bizu Hub Bruno Goulart
 
-**Bizu SaaS** é um boilerplate full-stack para começar projetos web rápido, com
-base robusta, documentação viva e fluxo pensado para desenvolvimento com
-**AI Software Engineering**.
 
-Ele serve para criar SaaS, portais de clientes, sites institucionais, landing
-pages, blogs, dashboards/admin e sistemas web de aplicação sem começar do zero.
 
-## Demo
+**Bizu Hub Bruno Goulart** é o projeto pessoal de Bruno Pelatieri Goulart — uma
 
-**URL:** [https://bizu.bru.ia.br](https://bizu.bru.ia.br)
+plataforma unificada com **site pessoal**, **blog** e **hub de clientes** para
 
-> **Nota sobre deploy:** este repositório é focado em **VPS + Docker + Node único**
-> (`react-router-hono-server` + Hono + SSR). A demo pública roda na **Vercel** e
-> exigiu **adaptações de arquitetura** (modelo serverless, não o stack
-> plug-and-play deste repo).
->
-> O caminho natural deste template é **VPS/Docker**. Use a demo como referência
-> visual; para a arquitetura otimizada para Vercel, veja o repositório dedicado:
-> [github.com/brunopelatieri/bizu-saas-vercel](https://github.com/brunopelatieri/bizu-saas-vercel)
+acompanhamento de projetos e entregas.
+
+
+
+**Produção:** [https://brunogoulart.com.br](https://brunogoulart.com.br)
+
+
+
+**Repositório:** [gitlab.com/brunopelatieri/bizu-hub](https://gitlab.com/brunopelatieri/bizu-hub)
+
+
+
+Deploy em **VPS Ubuntu + Docker + Portainer** com imagem no **GitLab Container Registry**.
+
+
 
 ## O Que Vem Pronto
 
+
+
 - Landing page responsiva, blog com SSR, páginas públicas e meta tags.
-- Login com Supabase Auth e dashboard/admin client-side.
+
+- Login com Supabase Auth e hub de clientes client-side.
+
 - API Hono no mesmo processo Node do SSR.
+
 - Postgres próprio via Drizzle ORM.
-- Base visual com shadcn/ui, Tailwind v4, tema claro/escuro e componentes prontos.
-- Estrutura de contexto para agentes de IA entenderem o projeto antes de mexer.
-- Docker preparado para VPS Ubuntu + Docker + Portainer.
+
+- Base visual com shadcn/ui, Tailwind v4, tema claro/escuro.
+
+- Dockerfile multi-stage + stack Portainer pronta.
+
+- Scripts `npm run docker:build` e `npm run docker:push` para GitLab Registry.
+
+
 
 ## Resumo Técnico 80/20
 
+
+
 ```text
+
 React Router v7 Framework Mode + SSR global
+
   |
+
   |-- /api/*              Hono API -> Drizzle -> Postgres
+
   |-- /, /sobre, /blog    rotas públicas com SSR e SEO
+
   |-- /login              Supabase Auth
-  `-- /dashboard/**       client-side, sem loader sensível no servidor
+
+  `-- /dashboard/**       hub de clientes (client-side)
+
 ```
 
-Stack principal: **React 19**, **TypeScript**, **React Router v7**, **Vite**,
-**Tailwind v4**, **shadcn/ui**, **Hono**, **Drizzle**, **Postgres**, **Supabase
-Auth/Storage**, **Zod**, **Zustand**, **TanStack Query**, **React Hook Form**,
-**Stripe**, **Nodemailer** e **Docker**.
 
-## Metodologia Sugerida
 
-Este template foi pensado para trabalhar com humanos e agentes de IA no mesmo
-fluxo. A ideia é aplicar **AI Software Engineering**: especificar antes de
-implementar, manter contexto técnico vivo e deixar decisões importantes
-documentadas.
+## Como Clonar e Rodar (dev)
 
-Antes de pedir mudanças para uma IA ou abrir uma feature relevante, leia primeiro:
 
-- `AI_CONTEXT.md` — visão rápida e regras de atualização de contexto.
-- `PROJECT_TECHNICAL_SPEC.md` — especificação técnica completa.
-- `MIGRATION_NOTES.md` — decisões da migração para React Router Framework Mode.
-- `.specify/memory/constitution.md` — princípios de desenvolvimento SpecifyX.
-
-Regra prática: use o `AI_CONTEXT.md` para entender o projeto em poucos minutos e
-o `PROJECT_TECHNICAL_SPEC.md` quando precisar mexer em arquitetura, rotas,
-deploy, banco ou autenticação.
-
-## Como Clonar e Rodar
 
 ```bash
-git clone https://github.com/brunopelatieri/bizu-saas.git
-cd bizu-saas
+
+git clone https://gitlab.com/brunopelatieri/bizu-hub.git
+
+cd bizu-hub
+
+
 
 npm install
+
 cp .env.example .env.local
 
+
+
 docker compose up -d
+
 npm run db:migrate
+
 npm run dev
+
 ```
 
-App em desenvolvimento:
 
-```text
-http://localhost:5173
-```
 
-Servidor de produção local:
+App em desenvolvimento: `http://localhost:5173`
+
+
+
+## Deploy em Produção (VPS)
+
+
+
+Guia completo em **[deploy/README.md](deploy/README.md)**.
+
+
+
+Resumo:
+
+
 
 ```bash
-npm run build
-npm run start
+
+cp deploy/.env.docker.example deploy/.env.docker
+
+# Edite VITE_SUPABASE_* e DOCKER_IMAGE
+
+
+
+docker login registry.gitlab.com
+
+npm run docker:push
+
 ```
 
-Por padrão, o `start` usa `PORT=3000`.
+
+
+No Portainer, use `deploy/portainer-stack.yml` (Traefik) ou
+
+`deploy/portainer-stack.npm.yml` (Nginx Proxy Manager).
+
+**CI/CD:** push na branch `main` dispara build + push via `.gitlab-ci.yml`.
+
+Configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` em
+
+GitLab → Settings → CI/CD → Variables.
+
+
 
 ## Variáveis Principais
 
-- `DATABASE_URL` — conexão runtime com Postgres.
-- `DIRECT_URL` — conexão usada pelo Drizzle Kit/migrations.
-- `PORT` — porta do servidor único em produção.
-- `VITE_SUPABASE_URL` — URL pública do projeto Supabase.
-- `VITE_SUPABASE_PUBLISHABLE_KEY` — chave pública do Supabase.
+
+
+| Variável | Onde | Uso |
+
+|----------|------|-----|
+
+| `DATABASE_URL` | runtime | Postgres (Drizzle) |
+
+| `DIRECT_URL` | migrations | Drizzle Kit |
+
+| `PORT` | runtime | Servidor Node (padrão 3000) |
+
+| `VITE_SUPABASE_URL` | **docker build** | Auth Supabase no client |
+
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | **docker build** | Auth Supabase no client |
+
+| `DOCKER_IMAGE` | build/push | `registry.gitlab.com/brunopelatieri/bizu-hub` |
+
+
 
 ## Scripts Úteis
 
+
+
 ```bash
+
 npm run dev          # dev server: React Router + Hono
+
 npm run build        # build de produção
+
 npm run start        # roda build/server/index.js
+
 npm run typecheck    # typegen + TypeScript
-npm run db:generate  # gera migrations Drizzle
+
 npm run db:migrate   # aplica migrations
-npm run db:studio    # abre Drizzle Studio
+
+npm run docker:build # build imagem Docker
+
+npm run docker:push  # build + push GitLab Registry
+
 ```
+
+
 
 ## Documentação
 
-- `AI_CONTEXT.md` — o que faz, para quem é e como agentes devem se orientar.
-- `PROJECT_TECHNICAL_SPEC.md` — arquitetura, stack, rotas, deploy e decisões.
-- `MIGRATION_NOTES.md` — histórico técnico da migração para SSR + Hono.
-- `.cursor/rules/` — regras persistentes para agentes no Cursor.
+
+
+- `deploy/README.md` — build, push, Portainer, DNS, Supabase Auth.
+
+- `AI_CONTEXT.md` — visão rápida para agentes de IA.
+
+- `PROJECT_TECHNICAL_SPEC.md` — arquitetura, rotas, deploy e decisões.
+
+
 
 ## Autor
 
+
+
 **Bruno Pelatieri Goulart**  
+
 Enterprise Automation Architect • AI • DevOps • n8n Specialist
+

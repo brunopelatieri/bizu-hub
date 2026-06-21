@@ -1,21 +1,21 @@
 const steps = [
   {
     number: "01",
-    verb: "Especifique",
-    title: "Defina antes de implementar",
-    body: "Escreva a especificação da feature primeiro. Objetivos claros e critérios de sucesso guiam tanto o time quanto os agentes de IA.",
+    verb: "Site",
+    title: "Presença profissional",
+    body: "Landing, sobre, projetos e contato — tudo indexável com SSR e SEO para quem quer conhecer meu trabalho e contratar.",
   },
   {
     number: "02",
-    verb: "Contexto vivo",
-    title: "Mantenha o mapa técnico atualizado",
-    body: "AI_CONTEXT e a spec técnica descrevem arquitetura, rotas e decisões. A IA lê o contexto e propõe mudanças dentro do padrão do projeto.",
+    verb: "Blog",
+    title: "Conteúdo e autoridade",
+    body: "Artigos publicados com meta tags e Open Graph. Insights sobre IA, automação, produtividade e arquitetura de software.",
   },
   {
     number: "03",
-    verb: "Implemente",
-    title: "Entregue com humanos e agentes",
-    body: "Mudanças pequenas, verificáveis e documentadas na mesma sessão. Você revisa, a IA executa — e o projeto continua legível e rastreável.",
+    verb: "Hub",
+    title: "Portal de clientes",
+    body: "Login seguro via Supabase Auth e dashboard client-side para acompanhar projetos, entregas e recursos exclusivos.",
   },
 ];
 
@@ -28,14 +28,14 @@ export function HowItWorksSection() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-14 text-center">
           <p className="mb-3 text-sm font-medium uppercase tracking-widest text-primary">
-            Metodologia
+            Como funciona
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            AI Software Engineering, na prática
+            Três frentes, uma plataforma
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
-            Um fluxo onde especificação, contexto e execução andam juntos — para
-            entregar rápido sem perder controle técnico.
+            O visitante explora o site e o blog; o cliente entra no hub com
+            credenciais próprias — cada um no lugar certo.
           </p>
         </div>
 

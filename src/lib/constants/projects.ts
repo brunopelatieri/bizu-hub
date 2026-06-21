@@ -1,12 +1,13 @@
 import type { Project } from "@/types/project";
+import { siteConfig } from "@/lib/constants/navigation";
 
 export const sampleProjects: Project[] = [
   {
     id: "1",
-    title: "Bizu SaaS",
+    title: siteConfig.name,
     description:
-      "Boilerplate full-stack para SaaS com React Router, Hono, Drizzle e Supabase auxiliar.",
-    href: "https://bizu.bru.ia.br",
+      "Plataforma pessoal com site, blog e hub de clientes — automação, IA e arquitetura full-stack.",
+    href: siteConfig.url,
     tags: ["React Router", "Hono", "Drizzle", "Supabase"],
   },
   {

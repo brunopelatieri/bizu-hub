@@ -1,4 +1,4 @@
-# Bizu SaaS Constitution
+# Bizu Hub Bruno Goulart Constitution
 
 ## Core Principles
 

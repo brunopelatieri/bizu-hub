@@ -11,11 +11,10 @@ import { siteConfig } from "@/lib/constants/navigation";
 const channels = [
   { label: "WhatsApp", value: siteConfig.author.phone, href: siteConfig.links.whatsapp },
   { label: "E-mail", value: siteConfig.author.email, href: `mailto:${siteConfig.author.email}` },
-  { label: "Site", value: "brunogoulart.com.br", href: siteConfig.links.site },
+  { label: "Site", value: new URL(siteConfig.url).host, href: siteConfig.url },
   { label: "LinkedIn", value: "in/bruno-pelatieri-goulart", href: siteConfig.links.linkedin },
   { label: "GitHub", value: "@brunopelatieri", href: siteConfig.links.github },
-  { label: "Repositório", value: "brunopelatieri/bizu-saas", href: siteConfig.links.repo },
-  { label: "Repo Vercel", value: "brunopelatieri/bizu-saas-vercel", href: siteConfig.links.repoVercel },
+  { label: "Repositório", value: "gitlab.com/brunopelatieri/bizu-hub", href: siteConfig.links.repo },
   { label: "YouTube", value: "@devgalactico", href: siteConfig.links.youtube },
   { label: "X", value: "@brunopelatieri", href: siteConfig.links.x },
   { label: "Instagram", value: "@brunopelatieri", href: siteConfig.links.instagram },

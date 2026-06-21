@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/constants/navigation";
 
 const stackBadges = [
-  "React Router v7",
-  "Hono",
-  "Drizzle",
-  "Supabase",
-  "Tailwind v4",
-  "Docker",
+  "Automação",
+  "IA",
+  "n8n",
+  "Full Stack",
+  "DevOps",
+  "Web3",
 ];
 
 export function HeroSection() {
@@ -27,30 +27,29 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-5xl px-6 py-28 text-center md:py-36">
         <Badge variant="outline" className="mb-6 gap-2 px-3 py-1.5 text-xs">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-          Boilerplate full-stack · AI Software Engineering
+          Site pessoal · Blog · Hub de clientes
         </Badge>
 
         <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-foreground md:text-6xl">
-          Comece projetos robustos.{" "}
-          <span className="text-primary">Com IA, do primeiro commit.</span>
+          Tecnologia, automação e IA —{" "}
+          <span className="text-primary">na prática.</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-          O <strong className="text-foreground">Bizu SaaS</strong> é uma base
-          full-stack pronta para criar SaaS, portais, sites e dashboards — com
-          arquitetura moderna e contexto vivo para humanos e agentes de IA
-          trabalharem juntos.
+          O <strong className="text-foreground">{siteConfig.name}</strong> reúne
+          minha presença profissional, blog e portal onde clientes acompanham
+          projetos, entregas e recursos — tudo em uma plataforma integrada.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href={siteConfig.links.repo} target="_blank" rel="noreferrer">
+          <Link to="/sobre">
             <Button size="lg" className="min-w-44 text-base font-semibold">
-              Ver no GitHub
+              Sobre mim
             </Button>
-          </a>
-          <Link to="#metodologia">
+          </Link>
+          <Link to="/login">
             <Button variant="outline" size="lg" className="min-w-44 text-base">
-              Ver a metodologia
+              Área do cliente
             </Button>
           </Link>
         </div>
@@ -66,19 +65,18 @@ export function HeroSection() {
           ))}
         </div>
 
-        {/* Project preview */}
         <div className="relative mx-auto mt-16 max-w-4xl overflow-hidden rounded-xl border border-border/60 bg-card shadow-2xl">
           <div className="flex items-center gap-2 border-b border-border/60 bg-muted/40 px-4 py-3">
             <span className="h-3 w-3 rounded-full bg-destructive/70" />
             <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
             <span className="h-3 w-3 rounded-full bg-green-500/70" />
             <span className="ml-3 text-xs text-muted-foreground">
-              bizu.bru.ia.br
+              {new URL(siteConfig.url).host}
             </span>
           </div>
           <img
             src={siteConfig.screenshot}
-            alt="Preview do Bizu SaaS"
+            alt={`Preview do ${siteConfig.name}`}
             className="block w-full object-cover object-top"
           />
         </div>

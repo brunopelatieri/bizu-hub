@@ -2,9 +2,15 @@
 
 # ---------------------------------------------------------------------------
 # Stage 1 — Build (client + server bundles do React Router Framework Mode)
+# VITE_* são embutidos no bundle no build — passe via --build-arg.
 # ---------------------------------------------------------------------------
 FROM node:22-alpine AS build
 WORKDIR /app
+
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_PUBLISHABLE_KEY
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
 
 COPY package*.json ./
 RUN npm ci
@@ -18,22 +24,21 @@ RUN npm run build
 FROM node:22-alpine AS runtime
 WORKDIR /app
 
+LABEL org.opencontainers.image.title="Bizu Hub Bruno Goulart"
+LABEL org.opencontainers.image.description="Site pessoal, blog e hub de clientes — brunogoulart.com.br"
+LABEL org.opencontainers.image.source="https://gitlab.com/brunopelatieri/bizu-hub"
+
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Apenas dependências de produção (devDeps como drizzle-kit/vite ficam de fora)
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# Artefatos gerados pelo `react-router build` (build/client + build/server)
 COPY --from=build /app/build ./build
 
 EXPOSE 3000
 
-# Healthcheck usando a rota da API Hono no mesmo processo
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD wget -qO- http://127.0.0.1:3000/api/health || exit 1
 
-# O servidor Hono (criado pelo react-router-hono-server) serve assets,
-# responde /api/* e delega o resto ao handler SSR do React Router.
 CMD ["node", "build/server/index.js"]

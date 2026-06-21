@@ -29,4 +29,6 @@ Supabase é **serviço auxiliar**. Dados da aplicação ficam no **Postgres pró
 ## Config
 
 - `VITE_SUPABASE_URL` + `VITE_SUPABASE_PUBLISHABLE_KEY` (frontend Vite)
+- Project ref Bizu Hub: `kpersdlqtrxlytwbuvvv` — ver `.cursor/MCP_SUPABASE.md`
+- MCP Cursor (este repo): `.cursor/mcp.json` → `supabase-bizu-hub` — ver `.cursor/MCP_SUPABASE.md`
 - Verificar com `isSupabaseConfigured()` antes de features opcionais

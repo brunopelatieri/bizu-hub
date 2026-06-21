@@ -4,4 +4,4 @@ Disallow: /dashboard
 Disallow: /login
 Disallow: /auth
 
-Sitemap: https://bizu.bru.ia.br/sitemap.xml
+Sitemap: https://brunogoulart.com.br/sitemap.xml

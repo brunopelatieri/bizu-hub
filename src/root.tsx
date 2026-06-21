@@ -33,7 +33,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => [
-  { title: `${siteConfig.name} — Boilerplate full-stack com AI Software Engineering` },
+  { title: `${siteConfig.name} — Site pessoal, blog e hub de clientes` },
   { name: "description", content: siteConfig.description },
   { name: "theme-color", content: "#0b0b0c" },
 ];
