@@ -1,0 +1,17 @@
+node_modules
+build
+.react-router
+.git
+.gitignore
+*.log
+.env
+.env.*
+!.env.example
+Dockerfile
+.dockerignore
+README.md
+MIGRATION_NOTES.md
+.specify
+.claude
+.cursor
+drizzle

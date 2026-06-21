@@ -1,0 +1,153 @@
+import { BarChart3, FileStack, FolderKanban, Users } from "lucide-react";
+import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/providers/auth-provider";
+
+const stats = [
+  {
+    label: "Projetos ativos",
+    value: "0",
+    icon: FolderKanban,
+    href: "/dashboard/projetos",
+    description: "Nenhum projeto criado ainda",
+  },
+  {
+    label: "Clientes",
+    value: "0",
+    icon: Users,
+    href: "/dashboard/clientes",
+    description: "Nenhum cliente convidado ainda",
+  },
+  {
+    label: "Arquivos",
+    value: "0",
+    icon: FileStack,
+    href: "/dashboard/arquivos",
+    description: "Nenhum arquivo enviado ainda",
+  },
+  {
+    label: "Atualizações",
+    value: "0",
+    icon: BarChart3,
+    href: "/dashboard/relatorios",
+    description: "Nenhuma atualização esta semana",
+  },
+];
+
+const quickActions = [
+  {
+    label: "Criar projeto",
+    description: "Adicione um novo projeto e defina suas etapas.",
+    href: "/dashboard/projetos",
+    icon: FolderKanban,
+  },
+  {
+    label: "Convidar cliente",
+    description: "Convide um cliente por e-mail para acessar o portal.",
+    href: "/dashboard/clientes",
+    icon: Users,
+  },
+  {
+    label: "Enviar arquivo",
+    description: "Compartilhe documentos, assets ou contratos.",
+    href: "/dashboard/arquivos",
+    icon: FileStack,
+  },
+];
+
+export function DashboardPage() {
+  const { user } = useAuth();
+
+  const firstName = user?.email?.split("@")[0] ?? "usuário";
+
+  return (
+    <div className="space-y-8">
+      {/* Welcome header */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+          Olá, {firstName}! 👋
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Bem-vindo ao seu dashboard. Comece criando seu primeiro projeto.
+        </p>
+      </div>
+
+      {/* Stat cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map(({ label, value, icon: Icon, href, description }) => (
+          <Link key={label} to={href}>
+            <Card className="group cursor-pointer transition-shadow hover:shadow-md">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {label}
+                </CardTitle>
+                <Icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-foreground">{value}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {description}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+
+      {/* Empty state / quick actions */}
+      <div>
+        <h2 className="mb-4 text-base font-semibold text-foreground">
+          Por onde começar
+        </h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {quickActions.map(({ label, description, href, icon: Icon }) => (
+            <Card
+              key={label}
+              className="flex flex-col border-dashed border-border/80"
+            >
+              <CardHeader>
+                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <Icon className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-base">{label}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-1 flex-col justify-between gap-4">
+                <p className="text-sm text-muted-foreground">{description}</p>
+                <Link to={href}>
+                  <Button variant="outline" size="sm" className="w-full">
+                    {label}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent activity placeholder */}
+      <div>
+        <h2 className="mb-4 text-base font-semibold text-foreground">
+          Atividade recente
+        </h2>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+            <BarChart3 className="mb-4 h-10 w-10 text-muted-foreground/40" />
+            <p className="font-medium text-muted-foreground">
+              Nenhuma atividade ainda
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Crie um projeto e faça sua primeira atualização para ver o
+              histórico aqui.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
