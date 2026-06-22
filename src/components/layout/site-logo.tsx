@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/constants/navigation";
 import { cn } from "@/lib/utils";
 
 type SiteLogoProps = {
-  showName?: boolean;
+  subtitle?: string;
   size?: "sm" | "md" | "lg";
   className?: string;
   asLink?: boolean;
@@ -16,7 +16,7 @@ const sizeClasses = {
 };
 
 export function SiteLogo({
-  showName = false,
+  subtitle,
   size = "md",
   className,
   asLink = true,
@@ -26,19 +26,19 @@ export function SiteLogo({
       <img
         src={siteConfig.logo}
         alt={siteConfig.name}
+        width={160}
+        height={40}
         className={cn("w-auto object-contain", sizeClasses[size])}
       />
-      {showName ? (
-        <span className="text-sm font-semibold tracking-wide text-primary">
-          {siteConfig.name}
-        </span>
+      {subtitle ? (
+        <p className="mt-2 text-sm text-gradient-brand">{subtitle}</p>
       ) : null}
     </>
   );
 
   const wrapperClass = cn(
-    "inline-flex items-center gap-2 transition hover:opacity-80",
-    className
+    "inline-flex flex-col items-start transition hover:opacity-90",
+    className,
   );
 
   if (asLink) {

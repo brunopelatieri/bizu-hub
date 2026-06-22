@@ -445,6 +445,17 @@ Observacao:
 - A `BlogSection` da landing e uma vitrine/preview estatica.
 - O blog real com SSR esta em `/blog` e `/blog/:slug`.
 
+### Design System 2026 (paginas publicas)
+
+- Aplicado em `home-page`, `about-page`, `projects-page`, `contact-page` e nas secoes `src/components/landing/*`.
+- Paleta fixa de marca em `src/styles/theme.css` (`@theme inline`): `--color-brand-blue #1096E6`, `--color-brand-indigo #3C51C4`, `--color-brand-teal #00CDBA` (usaveis como `bg-brand-blue`, `text-brand-teal`, `border-brand-indigo`, `from-brand-*`).
+- Tipografia: `Inter` para texto e `JetBrains Mono` (`--font-mono`, classe `font-mono`) para badges, numeros, stacks e snippets de codigo.
+- Utilitarios em `src/index.css`: `text-gradient-brand` (titulo com gradiente animado das 3 cores via keyframe `gradient-x`) e `glass-card`.
+- Estilo: dark dominante (slate-950 -> slate-900), glassmorphism com `backdrop-blur-md` e bordas `border-slate-800/50`.
+- Conteudo derivado do perfil profissional consolidado (GitHub README + `bruno_pelatieri_goulart-full-profile.md`): posicionamento "AI Automation Specialist & Full Stack Developer", timeline 2006 -> hoje, cases reais (Phyonext, Gestao Inteligente) e projetos open source (MCP Server, Setup Orion, AI XML Tag Guide, DApps, Bot de Cripto).
+- `about-page` e `projects-page` deixaram de usar `PageHero` e tem hero proprio (grid cibernetico + glow radial). `contact-page` consolida canais (WhatsApp, E-mail, LinkedIn, YouTube, TikTok, GitHub, GitLab, Discord, Localizacao).
+- `ContactForm` usa `sonner` para feedback de sucesso/erro (substituindo estado local de mensagem).
+
 ---
 
 ## 11. Dashboard/Admin

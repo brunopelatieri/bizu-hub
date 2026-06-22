@@ -1,172 +1,189 @@
-import { PageHero } from "@/components/layout/page-hero";
+import { Link } from "react-router";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/constants/navigation";
 
-const focusAreas = [
+const timeline = [
   {
-    title: "Backend & APIs",
-    body: "Node.js, Python e PHP (Laravel, Zend, CodeIgniter). APIs de alta performance e migração de sistemas legados para stacks modernas.",
+    year: "2006",
+    title: "O início com PHP clássico",
+    body: "Primeiros sistemas robustos com PHP, CodeIgniter, Zend Framework e Laravel — base sólida em desenvolvimento web e arquitetura de sistemas.",
   },
   {
-    title: "Frontend",
-    body: "React e Next.js para interfaces modernas, responsivas e de alto desempenho.",
+    year: "2012+",
+    title: "Expansão Full Stack",
+    body: "Node.js, Express, React e Next.js. APIs de alta performance, interfaces modernas e migração de sistemas legados para stacks atuais.",
   },
   {
-    title: "IA, LLMs & Agentes",
-    body: "Claude, GPT, Gemini, DeepSeek e Grok. Agentes autônomos com LangChain/LangGraph, pipelines RAG e servidores MCP.",
+    year: "2018+",
+    title: "Dados, DevOps & Web3",
+    body: "PostgreSQL, MongoDB, Redis e Supabase. Docker, Docker Swarm, Traefik e Portainer. Solidity, Ethereum, DApps e smart contracts.",
   },
   {
-    title: "Automação Inteligente",
-    body: "n8n, Kestra e ActivePieces conectando IA a fluxos de negócio reais, com deploy em Docker.",
+    year: "2023+",
+    title: "Engenharia de IA & Agentes",
+    body: "LangChain, LangGraph, MCP Servers e Prompt Engineering em XML. Integração de Claude, GPT, Gemini, DeepSeek e Grok em produtos reais.",
   },
   {
-    title: "Blockchain & Web3",
-    body: "DApps e smart contracts em Solidity + React + Web3.js na Ethereum.",
-  },
-  {
-    title: "DevOps & Infra",
-    body: "Docker, VPS e automação de infraestrutura — do deploy instantâneo ao proxy reverso.",
+    year: "2025",
+    title: "AI Automation Specialist",
+    body: "Foco em automação inteligente aplicada a crédito, saúde e food service — agentes autônomos que atendem, qualificam e convertem 24/7.",
   },
 ];
 
-const audiences = [
+const philosophy = [
   {
-    title: "Para empreendedores & startups",
-    body: "Transformo ideias em produtos digitais completos — do MVP ao sistema escalável, integrando IA para automatizar processos e acelerar o crescimento.",
+    title: "Especificação primeiro",
+    body: "Spec-Driven Development: contexto explícito e decisões documentadas antes do código. Menos retrabalho, mais previsibilidade.",
   },
   {
-    title: "Para investidores",
-    body: "Experiência técnica sólida em tecnologias emergentes (IA, Web3, Automação) com visão de produto e execução comprovada em 18+ anos de mercado.",
+    title: "Código limpo é requisito",
+    body: "TypeScript estrito, schemas Zod compartilhados e mudanças pequenas e verificáveis. Qualidade não é negociável.",
   },
   {
-    title: "Para recrutadores",
-    body: "Full Stack com profundidade rara — backend, frontend, blockchain, IA e DevOps em um único perfil, com projetos open source verificáveis.",
+    title: "Contexto vivo para LLMs",
+    body: "Arquitetura preparada para desenvolvimento assistido por IA — documentação rastreável que humanos e agentes entendem.",
   },
-  {
-    title: "Para pesquisadores & tech",
-    body: "Contribuições em Engenharia de Prompt (XML estruturado, Agent Skills, CoT), servidores MCP, RAG e orquestração com LangGraph.",
-  },
+];
+
+const stats = [
+  { value: "18+", label: "anos de engenharia" },
+  { value: "2006", label: "início da carreira" },
+  { value: "5", label: "LLMs em produção" },
+  { value: "∞", label: "agentes rodando 24/7" },
 ];
 
 export function AboutPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Sobre"
-        title="Bruno Pelatieri Goulart"
-        description="Desenvolvedor Full Stack desde 2006. Unindo a robustez de tecnologias consolidadas com a inteligência das ferramentas mais modernas de IA."
-        actions={
-          <>
-            <a href={siteConfig.links.linkedin} target="_blank" rel="noreferrer">
-              <Button>LinkedIn</Button>
-            </a>
-            <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
-              <Button variant="outline">GitHub</Button>
-            </a>
-            <a href={siteConfig.links.youtube} target="_blank" rel="noreferrer">
-              <Button variant="outline">YouTube</Button>
-            </a>
-          </>
-        }
-      />
-
-      <section className="px-6 py-16">
-        <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-[280px_1fr] md:items-start">
-          <div className="mx-auto w-full max-w-[280px]">
-            <img
-              src={siteConfig.author.photo}
-              alt={siteConfig.author.name}
-              className="aspect-square w-full rounded-2xl border border-border/60 object-cover shadow-lg"
-            />
+    <div className="bg-slate-950">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-slate-800/50 px-6 py-24">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            backgroundImage: `linear-gradient(oklch(1 0 0 / 3%) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 3%) 1px, transparent 1px)`,
+            backgroundSize: "56px 56px",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-96"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(60,81,196,0.16), transparent 70%)",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-5xl gap-10 md:grid-cols-[260px_1fr] md:items-center">
+          <div className="mx-auto w-full max-w-[260px]">
+            <div className="relative">
+              <div
+                aria-hidden="true"
+                className="absolute -inset-2 rounded-3xl opacity-40 blur-xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #1096E6, #3C51C4, #00CDBA)",
+                }}
+              />
+              <img
+                src={siteConfig.author.photo}
+                alt={siteConfig.author.name}
+                className="relative aspect-square w-full rounded-2xl border border-slate-800 object-cover shadow-2xl"
+              />
+            </div>
           </div>
-          <div className="space-y-5 text-muted-foreground">
-            <p>
-              Iniciei minha jornada com PHP e frameworks clássicos como
-              CodeIgniter, Zend Framework e Laravel — construindo uma base sólida
-              em desenvolvimento web e arquitetura de sistemas. Ao longo dos anos,
-              expandi para tecnologias modernas de alto impacto: do backend ao
-              frontend, automação inteligente, engenharia de IA e blockchain.
+          <div>
+            <p className="mb-3 font-mono text-sm uppercase tracking-widest text-brand-teal">
+              Sobre · Bruno Pelatieri Goulart
             </p>
-            <p>
-              Minha paixão está em criar soluções{" "}
-              <strong className="text-foreground">
-                escaláveis, seguras e inovadoras
-              </strong>
-              . Minha experiência permite migrar sistemas legados para tecnologias
-              modernas, integrar LLMs em produtos existentes e construir do zero
-              arquiteturas orientadas a agentes autônomos.
+            <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+              AI Automation Specialist &{" "}
+              <span className="text-gradient-brand">Full Stack Developer</span>
+            </h1>
+            <p className="mt-5 text-lg leading-relaxed text-slate-400">
+              Desenvolvedor Full Stack com 18+ anos de experiência — da era do
+              PHP clássico à arquitetura moderna de AI Agents. Projeto e entrego
+              soluções que unem engenharia de software consolidada ao que há de
+              mais atual em Inteligência Artificial, automação e Web3.
             </p>
-            <p>
-              <strong className="text-foreground">Atualmente</strong>, meu foco
-              está em DApps, APIs de alta performance, automação inteligente com
-              n8n e LangChain, construção de agentes de IA com LLMs (Claude, GPT,
-              Gemini, DeepSeek, Grok) e desenvolvimento de servidores MCP para
-              conectar IA a fluxos de negócio reais.
-            </p>
-            <p>
-              Compartilho conteúdo técnico sobre IA, automação e arquitetura
-              full-stack no{" "}
-              <a
-                href={siteConfig.links.youtube}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-primary underline-offset-4 hover:underline"
-              >
-                YouTube (@devgalactico)
-              </a>{" "}
-              e no{" "}
-              <a
-                href={siteConfig.links.tiktok}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-primary underline-offset-4 hover:underline"
-              >
-                TikTok (@brunopelatieri)
-              </a>
-              .
+            <p className="mt-4 font-mono text-sm text-slate-500">
+              📍 {siteConfig.author.location} · disponível remotamente
             </p>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border/50 bg-muted/30 px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-10 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Áreas de atuação
+      {/* Stats */}
+      <section className="border-b border-slate-800/50 px-6 py-12">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 md:grid-cols-4">
+          {stats.map((s) => (
+            <div
+              key={s.label}
+              className="rounded-2xl border border-slate-800/50 bg-slate-900/40 p-6 text-center backdrop-blur-md"
+            >
+              <p className="font-mono text-3xl font-bold text-gradient-brand">
+                {s.value}
+              </p>
+              <p className="mt-1 text-sm text-slate-400">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Narrativa */}
+      <section className="border-b border-slate-800/50 px-6 py-20">
+        <div className="mx-auto max-w-3xl space-y-5 text-slate-400">
+          <h2 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+            A jornada: PHP → Node.js/React →{" "}
+            <span className="text-gradient-brand">AI Agents</span>
           </h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {focusAreas.map((area) => (
-              <div
-                key={area.title}
-                className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
-              >
-                <h3 className="mb-2 font-semibold text-foreground">
-                  {area.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {area.body}
+          <p>
+            Comecei em 2006 construindo sistemas robustos com PHP, Laravel,
+            CodeIgniter e Zend Framework. Ao longo dos anos, expandi para
+            tecnologias modernas de alto impacto — do backend ao frontend,
+            automação inteligente, engenharia de IA e blockchain.
+          </p>
+          <p>
+            Minha paixão está em criar soluções{" "}
+            <strong className="text-slate-200">
+              escaláveis, seguras e inovadoras
+            </strong>
+            . Migro sistemas legados sem parar a operação, integro LLMs em
+            produtos existentes e construo do zero arquiteturas orientadas a
+            agentes autônomos.
+          </p>
+          <p>
+            <strong className="text-slate-200">Atualmente</strong>, meu foco está
+            em DApps, APIs de alta performance, automação inteligente com n8n e
+            LangChain, construção de agentes de IA com LLMs (Claude, GPT, Gemini,
+            DeepSeek, Grok) e desenvolvimento de servidores MCP para conectar IA
+            a fluxos de negócio reais.
+          </p>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="border-b border-slate-800/50 bg-slate-900 px-6 py-20">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-12 text-2xl font-bold tracking-tight text-white md:text-3xl">
+            Linha do tempo
+          </h2>
+          <div className="relative space-y-8 border-l border-slate-800 pl-8">
+            {timeline.map((item) => (
+              <div key={item.year} className="relative">
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[39px] flex h-5 w-5 items-center justify-center rounded-full border border-brand-blue/50 bg-slate-950"
+                >
+                  <span className="h-2 w-2 rounded-full bg-brand-teal" />
+                </span>
+                <p className="mb-1 font-mono text-sm font-bold text-brand-blue">
+                  {item.year}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-10 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            O que posso oferecer
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {audiences.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
-              >
-                <h3 className="mb-2 font-semibold text-primary">
+                <h3 className="mb-1 text-lg font-semibold text-white">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-sm leading-relaxed text-slate-400">
                   {item.body}
                 </p>
               </div>
@@ -175,17 +192,65 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-border/50 bg-muted/30 px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <blockquote className="text-lg italic text-foreground md:text-xl">
-            &ldquo;Unindo 18+ anos de engenharia com a inteligência do futuro —
-            construindo hoje o que o mercado precisará amanhã.&rdquo;
-          </blockquote>
-          <p className="mt-4 text-sm text-muted-foreground">
-            {siteConfig.author.role}
-          </p>
+      {/* Filosofia */}
+      <section className="border-b border-slate-800/50 px-6 py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 text-center">
+            <p className="mb-3 font-mono text-sm uppercase tracking-widest text-brand-teal">
+              Filosofia de trabalho
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+              Rigor de engenharia, velocidade de IA
+            </h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {philosophy.map((p) => (
+              <div
+                key={p.title}
+                className="rounded-2xl border border-slate-800/50 bg-slate-900/40 p-6 backdrop-blur-md"
+              >
+                <h3 className="mb-2 font-semibold text-white">{p.title}</h3>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  {p.body}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-    </>
+
+      {/* Citação + CTA */}
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <blockquote className="text-xl font-medium italic text-white md:text-2xl">
+            &ldquo;Unindo 18 anos de engenharia com a inteligência do futuro —
+            construindo hoje o que o mercado precisará amanhã.&rdquo;
+          </blockquote>
+          <p className="mt-4 font-mono text-sm text-slate-500">
+            {siteConfig.author.role}
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link to="/projetos">
+              <Button
+                size="lg"
+                className="bg-brand-blue font-semibold text-white shadow-lg shadow-brand-blue/25 hover:bg-brand-blue/90"
+              >
+                Ver projetos
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link to="/contato">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-slate-700 bg-slate-900/40 text-slate-200 hover:bg-slate-800/60 hover:text-white"
+              >
+                Falar comigo
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

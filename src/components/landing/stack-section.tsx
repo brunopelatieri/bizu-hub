@@ -1,44 +1,47 @@
 const groups = [
   {
+    label: "Backend & APIs",
+    items: ["Node.js", "Express", "Python", "PHP/Laravel", "Hono", "REST", "SSE", "JSON-RPC"],
+  },
+  {
     label: "Frontend",
-    items: ["React 19", "React Router v7", "TypeScript", "Vite 7"],
+    items: ["React", "Next.js", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
   },
   {
-    label: "UI & Estilo",
-    items: ["shadcn/ui", "Tailwind v4", "Tema dark/light", "Sonner"],
+    label: "LLMs",
+    items: ["Claude", "GPT", "Gemini", "DeepSeek", "Grok", "Ollama"],
   },
   {
-    label: "Backend & API",
-    items: ["Hono", "Zod", "react-router-hono-server", "Nodemailer"],
+    label: "Automação & Agentes",
+    items: ["n8n", "LangChain", "LangGraph", "LangSmith", "MCP", "EvoAI", "Dify", "Kestra"],
   },
   {
     label: "Dados",
-    items: ["Drizzle ORM", "Postgres", "Supabase Auth/Storage"],
+    items: ["PostgreSQL", "Drizzle", "MySQL", "MongoDB", "Redis", "Supabase"],
   },
   {
-    label: "Estado & Dados no cliente",
-    items: ["Zustand", "TanStack Query", "React Hook Form", "TanStack Table"],
-  },
-  {
-    label: "Pagamentos & Deploy",
-    items: ["Stripe", "Docker", "VPS + Portainer"],
+    label: "DevOps & Web3",
+    items: ["Docker", "Docker Swarm", "Traefik", "Portainer", "Linux", "Solidity", "Ethereum"],
   },
 ];
 
 export function StackSection() {
   return (
-    <section id="stack" className="border-b border-border/50 bg-background py-24">
+    <section
+      id="stack"
+      className="border-b border-slate-800/50 bg-slate-900 py-24"
+    >
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-14 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-primary">
+          <p className="mb-3 font-mono text-sm uppercase tracking-widest text-brand-teal">
             Stack
           </p>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Tecnologias modernas, escolhidas com critério
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Ecossistema técnico completo
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
-            Cada peça resolve um problema real e conversa bem com as outras —
-            sem excesso de dependências nem mágica escondida.
+          <p className="mx-auto max-w-2xl text-slate-400">
+            Profundidade rara em um único perfil — backend, frontend, IA,
+            blockchain e DevOps, escolhidos com critério para cada problema.
           </p>
         </div>
 
@@ -46,16 +49,16 @@ export function StackSection() {
           {groups.map((group) => (
             <div
               key={group.label}
-              className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
+              className="rounded-2xl border border-slate-800/50 bg-slate-950/40 p-6 backdrop-blur-md"
             >
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+              <h3 className="mb-4 font-mono text-sm uppercase tracking-widest text-brand-blue">
                 {group.label}
               </h3>
               <ul className="flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs text-muted-foreground"
+                    className="rounded-full border border-slate-700/60 bg-slate-900/60 px-3 py-1 font-mono text-xs text-slate-300"
                   >
                     {item}
                   </li>

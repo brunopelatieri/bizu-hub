@@ -1,33 +1,39 @@
-const features = [
+const services = [
   {
-    icon: "🌐",
-    title: "Site pessoal com SSR",
-    body: "Landing, sobre, projetos e contato renderizados no servidor, com meta tags e Open Graph para presença profissional indexável.",
+    icon: "🤖",
+    title: "Desenvolvimento de AI Agents",
+    body: "Agentes autônomos com LangChain, LangGraph e MCP Protocol conectando LLMs a fluxos de negócio reais via n8n, APIs e bancos de dados. Do protótipo ao deploy em Docker.",
+    tags: ["LangGraph", "MCP", "RAG"],
   },
   {
-    icon: "✍️",
-    title: "Blog integrado",
-    body: "Artigos com SSR, SEO por rota e estrutura pronta para evoluir de conteúdo estático para posts no Postgres.",
+    icon: "⚙️",
+    title: "Automação Inteligente com n8n",
+    body: "Workflows integrados a LLMs, WhatsApp (Evolution API), CRMs e bancos. Processos manuais repetitivos viram pipelines inteligentes e auditáveis.",
+    tags: ["n8n", "Evolution API", "Webhooks"],
   },
   {
-    icon: "🔐",
-    title: "Hub de clientes",
-    body: "Área autenticada em /dashboard para clientes acompanharem projetos e recursos, sem expor dados sensíveis no HTML público.",
+    icon: "🧩",
+    title: "SaaS Full Stack",
+    body: "Produtos completos com React/Next.js no front, Hono/Node.js no back, Postgres via Drizzle e auth Supabase. Arquitetura escalável com SSR e deploy em VPS.",
+    tags: ["Hono", "Drizzle", "Postgres"],
   },
   {
     icon: "🔌",
-    title: "API no mesmo processo",
-    body: "Hono montado junto do SSR em um único processo Node. Frontend e API compartilham origem, sem proxy extra.",
+    title: "Integração de LLMs em produtos",
+    body: "Claude, GPT, Gemini, DeepSeek e Grok em sistemas existentes — com RAG, memória de contexto, Prompt Engineering em XML e observabilidade via LangSmith.",
+    tags: ["Claude", "GPT", "LangSmith"],
   },
   {
-    icon: "🗄️",
-    title: "Postgres via Drizzle",
-    body: "Dados da aplicação no seu Postgres, com migrations versionadas e tipagem ponta a ponta.",
+    icon: "🛠️",
+    title: "Infraestrutura DevOps",
+    body: "Docker Swarm, Traefik com SSL automático, Portainer e MinIO. Deploy de stacks completas de IA (n8n, Dify, Ollama) em VPS própria — como o Setup Orion.",
+    tags: ["Docker Swarm", "Traefik", "Portainer"],
   },
   {
-    icon: "🐳",
-    title: "Deploy em VPS",
-    body: "Dockerfile multi-stage para Ubuntu + Docker + Portainer. Um processo, healthcheck e build de produção enxuto.",
+    icon: "♻️",
+    title: "Migração de legado PHP",
+    body: "Sistemas em Zend, CodeIgniter, WordPress e Magento migrados para Node.js, Laravel ou Next.js — sem downtime e com documentação técnica completa.",
+    tags: ["PHP", "Laravel", "Next.js"],
   },
 ];
 
@@ -35,33 +41,43 @@ export function FeaturesSection() {
   return (
     <section
       id="funcionalidades"
-      className="border-b border-border/50 bg-muted/30 py-24"
+      className="border-b border-slate-800/50 bg-slate-900 py-24"
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-14 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-primary">
-            O que compõe a plataforma
+          <p className="mb-3 font-mono text-sm uppercase tracking-widest text-brand-teal">
+            Serviços
           </p>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Site, blog e hub — na mesma base
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Pilares reais de atuação
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
-            Três frentes integradas com stack full-stack moderna, prontas para
-            evoluir conforme novos clientes e conteúdos entram.
+          <p className="mx-auto max-w-2xl text-slate-400">
+            AI Software Engineering aplicada de ponta a ponta: dos agentes
+            autônomos à infraestrutura que os sustenta em produção.
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
+          {services.map((s) => (
             <div
-              key={f.title}
-              className="group rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+              key={s.title}
+              className="group rounded-2xl border border-slate-800/50 bg-slate-950/40 p-6 backdrop-blur-md transition-all duration-200 hover:border-brand-teal/40 hover:shadow-lg hover:shadow-brand-teal/5"
             >
-              <span className="mb-4 block text-3xl">{f.icon}</span>
-              <h3 className="mb-2 font-semibold text-foreground">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {f.body}
+              <span className="mb-4 block text-3xl">{s.icon}</span>
+              <h3 className="mb-2 font-semibold text-white">{s.title}</h3>
+              <p className="mb-4 text-sm leading-relaxed text-slate-400">
+                {s.body}
               </p>
+              <div className="flex flex-wrap gap-1.5">
+                {s.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-0.5 font-mono text-[11px] text-brand-blue"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>

@@ -7,7 +7,6 @@ export const meta: MetaFunction = () =>
     title: siteConfig.title,
     description: siteConfig.description,
     path: "/",
-    image: `${siteConfig.url}${siteConfig.logo}`,
   });
 
 export default function Home() {

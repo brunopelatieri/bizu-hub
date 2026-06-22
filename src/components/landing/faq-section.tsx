@@ -3,34 +3,34 @@ import { siteConfig } from "@/lib/constants/navigation";
 
 const faqs = [
   {
-    question: `O que é o ${siteConfig.name}?`,
+    question: "Que tipo de projeto o Bruno desenvolve?",
     answer:
-      "É a plataforma pessoal de Bruno Pelatieri Goulart: site profissional, blog e hub autenticado onde clientes acompanham projetos e entregas — tudo integrado em uma única base técnica.",
+      "Agentes de IA e automação inteligente (LangChain, LangGraph, MCP, n8n), SaaS full-stack (React, Hono, Postgres), integração de LLMs em produtos existentes, migração de sistemas legados PHP e infraestrutura DevOps com Docker. Do MVP à produção em VPS.",
   },
   {
-    question: "Como acesso a área de clientes?",
+    question: "O que diferencia um agente de IA de um chatbot comum?",
     answer:
-      "Clientes ativos recebem credenciais de acesso. Use o botão 'Área do cliente' ou acesse /login para entrar com e-mail e senha via Supabase Auth.",
+      "Um chatbot responde scripts. Um agente pensa, decide e age: qualifica leads, agenda, dispara follow-ups, consulta bancos e integra CRMs — com memória de contexto e handoff humano quando necessário. É IA operacional real, não resposta automática.",
   },
   {
-    question: "Que serviços o Bruno oferece?",
+    question: "Quais LLMs você integra?",
     answer:
-      "Automação enterprise com n8n, arquitetura de IA e agentes autônomos, integrações, DevOps e desenvolvimento full-stack — do MVP à produção em VPS.",
+      "Claude (Anthropic), GPT (OpenAI), Gemini (Google), DeepSeek e Grok (xAI), além de modelos locais via Ollama. A escolha do modelo é feita por critério técnico para cada problema — custo, latência e qualidade.",
   },
   {
-    question: "O blog é atualizado com frequência?",
+    question: "Dá para integrar IA num sistema que já existe?",
     answer:
-      "Sim. Artigos sobre produtividade, tecnologia, negócios e ferramentas para profissionais digitais. Acesse /blog para ver os posts publicados.",
+      "Sim. Integro LLMs em produtos em produção com RAG, memória de contexto, Prompt Engineering em XML e observabilidade via LangSmith — sem reescrever tudo. Também migro legado PHP para stacks modernas sem downtime.",
   },
   {
-    question: "Onde a plataforma roda?",
+    question: "Como funciona o atendimento via WhatsApp?",
     answer:
-      "Deploy em VPS com Docker + Portainer em brunogoulart.com.br.",
+      "Uso Evolution API e Meta Cloud API para conectar agentes ao WhatsApp Business. O funil completo — captação, qualificação, atendimento, conversão e pós-venda — roda 24/7 com integração a CRM e Instagram.",
   },
   {
-    question: "Como contratar um projeto?",
+    question: "Você atende remotamente?",
     answer:
-      "Pelo formulário de contato em /contato, WhatsApp ou e-mail. Descreva o desafio e retorno com os próximos passos.",
+      "Sim. Base em Campinas/SP, disponível para projetos remotos no Brasil e no exterior. O canal primário de contato é o WhatsApp — respondo rápido e com proposta de próximos passos.",
   },
 ];
 
@@ -38,16 +38,16 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-border/60 last:border-0">
+    <div className="border-b border-slate-800/60 last:border-0">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between gap-4 py-5 text-left"
         aria-expanded={open}
       >
-        <span className="font-medium text-foreground">{question}</span>
+        <span className="font-medium text-white">{question}</span>
         <span
           aria-hidden="true"
-          className={`shrink-0 text-muted-foreground transition-transform duration-200 ${open ? "rotate-45" : ""}`}
+          className={`shrink-0 text-brand-teal transition-transform duration-200 ${open ? "rotate-45" : ""}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
         </span>
       </button>
       {open && (
-        <div className="pb-5 text-sm leading-relaxed text-muted-foreground">
+        <div className="pb-5 text-sm leading-relaxed text-slate-400">
           {answer}
         </div>
       )}
@@ -70,30 +70,30 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 export function FaqSection() {
   return (
-    <section className="border-b border-border/50 bg-background py-24">
+    <section className="border-b border-slate-800/50 bg-slate-950 py-24">
       <div className="mx-auto max-w-3xl px-6">
         <div className="mb-14 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-primary">
+          <p className="mb-3 font-mono text-sm uppercase tracking-widest text-brand-teal">
             FAQ
           </p>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
             Perguntas frequentes
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-slate-400">
             Não encontrou o que precisava?{" "}
             <a
               href={siteConfig.links.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="text-primary underline-offset-4 hover:underline"
+              className="text-brand-blue underline-offset-4 hover:underline"
             >
-              Fale comigo
+              Fale comigo no WhatsApp
             </a>
             .
           </p>
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-card px-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-800/50 bg-slate-900/40 px-6 backdrop-blur-md">
           {faqs.map((faq) => (
             <FaqItem key={faq.question} {...faq} />
           ))}

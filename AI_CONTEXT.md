@@ -113,6 +113,25 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - Tabs `Entrar` / `Criar conta` — formulário de cadastro com campos: Nome, E-mail, Telefone Celular, Senha.
 - Validação inline via zod + react-hook-form; notificações via sonner.
 
+## Tema único — Dark Mode Only (atualizado Jun 2026)
+
+- Light mode deprecado. `<html class="dark">` fixo em `src/root.tsx` — sem script de init nem alternância.
+- `ThemeProvider` é pass-through; `useResolvedTheme()` retorna sempre `"dark"`.
+- Removidos: `ThemeToggle`, `theme-store.ts`, `themeInitScript` e persistência localStorage de tema.
+- `Toaster` (sonner) usa `theme="dark"` fixo.
+
+## Páginas Públicas — Design System 2026 (atualizado Jun 2026)
+
+- Tokens de marca fixos em `src/styles/theme.css` (`@theme inline`): `--color-brand-blue #1096E6`, `--color-brand-indigo #3C51C4`, `--color-brand-teal #00CDBA`.
+- Tipografia: `Inter` (texto) + `JetBrains Mono` (`--font-mono`, usada em badges, números, stacks e snippets); fontes carregadas em `src/root.tsx`.
+- Utilitários em `src/index.css`: `text-gradient-brand` (título com gradiente animado das 3 cores) e `glass-card`.
+- `home-page`, `about-page`, `projects-page`, `contact-page` + seções em `src/components/landing/*` adotam dark dominante (slate-950 → slate-900) com glassmorphism (`backdrop-blur-md`, `border-slate-800/50`).
+- Conteúdo real derivado do perfil consolidado (GitHub README + full-profile): posicionamento "AI Automation Specialist & Full Stack Developer", cases Phyonext/Gestão Inteligente, projetos open source (MCP Server, Setup Orion, DApps etc.).
+- `ContactForm` (`src/components/contact/contact-form.tsx`) usa `sonner` para feedback; canais incluem Discord (`siteConfig.links.discord`).
+- Ícones de marca adicionais em `src/components/ui/brand-icons.tsx` (inclui `DiscordIcon`).
+- **Header** (`site-header.tsx`): barra flutuante glass (`bg-slate-950/80 backdrop-blur-md`), marca "Bruno Goulart" + subtítulo gradiente, nav central (Home/Sobre/Projetos/Contato), CTA "Fale com o Especialista", Sheet mobile.
+- **Footer** (`site-footer.tsx`): grid 3 colunas (manifesto, navegação, canais com handles), copyright 2006–2026, botão scroll-to-top.
+
 ## Pendências Técnicas Conhecidas
 
 - Evoluir blog estático para tabela Drizzle quando virar feature real.

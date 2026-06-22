@@ -22,14 +22,14 @@ export function buildMeta({
   robots,
 }: SeoInput) {
   const url = path === "/" ? siteConfig.url : `${siteConfig.url}${path}`;
+  const ogImageUrl = image ?? absoluteAsset(siteConfig.ogImage);
 
-  const imageTags = image
-    ? [
-        { property: "og:image", content: image },
-        { name: "twitter:image", content: image },
-        { name: "twitter:card", content: "summary_large_image" },
-      ]
-    : [{ name: "twitter:card", content: "summary" }];
+  const imageTags = [
+    { property: "og:image", content: ogImageUrl },
+    { property: "og:image:type", content: "image/webp" },
+    { name: "twitter:image", content: ogImageUrl },
+    { name: "twitter:card", content: "summary_large_image" },
+  ];
 
   return [
     { title },

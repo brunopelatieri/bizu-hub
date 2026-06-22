@@ -13,7 +13,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/providers/auth-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { themeInitScript } from "@/lib/theme";
 import { siteConfig } from "@/lib/constants/navigation";
 import stylesheet from "@/index.css?url";
 
@@ -29,7 +28,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400..700&family=Manrope:wght@200..800&display=swap",
   },
   { rel: "stylesheet", href: stylesheet },
 ];
@@ -42,11 +41,13 @@ export const meta: MetaFunction = () => [
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" className="dark" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <link rel="icon" href={siteConfig.favicon} sizes="any" />
+        <link rel="icon" href={siteConfig.favicon} type="image/x-icon" />
+        <link rel="shortcut icon" href={siteConfig.favicon} />
         <Meta />
         <Links />
       </head>

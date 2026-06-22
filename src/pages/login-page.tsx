@@ -1,8 +1,9 @@
 import { Link, Navigate } from "react-router";
 import { Sparkles } from "lucide-react";
 import { AuthForm } from "@/components/auth/auth-form";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { HeroBackground } from "@/components/ui/hero-background";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { siteConfig } from "@/lib/constants/navigation";
 import { useAuth } from "@/providers/auth-provider";
 
 export function LoginPage() {
@@ -10,8 +11,9 @@ export function LoginPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[oklch(0.07_0.025_264)]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-sky-400" />
+      <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-slate-950">
+        <HeroBackground />
+        <div className="relative z-10 h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-brand-blue" />
       </div>
     );
   }
@@ -21,50 +23,23 @@ export function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-[oklch(0.07_0.025_264)] px-4 py-10">
-      <ThemeToggle className="absolute top-4 right-4 z-10 text-white/50 hover:text-white" />
-
-      {/* Grid cibernético */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(oklch(1 0 0 / 2.5%) 1px, transparent 1px),
-            linear-gradient(90deg, oklch(1 0 0 / 2.5%) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-      />
-
-      {/* Glow superior */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[480px]"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, oklch(0.55 0.2 230 / 14%), transparent 70%)",
-        }}
-      />
-
-      {/* Glow inferior */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 h-72 w-[700px] -translate-x-1/2 blur-3xl"
-        style={{ background: "oklch(0.45 0.18 280 / 10%)" }}
-      />
-
+    <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-slate-950 px-4 py-10">
+      <HeroBackground />
       <div className="relative z-10 w-full max-w-md">
         {/* Brand — acima do card */}
         <div className="mb-8 text-center">
+          <img
+            src={siteConfig.favicon}
+            alt={siteConfig.name}
+            width={56}
+            height={56}
+            className="mx-auto mb-4 h-14 w-14 rounded-xl object-contain"
+          />
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/50 backdrop-blur-sm">
             <Sparkles className="h-3.5 w-3.5 text-sky-400" />
             Engineering AI Design
           </div>
-          <h1 className="bg-gradient-to-br from-white via-white to-white/60 bg-clip-text text-4xl font-bold tracking-tight text-transparent">
-            Bizu
-          </h1>
-          <p className="mt-2 text-sm text-white/40">
+          <p className="text-sm text-white/40">
             Área restrita — clientes e projetos
           </p>
         </div>

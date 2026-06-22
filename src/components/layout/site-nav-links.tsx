@@ -1,16 +1,25 @@
 import { NavLink } from "react-router";
 import { cn } from "@/lib/utils";
-import { navItems } from "@/lib/constants/navigation";
+import { headerNavItems } from "@/lib/constants/navigation";
+
+type NavItem = { href: string; label: string };
 
 type SiteNavLinksProps = {
+  items?: readonly NavItem[];
   onNavigate?: () => void;
   className?: string;
+  variant?: "default" | "header";
 };
 
-export function SiteNavLinks({ onNavigate, className }: SiteNavLinksProps) {
+export function SiteNavLinks({
+  items = headerNavItems,
+  onNavigate,
+  className,
+  variant = "default",
+}: SiteNavLinksProps) {
   return (
     <>
-      {navItems.map((item) => (
+      {items.map((item) => (
         <NavLink
           key={item.href}
           to={item.href}
@@ -18,10 +27,16 @@ export function SiteNavLinks({ onNavigate, className }: SiteNavLinksProps) {
           onClick={onNavigate}
           className={({ isActive }) =>
             cn(
-              "text-sm transition",
-              isActive
-                ? "font-medium text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+              variant === "header"
+                ? "relative px-1 py-2 text-sm transition-colors duration-200"
+                : "text-sm transition",
+              variant === "header"
+                ? isActive
+                  ? "font-medium text-white after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-gradient-to-r after:from-brand-blue after:via-brand-indigo after:to-brand-teal"
+                  : "text-slate-400 hover:text-white"
+                : isActive
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               className,
             )
           }

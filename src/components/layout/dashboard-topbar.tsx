@@ -17,7 +17,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { SiteLogo } from "@/components/layout/site-logo";
 import { DashboardNavItems } from "@/components/layout/dashboard-nav";
 import { useAuth } from "@/providers/auth-provider";
@@ -83,8 +82,6 @@ export function DashboardTopbar({
 
       {/* Right */}
       <div className="flex items-center gap-2">
-        <ThemeToggle />
-
         {/* User dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
