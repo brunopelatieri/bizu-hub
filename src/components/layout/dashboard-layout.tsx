@@ -11,10 +11,9 @@ export function DashboardLayout() {
 
   return (
     <div className="flex h-svh overflow-hidden bg-background">
-      {/* Sidebar */}
+      {/* Sidebar — visível só md+ */}
       <DashboardSidebar collapsed={collapsed} />
 
-      {/* Main panel */}
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardTopbar
           sidebarCollapsed={collapsed}

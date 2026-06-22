@@ -1,6 +1,34 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router";
+import { Mail } from "lucide-react";
+import {
+  DockerIcon,
+  FacebookIcon,
+  GithubIcon,
+  GitlabIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  TikTokIcon,
+  WhatsAppIcon,
+  XIcon,
+  YoutubeIcon,
+} from "@/components/ui/brand-icons";
 import { SiteLogo } from "@/components/layout/site-logo";
 import { navItems, siteConfig, socialLinks } from "@/lib/constants/navigation";
+
+const brandIcons: Record<string, ReactNode> = {
+  LinkedIn: <LinkedinIcon className="h-4 w-4 shrink-0" />,
+  GitHub: <GithubIcon className="h-4 w-4 shrink-0" />,
+  GitLab: <GitlabIcon className="h-4 w-4 shrink-0" />,
+  "Docker Hub": <DockerIcon className="h-4 w-4 shrink-0" />,
+  YouTube: <YoutubeIcon className="h-4 w-4 shrink-0" />,
+  TikTok: <TikTokIcon className="h-4 w-4 shrink-0" />,
+  X: <XIcon className="h-4 w-4 shrink-0" />,
+  Instagram: <InstagramIcon className="h-4 w-4 shrink-0" />,
+  Facebook: <FacebookIcon className="h-4 w-4 shrink-0" />,
+  WhatsApp: <WhatsAppIcon className="h-4 w-4 shrink-0" />,
+  "E-mail": <Mail className="h-4 w-4 shrink-0" />,
+};
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -25,7 +53,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="text-sm text-muted-foreground transition hover:text-primary"
+                    className="text-sm text-muted-foreground transition-colors duration-200 hover:text-primary"
                   >
                     {item.label}
                   </Link>
@@ -38,16 +66,18 @@ export function SiteFooter() {
             <p className="mb-3 text-sm font-semibold text-foreground">
               Redes & contato
             </p>
-            <ul className="grid grid-cols-2 gap-2">
+            <ul className="space-y-2">
               {socialLinks.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-muted-foreground transition hover:text-primary"
+                    aria-label={link.label}
+                    className="flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-200 hover:text-primary"
                   >
-                    {link.label}
+                    {brandIcons[link.label] ?? null}
+                    <span>{link.label}</span>
                   </a>
                 </li>
               ))}

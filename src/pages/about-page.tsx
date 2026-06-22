@@ -63,8 +63,8 @@ export function AboutPage() {
             <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
               <Button variant="outline">GitHub</Button>
             </a>
-            <a href={siteConfig.links.site} target="_blank" rel="noreferrer">
-              <Button variant="outline">Site pessoal</Button>
+            <a href={siteConfig.links.youtube} target="_blank" rel="noreferrer">
+              <Button variant="outline">YouTube</Button>
             </a>
           </>
         }
@@ -102,6 +102,28 @@ export function AboutPage() {
               n8n e LangChain, construção de agentes de IA com LLMs (Claude, GPT,
               Gemini, DeepSeek, Grok) e desenvolvimento de servidores MCP para
               conectar IA a fluxos de negócio reais.
+            </p>
+            <p>
+              Compartilho conteúdo técnico sobre IA, automação e arquitetura
+              full-stack no{" "}
+              <a
+                href={siteConfig.links.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary underline-offset-4 hover:underline"
+              >
+                YouTube (@devgalactico)
+              </a>{" "}
+              e no{" "}
+              <a
+                href={siteConfig.links.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary underline-offset-4 hover:underline"
+              >
+                TikTok (@brunopelatieri)
+              </a>
+              .
             </p>
           </div>
         </div>
@@ -156,7 +178,7 @@ export function AboutPage() {
       <section className="border-t border-border/50 bg-muted/30 px-6 py-16">
         <div className="mx-auto max-w-3xl text-center">
           <blockquote className="text-lg italic text-foreground md:text-xl">
-            &ldquo;Unindo 18 anos de engenharia com a inteligência do futuro —
+            &ldquo;Unindo 18+ anos de engenharia com a inteligência do futuro —
             construindo hoje o que o mercado precisará amanhã.&rdquo;
           </blockquote>
           <p className="mt-4 text-sm text-muted-foreground">

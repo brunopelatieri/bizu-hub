@@ -2,7 +2,10 @@
 description: "Claude Code context file for this project"
 ---
 
-# Bizu Hub Bruno Goulart - AI Software Engineering Context
+# Bruno Goulart AI Automation Specialist & Full Stack Developer — AI Software Engineering Context
+
+**Identidade pública:** Bruno Goulart AI Automation Specialist & Full Stack Developer
+**Repo/slug:** bizu-hub | **Domínio:** brunogoulart.com.br
 
 Este projeto é a plataforma pessoal de Bruno Pelatieri Goulart — site, blog e
 hub de clientes — construída com metodologia de **AI Software Engineering**:

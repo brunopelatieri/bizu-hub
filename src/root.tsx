@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -8,6 +8,8 @@ import {
   ScrollRestoration,
 } from "react-router";
 import type { LinksFunction, MetaFunction } from "react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/providers/auth-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -33,7 +35,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => [
-  { title: `${siteConfig.name} — Site pessoal, blog e hub de clientes` },
+  { title: siteConfig.title },
   { name: "description", content: siteConfig.description },
   { name: "theme-color", content: "#0b0b0c" },
 ];
@@ -58,13 +60,24 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { staleTime: 60_000, retry: 1 } },
+      }),
+  );
+
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Outlet />
-        <Toaster richColors closeButton position="top-right" />
-      </AuthProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Outlet />
+            <Toaster richColors closeButton position="top-right" />
+          </AuthProvider>
+        </ThemeProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 }
 

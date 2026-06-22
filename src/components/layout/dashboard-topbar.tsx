@@ -1,7 +1,25 @@
 import { Link } from "react-router";
 import { LogOut, Menu, PanelLeftClose } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteLogo } from "@/components/layout/site-logo";
+import { DashboardNavItems } from "@/components/layout/dashboard-nav";
 import { useAuth } from "@/providers/auth-provider";
 
 type TopbarProps = {
@@ -16,21 +34,42 @@ export function DashboardTopbar({
   title = "Dashboard",
 }: TopbarProps) {
   const { user, signOut } = useAuth();
-
-  const initials = user?.email
-    ? user.email.slice(0, 2).toUpperCase()
-    : "??";
+  const initials = user?.email ? user.email.slice(0, 2).toUpperCase() : "??";
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-border bg-background px-4">
-      {/* Left: toggle + breadcrumb */}
-      <div className="flex items-center gap-3">
+      {/* Left */}
+      <div className="flex items-center gap-2">
+        {/* Mobile: hambúrguer + Sheet */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 md:hidden"
+              aria-label="Abrir menu"
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-60 p-0 flex flex-col">
+            <SheetHeader className="flex h-16 items-center border-b border-border px-4">
+              <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
+              <SiteLogo size="sm" asLink={false} />
+            </SheetHeader>
+            <div className="flex flex-1 flex-col overflow-hidden">
+              <DashboardNavItems />
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        {/* Desktop: colapsar sidebar */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onToggleSidebar}
           aria-label={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
-          className="h-8 w-8"
+          className="hidden h-8 w-8 md:flex"
         >
           {sidebarCollapsed ? (
             <Menu className="h-4 w-4" />
@@ -38,43 +77,50 @@ export function DashboardTopbar({
             <PanelLeftClose className="h-4 w-4" />
           )}
         </Button>
+
         <span className="text-sm font-medium text-foreground">{title}</span>
       </div>
 
-      {/* Right: user + actions */}
-      <div className="flex items-center gap-3">
-        {user?.email && (
-          <span className="hidden text-xs text-muted-foreground sm:block">
-            {user.email}
-          </span>
-        )}
-
-        {/* Avatar */}
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-          {initials}
-        </div>
-
-        {/* Back to site */}
-        <Link
-          to="/"
-          className="hidden text-xs text-muted-foreground transition hover:text-foreground sm:block"
-        >
-          ← Site público
-        </Link>
-
+      {/* Right */}
+      <div className="flex items-center gap-2">
         <ThemeToggle />
 
-        {/* Sign out */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => signOut()}
-          aria-label="Sair"
-          className="h-8 w-8"
-          title="Sair"
-        >
-          <LogOut className="h-4 w-4" />
-        </Button>
+        {/* User dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              aria-label="Menu do usuário"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuLabel className="text-xs text-muted-foreground truncate">
+              {user?.email ?? "—"}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/" className="cursor-pointer">
+                ← Site público
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => signOut()}
+              className="text-destructive cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sair
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

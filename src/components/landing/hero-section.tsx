@@ -27,18 +27,20 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-5xl px-6 py-28 text-center md:py-36">
         <Badge variant="outline" className="mb-6 gap-2 px-3 py-1.5 text-xs">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-          Site pessoal · Blog · Hub de clientes
+          AI Automation · Full Stack · n8n · LLMs
         </Badge>
 
         <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-foreground md:text-6xl">
-          Tecnologia, automação e IA —{" "}
-          <span className="text-primary">na prática.</span>
+          Bruno Goulart —{" "}
+          <span className="text-primary">
+            AI Automation Specialist & Full Stack Developer
+          </span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-          O <strong className="text-foreground">{siteConfig.name}</strong> reúne
-          minha presença profissional, blog e portal onde clientes acompanham
-          projetos, entregas e recursos — tudo em uma plataforma integrada.
+          Automação inteligente com IA, agentes LLM e arquitetura full-stack.
+          Blog, presença profissional e portal privado para clientes — tudo em
+          uma plataforma integrada.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -76,7 +78,7 @@ export function HeroSection() {
           </div>
           <img
             src={siteConfig.screenshot}
-            alt={`Preview do ${siteConfig.name}`}
+            alt={`Preview — ${siteConfig.title}`}
             className="block w-full object-cover object-top"
           />
         </div>

@@ -1,4 +1,7 @@
-# Bizu Hub Bruno Goulart — Especificacao Tecnica
+# Bruno Goulart AI Automation Specialist & Full Stack Developer — Especificacao Tecnica
+
+**Identidade pública:** Bruno Goulart AI Automation Specialist & Full Stack Developer
+**Repo/slug:** `bizu-hub` | **Domínio:** `brunogoulart.com.br`
 
 Este documento descreve o estado tecnico atual do projeto `bizu-hub` — plataforma
 pessoal de Bruno Pelatieri Goulart com site, blog e hub de clientes.
@@ -905,13 +908,25 @@ Acao recomendada:
 ### Curto prazo
 
 - Adicionar shadcn components essenciais: `dialog`, `dropdown-menu`, `sheet`,
-  `table`, `form`, `select`, `skeleton`, `tooltip`, `avatar`.
+  `table`, `form`, `select` (pendentes).
 - Criar stack Portainer completa para app + Postgres + reverse proxy.
 - Documentar rotina de migrations como job/pipeline separado.
 
+### Concluido (Jun 2026)
+
+- Header público responsivo: hambúrguer + `Sheet` mobile, nav inline desktop. `SiteNavLinks` reutilizável com `NavLink` ativo em `src/components/layout/site-nav-links.tsx`.
+- Componentes shadcn adicionados: `avatar`, `dropdown-menu`, `sheet`, `skeleton`, `tooltip`.
+- `QueryClientProvider` (TanStack Query) + `TooltipProvider` configurados em `src/root.tsx` via `useState` (seguro para SSR).
+- Redesign premium da login page: dark mode, grid cibernético, glassmorphism card.
+- `AuthForm` refatorado com `react-hook-form` + zod + sonner (validação inline e toasts).
+- Formulário de cadastro com campos: Nome, E-mail, Telefone Celular.
+- Dashboard responsivo: sidebar desktop colapsável (`hidden md:flex`), Sheet mobile via topbar hambúrguer.
+- `DashboardNavItems` centralizado em `src/components/layout/dashboard-nav.tsx`.
+- User menu via `DropdownMenu` na topbar (substitui links soltos).
+- Avatar do usuário na base da sidebar desktop.
+
 ### Medio prazo
 
-- Configurar TanStack Query Provider no `root.tsx`.
 - Criar API client tipado para Hono ou helpers de fetch padronizados.
 - Criar tabela `posts`.
 - Criar modelos `clients`, `projects`, `project_updates`, `files`.

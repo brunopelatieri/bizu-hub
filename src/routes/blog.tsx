@@ -13,13 +13,13 @@ export function loader() {
 }
 
 export const meta: Route.MetaFunction = () => [
-  { title: `Blog — ${siteConfig.name}` },
+  { title: `Blog — ${siteConfig.title}` },
   {
     name: "description",
     content:
-      "Insights para profissionais digitais: produtividade, negócios e ferramentas.",
+      "Insights sobre automação com IA, n8n, agentes LLM, arquitetura full-stack e produtividade técnica.",
   },
-  { property: "og:title", content: `Blog — ${siteConfig.name}` },
+  { property: "og:title", content: `Blog — ${siteConfig.title}` },
   { property: "og:type", content: "website" },
 ];
 

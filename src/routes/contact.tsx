@@ -5,9 +5,9 @@ import { buildMeta } from "@/lib/seo";
 
 export const meta: MetaFunction = () =>
   buildMeta({
-    title: `Contato — ${siteConfig.name}`,
+    title: `Contato — ${siteConfig.title}`,
     description:
-      "Fale com Bruno Pelatieri Goulart: WhatsApp, e-mail e redes. Projetos de SaaS, automação com IA, agentes e arquitetura full-stack.",
+      "Fale com Bruno Goulart: WhatsApp, e-mail e redes. Projetos de SaaS, automação com IA, agentes LLM e arquitetura full-stack.",
     path: "/contato",
   });
 

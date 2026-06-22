@@ -1,88 +1,66 @@
-import { NavLink } from "react-router";
-import {
-  BarChart3,
-  FileStack,
-  FolderKanban,
-  LayoutDashboard,
-  Settings,
-  Users,
-} from "lucide-react";
+import { Link } from "react-router";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SiteLogo } from "@/components/layout/site-logo";
+import { DashboardNavItems } from "@/components/layout/dashboard-nav";
+import { useAuth } from "@/providers/auth-provider";
 import { siteConfig } from "@/lib/constants/navigation";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { href: "/dashboard/projetos", label: "Projetos", icon: FolderKanban },
-  { href: "/dashboard/clientes", label: "Clientes", icon: Users },
-  { href: "/dashboard/arquivos", label: "Arquivos", icon: FileStack },
-  { href: "/dashboard/relatorios", label: "Relatórios", icon: BarChart3 },
-];
-
-const bottomItems = [
-  { href: "/dashboard/configuracoes", label: "Configurações", icon: Settings },
-];
+import { cn } from "@/lib/utils";
 
 type SidebarProps = {
   collapsed?: boolean;
 };
 
 export function DashboardSidebar({ collapsed = false }: SidebarProps) {
+  const { user } = useAuth();
+  const initials = user?.email ? user.email.slice(0, 2).toUpperCase() : "??";
+
   return (
     <aside
-      className={`flex h-full flex-col border-r border-border bg-card transition-all duration-200 ${collapsed ? "w-16" : "w-60"}`}
+      className={cn(
+        "hidden md:flex h-full flex-col border-r border-border bg-card transition-all duration-200",
+        collapsed ? "w-16" : "w-60",
+      )}
     >
       {/* Logo */}
       <div className="flex h-16 items-center border-b border-border px-4">
         {collapsed ? (
-          <img
-            src={siteConfig.logo}
-            alt={siteConfig.name}
-            className="mx-auto h-7 w-auto object-contain"
-          />
+          <Link to="/" className="mx-auto">
+            <img
+              src={siteConfig.logo}
+              alt={siteConfig.name}
+              className="h-7 w-auto object-contain"
+            />
+          </Link>
         ) : (
           <SiteLogo size="sm" asLink={false} />
         )}
       </div>
 
-      {/* Main nav */}
-      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-        {navItems.map(({ href, label, icon: Icon, end }) => (
-          <NavLink
-            key={href}
-            to={href}
-            end={end}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`
-            }
-          >
-            <Icon className="h-4 w-4 shrink-0" />
-            {!collapsed && <span>{label}</span>}
-          </NavLink>
-        ))}
-      </nav>
+      {/* Nav */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <DashboardNavItems collapsed={collapsed} />
+      </div>
 
-      {/* Bottom nav */}
-      <div className="space-y-1 border-t border-border p-3">
-        {bottomItems.map(({ href, label, icon: Icon }) => (
-          <NavLink
-            key={href}
-            to={href}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`
-            }
-          >
-            <Icon className="h-4 w-4 shrink-0" />
-            {!collapsed && <span>{label}</span>}
-          </NavLink>
-        ))}
+      {/* Avatar do usuário na base */}
+      <div
+        className={cn(
+          "flex items-center gap-3 border-t border-border p-3",
+          collapsed && "justify-center",
+        )}
+      >
+        <Avatar className="h-8 w-8 shrink-0">
+          <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+            {initials}
+          </AvatarFallback>
+        </Avatar>
+        {!collapsed && (
+          <div className="min-w-0">
+            <p className="truncate text-xs font-medium text-foreground">
+              {user?.email ?? "—"}
+            </p>
+            <p className="text-[10px] text-muted-foreground">Cliente</p>
+          </div>
+        )}
       </div>
     </aside>
   );

@@ -1,5 +1,6 @@
 [project]
 name = "bizu-hub"
+title = "Bruno Goulart AI Automation Specialist & Full Stack Developer"
 
 [project.branch_naming]
 description = "Single-branch workflow - develop all features on current branch or manually created branch"

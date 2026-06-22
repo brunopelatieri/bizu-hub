@@ -1,11 +1,14 @@
-# AI Context — Bizu Hub Bruno Goulart
+# AI Context — Bruno Goulart AI Automation Specialist & Full Stack Developer
+
+**Identidade do projeto:** `Bruno Goulart AI Automation Specialist & Full Stack Developer`
+**Repo/slug:** `bizu-hub` | **Domínio:** `brunogoulart.com.br`
 
 Este arquivo é o ponto de entrada rápido para qualquer LLM/AI Agent entender o
 projeto antes de propor ou executar mudanças.
 
 ## Objetivo
 
-Projeto pessoal de **Bruno Pelatieri Goulart** que reúne em uma única plataforma:
+Plataforma pessoal de **Bruno Pelatieri Goulart** que reúne em uma única plataforma:
 
 - **Site pessoal** — landing, sobre, projetos, contato e presença profissional.
 - **Blog** — artigos com SSR, SEO e Open Graph.
@@ -81,9 +84,37 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - Scripts `npm run docker:build` / `docker:push` em `scripts/docker-build.mjs`.
 - CI/CD GitLab (`.gitlab-ci.yml`) — build + push automático na branch principal.
 
+## Header Público Responsivo (adicionado Jun 2026)
+
+- `src/components/layout/site-nav-links.tsx` — `NavLink` com estado ativo + prop `onNavigate` para fechar Sheet.
+- `src/components/layout/site-header.tsx` refatorado: desktop `≥ md` inline; mobile `< md` hambúrguer + `Sheet` lateral (direita) com nav + botões de auth.
+- Anti-overflow: `shrink-0` no logo, `min-w-0` no container de nav, `px-4 sm:px-6` adaptável.
+
+## Infraestrutura Client-side (adicionada Jun 2026)
+
+- **TanStack Query** (`QueryClientProvider`) em `src/root.tsx` — instância segura via `useState` para evitar cache leak no SSR.
+- **TooltipProvider** (shadcn/ui) adicionado em `src/root.tsx`.
+- **react-hook-form + @hookform/resolvers/zod** no `AuthForm` (`src/components/auth/auth-form.tsx`).
+- **sonner** (toasts) para feedback de auth — sucesso e erro.
+- Componentes shadcn disponíveis: `avatar`, `dropdown-menu`, `sheet`, `skeleton`, `tooltip` (além dos já existentes).
+
+## Estrutura do Dashboard (atualizada Jun 2026)
+
+- **Desktop**: Sidebar lateral fixa colapsável (`hidden md:flex`) com avatar do usuário na base.
+- **Mobile**: Topbar com botão hambúrguer que dispara `Sheet` lateral (sem sidebar visível em `< md`).
+- Navegação centralizada em `src/components/layout/dashboard-nav.tsx` (`DashboardNavItems`).
+- User menu com `DropdownMenu` (avatar → logout, site público).
+- Convenção mantida: sem loaders SSR com dados sensíveis no dashboard.
+
+## Página de Login (atualizada Jun 2026)
+
+- Visual dark premium "Engineering AI Design": background `oklch(0.08_0.03_264)`, grid cibernético, glow radial.
+- Card glassmorphism com borda luminosa superior.
+- Tabs `Entrar` / `Criar conta` — formulário de cadastro com campos: Nome, E-mail, Telefone Celular, Senha.
+- Validação inline via zod + react-hook-form; notificações via sonner.
+
 ## Pendências Técnicas Conhecidas
 
 - Evoluir blog estático para tabela Drizzle quando virar feature real.
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
-- Adicionar providers prontos para TanStack Query quando houver server state real.
 - Job de migrations documentado em `deploy/README.md` (fora do container runtime).

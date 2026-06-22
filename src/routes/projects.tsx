@@ -5,9 +5,9 @@ import { buildMeta } from "@/lib/seo";
 
 export const meta: MetaFunction = () =>
   buildMeta({
-    title: `Projetos — ${siteConfig.name}`,
+    title: `Projetos — ${siteConfig.title}`,
     description:
-      `O propósito do ${siteConfig.name} em detalhe: site pessoal, blog, hub de clientes, arquitetura e stack.`,
+      "Cases e projetos de Bruno Goulart: automação com IA, SaaS, agentes LLM, arquitetura full-stack e hub de clientes.",
     path: "/projetos",
   });
 

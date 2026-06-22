@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/constants/navigation";
 import { buildMeta } from "@/lib/seo";
 export const meta: MetaFunction = () =>
   buildMeta({
-    title: `${siteConfig.name} — Site pessoal, blog e hub de clientes`,
+    title: siteConfig.title,
     description: siteConfig.description,
     path: "/",
     image: `${siteConfig.url}${siteConfig.logo}`,

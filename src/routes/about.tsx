@@ -5,9 +5,9 @@ import { buildMeta } from "@/lib/seo";
 
 export const meta: MetaFunction = () =>
   buildMeta({
-    title: `Sobre — Bruno Pelatieri Goulart | ${siteConfig.name}`,
+    title: `Sobre — Bruno Pelatieri Goulart | ${siteConfig.title}`,
     description:
-      `Desenvolvedor Full Stack desde 2006: IA, automação com n8n e LangChain, agentes autônomos, Web3 e arquitetura escalável. Quem está por trás do ${siteConfig.name}.`,
+      "AI Automation Specialist & Full Stack Developer desde 2006: automação inteligente com n8n, agentes LLM, LangChain, Web3 e arquitetura escalável.",
     path: "/sobre",
   });
 
