@@ -650,17 +650,17 @@ Objetivo:
 - URL: `https://brunogoulart.com.br`
 - Hospedagem: **VPS propria** (Ubuntu + Docker + Portainer).
 - Repositorio: **GitLab** (`gitlab.com/brunopelatieri/bizu-hub`).
-- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`).
+- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`) — **publica para pull** (VPS sem registry no Portainer).
 - Guia operacional: `deploy/README.md`.
 
 ### Modelo de Deploy
 
 ```text
-Dev local → docker build (VITE_* no build) → docker push → GitLab Container Registry
-                                                              ↓
-VPS Portainer Stack → pull imagem → app:3000 ← Traefik/NPM + TLS
-                                      ↓
-                                 postgres:5432
+Dev local → docker build (VITE_* no build) → docker push (login) → GitLab Container Registry
+                                                                        ↓
+VPS Portainer Stack → pull anonimo → app:3000 ← Traefik/NPM + TLS
+                              ↓
+                         postgres:5432
 ```
 
 Destino:
@@ -727,9 +727,11 @@ Runtime (container app):
 - `PORT=3000`
 - `DATABASE_URL` (montada pela stack: `postgresql://...@postgres:5432/...`)
 
-Migrations (fora do container):
+Migrations (fora do container; sem repo na VPS):
 
-- `DIRECT_URL`
+- **Recomendado:** Portainer → `bizu-hub_postgres` → Console → `psql -U bizu_hub -d bizu_hub` → colar SQL de `drizzle/`
+- Alternativa: `curl` do raw GitHub + `docker exec psql` (SSH)
+- Alternativa dev: `npm run db:migrate` com `DATABASE_URL`/`DIRECT_URL` apontando para o Postgres
 
 Supabase Auth (dashboard Supabase):
 

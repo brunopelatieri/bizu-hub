@@ -6,9 +6,11 @@
  *
  * Uso:
  *   cp deploy/.env.docker.example deploy/.env.docker
- *   docker login registry.gitlab.com
+ *   docker login registry.gitlab.com   # só para push (write_registry)
  *   npm run docker:build
  *   npm run docker:push
+ *
+ * Pull na VPS é público — Portainer não precisa de registry cadastrado.
  *
  * Variáveis lidas de deploy/.env.docker ou do ambiente.
  */

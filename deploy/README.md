@@ -3,7 +3,7 @@
 Produção em **https://brunogoulart.com.br** na VPS (Ubuntu + Docker + Portainer).
 
 Repositório: **[gitlab.com/brunopelatieri/bizu-hub](https://gitlab.com/brunopelatieri/bizu-hub)**  
-Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`)
+Imagem: **GitLab Container Registry (pública para pull)** — `registry.gitlab.com/brunopelatieri/bizu-hub`
 
 ---
 
@@ -11,11 +11,14 @@ Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-
 
 ```text
 [Dev local]  npm run docker:build  →  docker push  →  [GitLab Container Registry]
-                                                              ↓
-[VPS]  Portainer Stack  →  pull imagem  →  app:3000  ←  Traefik/NPM + TLS
+         (docker login só aqui)                              ↓
+[VPS]  Portainer Stack  →  pull anônimo  →  app:3000  ←  Traefik/NPM + TLS
                               ↓
                          postgres:5432
 ```
+
+**Pull na VPS:** imagem pública — **sem** registry no Portainer e **sem** `docker login`.  
+**Push (PC ou CI):** exige autenticação GitLab com `write_registry`.
 
 ---
 
@@ -23,45 +26,37 @@ Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-
 
 Projeto: **https://gitlab.com/brunopelatieri/bizu-hub**
 
-O registry fica em:
-
 ```text
 registry.gitlab.com/brunopelatieri/bizu-hub:latest
 ```
 
-### Token para push (dev) e pull (VPS)
+### Pull (VPS / Portainer) — público
+
+Qualquer host com Docker pode puxar sem credenciais:
+
+```bash
+docker pull registry.gitlab.com/brunopelatieri/bizu-hub:latest
+```
+
+No Portainer: use a URL da imagem nas variáveis da stack — **não** cadastre Registries.
+
+### Push (dev local ou CI) — autenticado
 
 **Opção A — Personal Access Token**
 
 1. GitLab → **Preferences → Access Tokens**
-2. Scopes: `read_registry`, `write_registry`
+2. Scopes: `write_registry` (e `read_registry` se quiser pull local autenticado)
 3. Login local:
 
    ```bash
    docker login registry.gitlab.com -u SEU_USUARIO -p glpat-SEU_TOKEN
    ```
 
-**Opção B — Deploy Token (recomendado para Portainer/VPS)**
+**Opção B — Deploy Token (CI)**
 
 1. GitLab → projeto **bizu-hub** → **Settings → Repository → Deploy tokens**
-2. Scopes: `read_registry` (pull na VPS); adicione `write_registry` se for push via CI
-3. Login:
-
-   ```bash
-   docker login registry.gitlab.com -u gitlab+deploy-token-XXXX -p TOKEN
-   ```
-
-### Portainer
-
-**Registries → Add registry**
-
-| Campo | Valor |
-|-------|-------|
-| Provider | Custom |
-| Name | GitLab Registry |
-| Registry URL | `registry.gitlab.com` |
-| Username | usuário GitLab ou deploy token |
-| Password | PAT ou deploy token |
+2. Scopes: `write_registry` para CI; `read_registry` opcional
+3. O pipeline `.gitlab-ci.yml` usa as credenciais do runner ou variáveis CI
 
 ---
 
@@ -71,7 +66,7 @@ registry.gitlab.com/brunopelatieri/bizu-hub:latest
 cp deploy/.env.docker.example deploy/.env.docker
 # Edite VITE_SUPABASE_* (obrigatório — embutidos no bundle no build)
 
-docker login registry.gitlab.com
+docker login registry.gitlab.com   # obrigatório apenas para push
 npm run docker:build    # build local
 npm run docker:push     # build + push para GitLab Registry
 ```
@@ -92,18 +87,43 @@ Variáveis em `deploy/.env.docker`:
 
 ## 3. Migrations (antes ou após deploy)
 
-O container de produção **não** inclui `drizzle-kit`. Rode migrations a partir do clone local apontando para o Postgres da VPS:
+O container de produção **não** inclui `drizzle-kit`. O deploy usa só a **imagem Docker** — não é necessário clonar o repositório na VPS.
+
+Arquivos SQL em `drizzle/` (ex.: `drizzle/0000_cloudy_miracleman.sql`).
+
+### Método recomendado — Portainer Console (sem SSH)
+
+1. **Containers** → `bizu-hub_postgres` → **Console**
+2. Comando: `psql -U bizu_hub -d bizu_hub`
+3. Cole o conteúdo do arquivo `.sql` em `drizzle/` (ex. migration `0000_cloudy_miracleman.sql`)
+4. Enter — resposta esperada: `CREATE TABLE`
+5. Saia com `\q`
+
+Se a tabela já existir: `ERROR: relation "contact_messages" already exists` — migration já aplicada.
+
+Validar:
+
+```sql
+\d contact_messages
+```
+
+### Alternativa — SSH (sem clone do repo)
+
+Baixar só o SQL e aplicar:
 
 ```bash
-git clone https://gitlab.com/brunopelatieri/bizu-hub.git
-cd bizu-hub
+curl -fsSL https://raw.githubusercontent.com/brunopelatieri/bizu-hub/main/drizzle/0000_cloudy_miracleman.sql | \
+  docker exec -i $(docker ps -q -f name=bizu-hub_postgres) \
+  psql -U bizu_hub -d bizu_hub
+```
 
+### Alternativa — Drizzle Kit no PC (Postgres exposto ou túnel)
+
+```bash
 DATABASE_URL="postgresql://USER:PASS@IP_VPS:5432/bizu_hub" \
 DIRECT_URL="postgresql://USER:PASS@IP_VPS:5432/bizu_hub" \
 npm run db:migrate
 ```
-
-Ou execute um job one-off na VPS com Node + clone do repo (apenas para migrations).
 
 ---
 
@@ -112,7 +132,7 @@ Ou execute um job one-off na VPS com Node + clone do repo (apenas para migration
 Guia passo a passo: **`deploy/PORTAINER.md`**  
 **Atualizar imagem pelo Portainer (sem SSH):** **`deploy/PORTAINER-ATUALIZAR.md`**
 
-Configure o registry GitLab **antes** do deploy (seção 1).
+Não é necessário configurar registry no Portainer — a imagem é pública.
 
 ### Sem domínio ainda (bootstrap)
 
@@ -186,12 +206,12 @@ No dashboard Supabase → **Authentication → URL Configuration**:
 
 ## 8. Atualizar produção
 
-### Opção A — CI/CD GitLab (recomendado)
+### Opção A — CI/CD GitLab
 
-A cada push na branch principal (ou tag), o pipeline `.gitlab-ci.yml` faz build e push
-automático para o Container Registry do projeto.
+A cada push na branch principal, o pipeline `.gitlab-ci.yml` faz build e push
+automático para o Container Registry.
 
-1. GitLab → **Settings → CI/CD → Variables** — adicione:
+1. GitLab → **Settings → CI/CD → Variables**:
 
    | Variável | Tipo | Protegida |
    |----------|------|-----------|
@@ -199,23 +219,23 @@ automático para o Container Registry do projeto.
    | `VITE_SUPABASE_PUBLISHABLE_KEY` | Variable | sim |
 
 2. Push na `main` → **Build → Pipelines** → job `build-image` concluído
-3. Portainer → stack `bizu-hub` → **Pull and redeploy**
+3. Portainer → stack `bizu-hub` → **Re-pull image** → Update the stack
+
+### Opção B — Build manual (dev local)
+
+```bash
+docker login registry.gitlab.com   # só para push
+npm run docker:push
+
+# Portainer → stack bizu-hub → Re-pull image → Update the stack
+```
 
 Imagem publicada:
 
 ```text
 registry.gitlab.com/brunopelatieri/bizu-hub:latest
 registry.gitlab.com/brunopelatieri/bizu-hub:<commit-sha>
-registry.gitlab.com/brunopelatieri/bizu-hub:<tag>   # se push de tag Git
-```
-
-### Opção B — Build manual (dev local)
-
-```bash
-docker login registry.gitlab.com
-npm run docker:push
-
-# Portainer → stack bizu-hub → Pull and redeploy
+registry.gitlab.com/brunopelatieri/bizu-hub:<tag>
 ```
 
 Para tags versionadas manuais, altere `DOCKER_TAG` no build e nas variáveis da stack.

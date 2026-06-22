@@ -109,24 +109,18 @@ Resumo:
 
 
 ```bash
-
 cp deploy/.env.docker.example deploy/.env.docker
+# Edite VITE_SUPABASE_*
 
-# Edite VITE_SUPABASE_* e DOCKER_IMAGE
-
-
-
-docker login registry.gitlab.com
-
+docker login registry.gitlab.com   # só para push (write_registry)
 npm run docker:push
-
 ```
 
-
-
 No Portainer, use `deploy/portainer-stack.yml` (Traefik) ou
-
 `deploy/portainer-stack.npm.yml` (Nginx Proxy Manager).
+
+A imagem no GitLab Registry é **pública para pull** — a VPS não precisa de
+registry cadastrado nem `docker login`.
 
 **CI/CD:** push na branch `main` dispara build + push via `.gitlab-ci.yml`.
 
@@ -186,7 +180,7 @@ npm run docker:push  # build + push GitLab Registry
 
 
 
-- `deploy/README.md` — build, push, Portainer, DNS, Supabase Auth.
+- `deploy/README.md` — build, push, Portainer, DNS, Supabase Auth, migrations SQL (Portainer Console).
 
 - `AI_CONTEXT.md` — visão rápida para agentes de IA.
 

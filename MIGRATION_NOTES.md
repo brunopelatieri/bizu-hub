@@ -135,22 +135,24 @@ NODE_ENV=production PORT=3000 node build/server/index.js
 
 ## 10. Deploy (VPS + Docker + Portainer)
 
-Produção em **https://brunogoulart.com.br** — VPS Ubuntu, Docker, Portainer, imagem no GitLab Container Registry.
+Produção em **https://brunogoulart.com.br** — VPS Ubuntu, Docker, Portainer, imagem no GitLab Container Registry (**pública para pull** na VPS).
 
 Guia completo: **`deploy/README.md`**
 
 ```bash
 cp deploy/.env.docker.example deploy/.env.docker
-docker login registry.gitlab.com
+docker login registry.gitlab.com   # só para push no PC (write_registry)
 npm run docker:push
 ```
+
+Pull na VPS/Portainer: anônimo — não cadastre registry no Portainer.
 
 Stack Portainer: `deploy/portainer-stack.yml` (Traefik) ou `deploy/portainer-stack.npm.yml` (NPM).
 
 - O container expõe a porta **3000** internamente.
 - O `HEALTHCHECK` usa `GET /api/health`.
 - `VITE_*` são passados no **docker build** (não no runtime).
-- Migrations: rodar `npm run db:migrate` apontando para o Postgres da VPS (ver deploy/README.md).
+- Migrations SQL: **Portainer Console** em `bizu-hub_postgres` → `psql -U bizu_hub -d bizu_hub` → colar SQL de `drizzle/` (ver `deploy/README.md`). Não exige repo na VPS.
 - Supabase Auth: Site URL e redirect `https://brunogoulart.com.br/auth/callback`.
 
 ---

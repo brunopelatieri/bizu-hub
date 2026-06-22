@@ -2,24 +2,27 @@
 
 Stack alinhada ao seu Portainer: **Swarm**, rede **`bru`**, Traefik **`letsencryptresolver`**.
 
-**Domínio:** `brunogoulart.com.br` → **212.85.19.156**
+**Domínio:** `brunogoulart.com.br` → **212.85.19.156**  
+**Imagem (pública):** `registry.gitlab.com/brunopelatieri/bizu-hub:latest`
 
 **Atualizar versão (sem SSH):** **`deploy/PORTAINER-ATUALIZAR.md`**
+
+> O Container Registry do GitLab está **público para pull**. Não cadastre registry no Portainer nem faça `docker login` na VPS.
 
 ---
 
 ## Checklist rápido
 
-- [ ] Pipeline GitLab verde → imagem `registry.gitlab.com/brunopelatieri/bizu-hub:latest`
-- [ ] Registry GitLab no Portainer (**Registries**)
+- [ ] Imagem `registry.gitlab.com/brunopelatieri/bizu-hub:latest` acessível (`docker pull` sem login)
+- [ ] Rede Docker **`bru`** existente + Traefik com `letsencryptresolver`
 - [ ] DNS `A` `@` e `www` → `212.85.19.156`
 - [ ] Stack **`deploy/portainer-stack.yml`** deployada
-- [ ] Migrations Drizzle aplicadas
+- [ ] Migrations Drizzle aplicadas (Postgres novo = obrigatório)
 - [ ] Supabase URLs com `https://brunogoulart.com.br`
 
 ---
 
-## 1. GitLab CI
+## 1. GitLab CI (opcional — build automático)
 
 **Settings → CI/CD → Variables:**
 
@@ -28,23 +31,13 @@ Stack alinhada ao seu Portainer: **Swarm**, rede **`bru`**, Traefik **`letsencry
 | `VITE_SUPABASE_URL` | `https://kpersdlqtrxlytwbuvvv.supabase.co` |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | publishable key |
 
-Push na **main** → pipeline **build-image** OK.
+Push na **main** → pipeline **build-image** OK → tag **`latest`** no Container Registry.
+
+Build manual no PC: ver **`deploy/README.md`** (seção build/push — `docker login` só no dev).
 
 ---
 
-## 2. Registry no Portainer
-
-**Registries → Add registry**
-
-| Campo | Valor |
-|-------|--------|
-| Name | `gitlab-bizu-hub` |
-| URL | `registry.gitlab.com` |
-| User / Password | deploy token (`read_registry`) |
-
----
-
-## 3. Stack produção (Traefik + bru)
+## 2. Stack produção (Traefik + bru)
 
 Arquivo: **`deploy/portainer-stack.yml`**
 
@@ -63,7 +56,7 @@ POSTGRES_PASSWORD=SENHA_FORTE_AQUI
 POSTGRES_DB=bizu_hub
 ```
 
-5. **Deploy the stack** (Swarm)
+5. **Deploy the stack** (Swarm) — pull da imagem é **automático e anônimo**
 
 ### Labels Traefik (já no YAML)
 
@@ -79,7 +72,7 @@ Igual aos seus serviços `bmcp.bru.ia.br` e `minio.bru.ia.br`.
 
 ---
 
-## 4. DNS
+## 3. DNS
 
 No registrador de `brunogoulart.com.br`:
 
@@ -98,17 +91,37 @@ curl -I https://brunogoulart.com.br/api/health
 
 ---
 
-## 5. Migrations (primeira vez)
+## 4. Migrations (primeira vez ou VPS nova)
 
-Com a stack no ar, na VPS ou via SSH:
+O deploy usa só a **imagem Docker** — não precisa do repositório na VPS.
 
-```bash
-git clone https://gitlab.com/brunopelatieri/bizu-hub.git
-cd bizu-hub
-npm ci
+Arquivo atual: `drizzle/0000_cloudy_miracleman.sql` (tabela `contact_messages`).
+
+### Método recomendado — Portainer Console (sem SSH)
+
+1. **Containers** → `bizu-hub_postgres` → **Console**
+2. Comando: `psql -U bizu_hub -d bizu_hub`
+3. Cole o SQL do arquivo em `drizzle/` (copie do repo local ou do GitHub)
+4. Enter — resposta esperada: `CREATE TABLE`
+5. Saia com `\q`
+
+Se aparecer `relation "contact_messages" already exists`, a migration já foi aplicada.
+
+Validar:
+
+```sql
+\d contact_messages
 ```
 
-Descubra o IP do Postgres na rede `bru` (Portainer → container **postgres** → Network):
+### Alternativa — SSH
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/brunopelatieri/bizu-hub/main/drizzle/0000_cloudy_miracleman.sql | \
+  docker exec -i $(docker ps -q -f name=bizu-hub_postgres) \
+  psql -U bizu_hub -d bizu_hub
+```
+
+### Alternativa — Drizzle Kit no PC (Postgres exposto ou túnel)
 
 ```bash
 DATABASE_URL="postgresql://bizu_hub:SENHA@IP_POSTGRES:5432/bizu_hub" \
@@ -120,7 +133,7 @@ Volume Postgres: **`bizu_hub_postgres_data`** (persiste entre redeploys).
 
 ---
 
-## 6. Supabase Auth
+## 5. Supabase Auth
 
 **Authentication → URL Configuration:**
 
@@ -131,7 +144,7 @@ Volume Postgres: **`bizu_hub_postgres_data`** (persiste entre redeploys).
 
 ---
 
-## 7. Bootstrap (opcional, sem DNS)
+## 6. Bootstrap (opcional, sem DNS)
 
 Se quiser testar **antes** do DNS, use **`portainer-stack.bootstrap.yml`**:
 
@@ -145,10 +158,12 @@ Quando o DNS estiver OK, remova bootstrap e suba **`portainer-stack.yml`**.
 
 ---
 
-## 8. Atualizar versão
+## 7. Atualizar versão
 
-1. Push na **main** → GitLab builda `latest`
-2. Portainer → stack **bizu-hub** → **Update the stack** / **Pull and redeploy**
+1. Push na **main** (GitLab CI) **ou** `npm run docker:push` no PC
+2. Portainer → stack **bizu-hub** → **Update the stack** → **Re-pull image**
+
+Detalhes: **`deploy/PORTAINER-ATUALIZAR.md`**
 
 ---
 
@@ -158,6 +173,7 @@ Quando o DNS estiver OK, remova bootstrap e suba **`portainer-stack.yml`**.
 |---------|------|
 | Certificate error | DNS ainda não apontou para 212.85.19.156 |
 | 404 Traefik | App não na rede `bru` ou labels erradas |
-| Pull failed | Registry GitLab no Portainer |
+| Pull failed | Verifique URL da imagem; teste `docker pull` na VPS |
 | 502 | Container app unhealthy — ver logs postgres/app |
 | Contato falha | Rodar migrations |
+| Push falha no PC | `docker login registry.gitlab.com` (token com `write_registry`) |

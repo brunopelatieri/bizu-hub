@@ -74,7 +74,7 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 
 - Produção: [https://brunogoulart.com.br](https://brunogoulart.com.br) — VPS Ubuntu + Docker + Portainer.
 - Repositório: [gitlab.com/brunopelatieri/bizu-hub](https://gitlab.com/brunopelatieri/bizu-hub).
-- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`).
+- Imagem: **GitLab Container Registry** (`registry.gitlab.com/brunopelatieri/bizu-hub`) — **pública para pull** (VPS/Portainer sem registry nem `docker login`).
 - Supabase (Auth auxiliar): project ref **`kpersdlqtrxlytwbuvvv`** — MCP em `.cursor/mcp.json` (só neste repo).
 - React Router Framework Mode com `ssr: true`.
 - Hono integrado via `react-router-hono-server`.
@@ -136,4 +136,4 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 
 - Evoluir blog estático para tabela Drizzle quando virar feature real.
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
-- Job de migrations documentado em `deploy/README.md` (fora do container runtime).
+- Job de migrations documentado em `deploy/README.md` — método recomendado: **Portainer Console** no container `bizu-hub_postgres` (sem SSH, sem clone na VPS).

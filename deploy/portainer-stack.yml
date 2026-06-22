@@ -1,7 +1,7 @@
 version: "3.8"
 
 ## Bizu Hub Bruno Goulart — brunogoulart.com.br
-## VPS: 212.85.19.156 | Rede Traefik: bru | Registry: GitLab
+## VPS: 212.85.19.156 | Rede Traefik: bru | Imagem publica (GitLab Registry)
 ##
 ## Portainer → Stacks → Web editor
 ## Variáveis: deploy/.env.portainer.example

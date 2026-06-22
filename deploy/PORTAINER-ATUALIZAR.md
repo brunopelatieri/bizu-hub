@@ -3,7 +3,9 @@
 Guia prático para **publicar nova versão** sem SSH na VPS (só Portainer + build no PC ou GitLab CI).
 
 **Stack:** `bizu-hub`  
-**Imagem:** `registry.gitlab.com/brunopelatieri/bizu-hub:latest`
+**Imagem (pública):** `registry.gitlab.com/brunopelatieri/bizu-hub:latest`
+
+> A imagem no GitLab Container Registry é **pública**. A VPS faz `pull` **sem** registry cadastrado no Portainer e **sem** `docker login`.
 
 ---
 
@@ -13,40 +15,32 @@ Guia prático para **publicar nova versão** sem SSH na VPS (só Portainer + bui
 |-------|------|------------|
 | **Build** da imagem (compilar app) | PC ou GitLab CI | ❌ Não |
 | **Push** para o registry | PC ou GitLab CI | ❌ Não |
-| **Pull** da imagem na VPS | Portainer | ✅ Sim |
+| **Pull** da imagem na VPS | Portainer (anônimo) | ✅ Sim |
 | **Redeploy** do serviço `app` | Portainer | ✅ Sim |
 | **Mudar env / YAML** da stack | Portainer | ✅ Sim |
 
 O Portainer **substitui** os comandos `docker pull` e `docker service update` na VPS.  
-O **build + push** continuam no seu PC (`npm run docker:push`) ou no **GitLab CI**.
+O **build + push** continuam no seu PC (`npm run docker:push`) ou no **GitLab CI** — só quem **publica** precisa de `docker login`.
 
 ---
 
-## Setup único (já feito na maioria dos casos)
+## Setup único (primeira vez na VPS)
 
-### 1. Registry Custom no Portainer
+### 1. Registry no Portainer — **não precisa**
 
-**Portainer → Registries → Add registry**
+Com a imagem pública, **pule** Registries → Add registry. O Swarm puxa direto:
 
-| Campo | Valor |
-|-------|--------|
-| Provider | **Custom** (não use integração GitLab — dá erro) |
-| Name | `gitlab-bizu-hub` |
-| Registry URL | `registry.gitlab.com` |
-| Username | `brunopelatieri` ou `gitlab+deploy-token-XXXX` |
-| Password | PAT ou deploy token com **`read_registry`** |
-
-### 2. Login na VPS (uma vez, se pull falhar)
-
-Se o Portainer CE não puxar imagem privada, no SSH **uma vez**:
-
-```bash
-echo 'SEU_TOKEN' | docker login registry.gitlab.com -u brunopelatieri --password-stdin
+```text
+registry.gitlab.com/brunopelatieri/bizu-hub:latest
 ```
 
-Depois disso, o Portainer costuma conseguir redeploy normalmente.
+Teste opcional na VPS (SSH):
 
-### 3. Variáveis da stack (não mudam a cada deploy)
+```bash
+docker pull registry.gitlab.com/brunopelatieri/bizu-hub:latest
+```
+
+### 2. Variáveis da stack (não mudam a cada deploy)
 
 ```env
 DOCKER_IMAGE=registry.gitlab.com/brunopelatieri/bizu-hub
@@ -60,7 +54,7 @@ POSTGRES_DB=bizu_hub
 
 ---
 
-## Fluxo A — Recomendado (GitLab CI + Portainer)
+## Fluxo A — GitLab CI + Portainer
 
 Ideal quando o código está no **GitLab** e o CI builda sozinho.
 
@@ -94,18 +88,20 @@ Variáveis CI necessárias (Settings → CI/CD → Variables):
 
 ---
 
-## Fluxo B — Build no PC + Portainer (seu caso hoje)
+## Fluxo B — Build no PC + Portainer
 
 Código no **GitHub** ou quando quer publicar manualmente.
 
 ### Passo 1 — Build e push (no seu PC)
+
+Só o **push** exige login no registry (imagem privada para escrita; pull na VPS é público):
 
 ```bash
 # uma vez
 cp deploy/.env.docker.example deploy/.env.docker
 # edite VITE_SUPABASE_* em deploy/.env.docker
 
-docker login registry.gitlab.com
+docker login registry.gitlab.com   # só para publicar (write_registry)
 npm run docker:push
 ```
 
@@ -150,7 +146,7 @@ Só **Update the stack** no Portainer, editando YAML ou env:
 | Texto/CSS/JS do site | ✅ |
 | Supabase `VITE_*` | ✅ |
 | Fix de bug no código | ✅ |
-| Migrations SQL no Postgres | ❌ (via `docker exec` psql) |
+| Migrations SQL no Postgres | ❌ (Portainer Console ou `docker exec` psql) |
 
 ---
 
@@ -170,14 +166,27 @@ Tempo habitual: **2–5 min** depois do push.
 
 ## Migrations (contato / Drizzle)
 
-Não passa pelo Portainer. **Uma vez** (ou quando houver migration nova):
+Não exige rebuild da imagem. **Uma vez** por migration nova (ou VPS nova com Postgres zerado).
+
+Arquivos em `drizzle/` no repositório (ex.: `0000_cloudy_miracleman.sql`).
+
+### Método recomendado — Portainer Console (sem SSH)
+
+1. **Containers** → `bizu-hub_postgres` → **Console**
+2. Comando: `psql -U bizu_hub -d bizu_hub`
+3. Cole o SQL do arquivo em `drizzle/`
+4. Enter
+5. Saia com `\q`
+
+`CREATE TABLE` = OK. `relation "contact_messages" already exists` = já aplicada.
+
+### Alternativa — SSH
 
 ```bash
-docker exec -i $(docker ps -q -f name=bizu-hub_postgres) \
-  psql -U bizu_hub -d bizu_hub < ~/bizu-hub/drizzle/0000_....sql
+curl -fsSL https://raw.githubusercontent.com/brunopelatieri/bizu-hub/main/drizzle/0000_cloudy_miracleman.sql | \
+  docker exec -i $(docker ps -q -f name=bizu-hub_postgres) \
+  psql -U bizu_hub -d bizu_hub
 ```
-
-Ou cole o SQL do arquivo em `drizzle/` no repositório.
 
 ---
 
@@ -186,11 +195,11 @@ Ou cole o SQL do arquivo em `drizzle/` no repositório.
 | Sintoma | Solução |
 |---------|---------|
 | App **0/1** após update | **Services → bizu-hub_app → Tasks** → ler erro |
-| `No such image` | Registry Custom + `docker login` na VPS |
-| `Business feature` no registry | Use **Custom**, não integração GitLab |
+| `No such image` | Confirme URL da imagem; teste `docker pull` na VPS |
 | Site antigo após update | Faltou marcar **Re-pull image** |
 | Contato 500 | Tabela + `DATABASE_URL` com `@bizu-hub_postgres` |
 | Login quebrado | Rebuild com `VITE_*` em `deploy/.env.docker` |
+| Push falha no PC | `docker login registry.gitlab.com` com token `write_registry` |
 
 ---
 
@@ -198,7 +207,7 @@ Ou cole o SQL do arquivo em `drizzle/` no repositório.
 
 **Build/push no PC (ou GitLab CI) → Portainer → Stacks → bizu-hub → Update → Re-pull image → Update the stack.**
 
-Não precisa SSH, `docker pull` nem `docker service update` no dia a dia.
+Não precisa SSH, registry no Portainer nem `docker login` na VPS para atualizar.
 
 ---
 
