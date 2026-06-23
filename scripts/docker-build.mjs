@@ -51,6 +51,8 @@ const buildArgs = [
   `VITE_SUPABASE_URL=${process.env.VITE_SUPABASE_URL ?? ""}`,
   "--build-arg",
   `VITE_SUPABASE_PUBLISHABLE_KEY=${process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""}`,
+  "--build-arg",
+  `VITE_GTM_ID=${process.env.VITE_GTM_ID ?? ""}`,
   "-t",
   fullTag,
   ".",
