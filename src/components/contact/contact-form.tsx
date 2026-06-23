@@ -5,6 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { contactMessageSchema } from "@/lib/schemas/contact";
+import {
+  trackContactFormSubmission,
+  trackContactFormError,
+} from "@/lib/gtm/events";
 
 export function ContactForm() {
   const [pending, setPending] = useState(false);
@@ -22,9 +26,10 @@ export function ContactForm() {
     });
 
     if (!payload.success) {
-      toast.error(
-        payload.error.issues[0]?.message ?? "Preencha todos os campos.",
-      );
+      const errorMsg =
+        payload.error.issues[0]?.message ?? "Preencha todos os campos.";
+      toast.error(errorMsg);
+      trackContactFormError(errorMsg);
       setPending(false);
       return;
     }
@@ -42,11 +47,16 @@ export function ContactForm() {
       }
 
       toast.success("Mensagem enviada com sucesso! Retorno em breve.");
+      trackContactFormSubmission({
+        name: payload.data.name,
+        email: payload.data.email,
+      });
       form.reset();
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Falha ao enviar mensagem.",
-      );
+      const errorMsg =
+        err instanceof Error ? err.message : "Falha ao enviar mensagem.";
+      toast.error(errorMsg);
+      trackContactFormError(errorMsg);
     } finally {
       setPending(false);
     }

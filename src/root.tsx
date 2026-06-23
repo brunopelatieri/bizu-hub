@@ -14,6 +14,7 @@ import { AuthProvider } from "@/providers/auth-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/constants/navigation";
+import { GoogleTagManager } from "@/components/gtm/google-tag-manager";
 import stylesheet from "@/index.css?url";
 
 export const links: LinksFunction = () => [
@@ -75,6 +76,7 @@ export default function App() {
           <AuthProvider>
             <Outlet />
             <Toaster richColors closeButton position="top-right" />
+            <GoogleTagManager />
           </AuthProvider>
         </ThemeProvider>
       </TooltipProvider>

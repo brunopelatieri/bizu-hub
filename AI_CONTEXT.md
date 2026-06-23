@@ -89,6 +89,7 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - `src/components/layout/site-nav-links.tsx` — `NavLink` com estado ativo + prop `onNavigate` para fechar Sheet.
 - `src/components/layout/site-header.tsx` refatorado: desktop `≥ md` inline; mobile `< md` hambúrguer + `Sheet` lateral (direita) com nav + botões de auth.
 - Anti-overflow: `shrink-0` no logo, `min-w-0` no container de nav, `px-4 sm:px-6` adaptável.
+- **`headerNavItems` vs `navItems`**: o header contém apenas Home/Sobre/Projetos/Contato (4 itens) para manter compactação visual. Blog é vitrine secundária — acessível na landing via `BlogSection`, no footer e via link direto. Essa distinção mantém a navegação principal focada em conversão (Contato/Fale com Especialista).
 
 ## Infraestrutura Client-side (adicionada Jun 2026)
 
@@ -132,8 +133,18 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - **Header** (`site-header.tsx`): barra flutuante glass (`bg-slate-950/80 backdrop-blur-md`), marca "Bruno Goulart" + subtítulo gradiente, nav central (Home/Sobre/Projetos/Contato), CTA "Fale com o Especialista", Sheet mobile.
 - **Footer** (`site-footer.tsx`): grid 3 colunas (manifesto, navegação, canais com handles), copyright 2006–2026, botão scroll-to-top.
 
+## Google Tag Manager + Google Analytics 4 (adicionado Jun 2026)
+
+- **GTM Container:** `GTM-KXX8MMKS` (substituir com seu ID no setup)
+- **Componente:** `src/components/gtm/google-tag-manager.tsx` — injeta script de GTM no client
+- **Eventos:** `src/lib/gtm/events.ts` — 6 helpers (`trackContactFormSubmission`, `trackCTAClick`, etc.)
+- **Integração:** `src/root.tsx` renderiza `GoogleTagManager` + tracking de conversão no form de contato
+- **Setup:** Veja `GTM_SETUP.md` para conectar à conta Google e criar GA4
+- **Variável:** `VITE_GTM_ID` em `.env.local` e variáveis de ambiente Portainer
+- **Status:** Pronto pra produção — aguardando setup em Google Tag Manager e Google Analytics
+
 ## Pendências Técnicas Conhecidas
 
 - Evoluir blog estático para tabela Drizzle quando virar feature real.
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
-- Job de migrations documentado em `deploy/README.md` — método recomendado: **Portainer Console** no container `bizu-hub_postgres` (sem SSH, sem clone na VPS).
+- Migrations: método recomendado — **Portainer Console** no container `bizu-hub_postgres` (sem SSH).

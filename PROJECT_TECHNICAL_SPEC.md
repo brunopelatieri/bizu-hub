@@ -916,7 +916,49 @@ Acao recomendada:
 
 ---
 
-## 17. Roadmap Tecnico Recomendado
+## 17. Google Tag Manager + Google Analytics 4
+
+### Integração (Jun 2026)
+
+Arquivos:
+
+- `src/lib/gtm/config.ts` — configuração centralizada (GTM_ID)
+- `src/lib/gtm/events.ts` — helpers de eventos (6 eventos: conversão, erro, click, scroll, etc.)
+- `src/components/gtm/google-tag-manager.tsx` — componente que injeta script no `<head>`
+- `GTM_SETUP.md` — guia passo-a-passo para conectar à conta Google
+
+Eventos rastreados:
+
+- `generate_lead` — form de contato enviado com sucesso
+- `form_error` — erro de validação ou envio
+- `page_view` — entrada em página (GA4 automático)
+- `click` — clique em CTA ou link externo
+- `scroll` — profundidade de scroll
+
+Integração no `src/root.tsx`:
+
+```tsx
+<GoogleTagManager />  // renderizado no <App />
+```
+
+No form de contato (`src/components/contact/contact-form.tsx`):
+
+```tsx
+trackContactFormSubmission({ name, email })  // sucesso
+trackContactFormError(errorMsg)               // erro
+```
+
+Variável de ambiente: `VITE_GTM_ID=GTM-XXXXXXX` (`.env.local` ou Portainer).
+
+Se vazio, GTM/GA4 são desabilitados (safe fallback).
+
+### Status
+
+Código pronto — aguardando setup em [Google Tag Manager](https://tagmanager.google.com/) + Google Analytics 4. Ver `GTM_SETUP.md`.
+
+---
+
+## 18. Roadmap Tecnico Recomendado
 
 ### Curto prazo
 
@@ -957,7 +999,7 @@ Acao recomendada:
 
 ---
 
-## 18. Conclusao
+## 19. Conclusao
 
 O projeto esta bem posicionado como template moderno e reutilizavel para:
 
