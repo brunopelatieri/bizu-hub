@@ -1,15 +1,12 @@
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/layout/page-hero";
-import { getAllPosts } from "@/lib/content/posts";
+import { getAllPosts } from "@/lib/content/posts.server";
 import { siteConfig } from "@/lib/constants/navigation";
 import type { Route } from "./+types/blog";
 
-export function loader() {
-  // O loader roda no mesmo processo Node do SSR. Hoje lê de um módulo estático;
-  // quando o blog migrar para o banco, troque por uma query Drizzle aqui
-  // (ex.: getDb().select().from(posts)) — sem volta de rede via HTTP.
-  return { posts: getAllPosts() };
+export async function loader() {
+  return { posts: await getAllPosts() };
 }
 
 export const meta: Route.MetaFunction = () => [

@@ -238,21 +238,20 @@ servicos server-only.
 | `/blog` | `src/routes/blog.tsx` | title, description, OG |
 | `/blog/:slug` | `src/routes/blog-post.tsx` | title, description, OG dinamico |
 
-### Blog
+### Blog (migrado para Drizzle em spec 001 — Jun 2026)
 
-Estado anterior:
-
-- Conteudo estatico em `src/lib/content/posts.ts`.
-- `loader` de `/blog` retorna `getAllPosts()`.
-- `loader` de `/blog/:slug` retorna `getPostBySlug(params.slug)`.
-- `meta` do post usa dados do loader para gerar Open Graph dinamico.
-
-Evolucao planejada:
-
-- Criar tabela `posts` no Drizzle.
-- Trocar implementacao de `getAllPosts()` e `getPostBySlug()` por queries
-  Drizzle.
-- Manter os loaders chamando as mesmas funcoes, sem HTTP interno.
+- Fonte de dados: tabela `posts` no Postgres via Drizzle (+ `post_images`,
+  `post_media`, `post_attachments`).
+- `src/lib/content/posts.server.ts` — `getAllPosts()` e `getPostBySlug()`.
+  Filtram `status = 'published'`; drafts retornam 404 em `/blog/:slug`.
+- `src/lib/content/read-time.ts` — calcula tempo de leitura (200 palavras/min).
+- `src/lib/content/types.ts` — tipo `PostWithRelations`.
+- Conteudo armazenado como Markdown; renderizado com `react-markdown` + `remark-gfm`.
+- Componentes de midia: `PostGallery`, `PostMedia`, `PostAttachments` em
+  `src/components/blog/`.
+- Seed idempotente: `npm run db:seed` — preserva os 3 slugs originais.
+- `src/lib/content/posts.ts` marcado `@deprecated` — remover apos validacao em producao.
+- Open Graph e meta SSR permanecem via `meta` function do React Router (inalterado).
 
 ---
 
@@ -308,6 +307,47 @@ contact_messages
   name text not null
   email text not null
   message text not null
+  created_at timestamp with timezone default now
+
+posts (spec 001)
+  id uuid primary key defaultRandom
+  slug text not null unique
+  title text not null
+  excerpt text not null
+  content text not null  -- Markdown
+  tag text not null
+  date text not null     -- display label, ex: "12 Jun 2026"
+  published_at timestamp with timezone not null
+  cover text             -- URL ou caminho relativo (nullable)
+  status text not null default 'draft'  -- 'published' | 'draft'
+  created_at timestamp with timezone default now
+  updated_at timestamp with timezone default now
+
+post_images (spec 001)
+  id uuid primary key defaultRandom
+  post_id uuid not null FK -> posts.id (cascade delete)
+  url text not null
+  alt text not null
+  position integer not null default 0
+  created_at timestamp with timezone default now
+
+post_media (spec 001)
+  id uuid primary key defaultRandom
+  post_id uuid not null FK -> posts.id (cascade delete)
+  media_type text not null  -- 'mp3' | 'mp4'
+  delivery_mode text not null  -- 'embed' | 'file'
+  url text not null
+  title text not null
+  position integer not null default 0
+  created_at timestamp with timezone default now
+
+post_attachments (spec 001)
+  id uuid primary key defaultRandom
+  post_id uuid not null FK -> posts.id (cascade delete)
+  name text not null
+  description text
+  url text not null
+  position integer not null default 0
   created_at timestamp with timezone default now
 ```
 

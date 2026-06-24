@@ -1,15 +1,19 @@
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
-import { getPostBySlug } from "@/lib/content/posts";
+import { PostAttachments } from "@/components/blog/post-attachments";
+import { PostGallery } from "@/components/blog/post-gallery";
+import { PostMedia } from "@/components/blog/post-media";
+import { getPostBySlug } from "@/lib/content/posts.server";
 import { siteConfig } from "@/lib/constants/navigation";
 import { absoluteAsset } from "@/lib/seo";
 import type { Route } from "./+types/blog-post";
 
-export function loader({ params }: Route.LoaderArgs) {
-  const post = getPostBySlug(params.slug);
+export async function loader({ params }: Route.LoaderArgs) {
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
-    // Vira a ErrorBoundary do root como 404.
     throw new Response("Post não encontrado", { status: 404 });
   }
 
@@ -78,8 +82,14 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
         ) : null}
 
         <div className="prose prose-invert max-w-none text-base leading-relaxed text-muted-foreground">
-          <p>{post.content}</p>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {post.content}
+          </ReactMarkdown>
         </div>
+
+        <PostGallery images={post.images} />
+        <PostMedia items={post.media} />
+        <PostAttachments attachments={post.attachments} />
       </div>
     </article>
   );

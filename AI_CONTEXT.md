@@ -143,8 +143,21 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - **Variável:** `VITE_GTM_ID` em `.env.local` e variáveis de ambiente Portainer
 - **Status:** Pronto pra produção — aguardando setup em Google Tag Manager e Google Analytics
 
+## Blog Dinâmico com Mídia Relacional (spec 001 — Jun 2026)
+
+- **Schema Drizzle:** 4 tabelas — `posts`, `post_images`, `post_media`, `post_attachments`.
+- `posts`: slug (unique), title, excerpt, content (Markdown), tag, date (display), publishedAt (ISO), cover (URL/path opcional), status (`published` | `draft`).
+- `post_images`: postId (FK cascade), url, alt (obrigatório), position.
+- `post_media`: postId (FK cascade), mediaType (`mp3`|`mp4`), deliveryMode (`embed`|`file`), url, title, position.
+- `post_attachments`: postId (FK cascade), name, description, url, position.
+- **readTime:** calculado em `src/lib/content/read-time.ts` (200 palavras/min). Não armazenado.
+- **Loaders:** `getAllPosts()` e `getPostBySlug()` em `src/lib/content/posts.server.ts` (Drizzle). Filtram `status = 'published'` — drafts retornam 404.
+- **Componentes:** `PostGallery`, `PostMedia`, `PostAttachments` em `src/components/blog/`.
+- **Markdown:** renderizado com `react-markdown` + `remark-gfm`.
+- **Seed:** `npm run db:seed` — idempotente, preserva slugs originais.
+- `src/lib/content/posts.ts` marcado `@deprecated` — remover após validação em produção.
+
 ## Pendências Técnicas Conhecidas
 
-- Evoluir blog estático para tabela Drizzle quando virar feature real.
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
 - Migrations: método recomendado — **Portainer Console** no container `bizu-hub_postgres` (sem SSH).
