@@ -42,10 +42,10 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
                 <img
                   src={post.cover}
                   alt=""
-                  className="h-44 w-full rounded-t-xl object-cover"
+                  className="aspect-[4/5] w-full rounded-t-xl object-cover"
                 />
               ) : (
-                <div className="h-44 rounded-t-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent" />
+                <div className="aspect-[4/5] rounded-t-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent" />
               )}
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-2">

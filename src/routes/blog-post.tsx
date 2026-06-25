@@ -77,7 +77,7 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
           <img
             src={post.cover}
             alt=""
-            className="mb-10 aspect-[16/9] w-full rounded-xl border border-border/60 object-cover"
+            className="mb-10 aspect-[4/5] w-full rounded-xl border border-border/60 object-cover"
           />
         ) : null}
 

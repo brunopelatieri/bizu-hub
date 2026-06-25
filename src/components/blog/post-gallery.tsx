@@ -19,7 +19,7 @@ export function PostGallery({ images }: PostGalleryProps) {
               src={image.url}
               alt={image.alt}
               loading="lazy"
-              className="w-full rounded-lg border border-border/60 object-cover"
+              className="aspect-[4/5] w-full rounded-lg border border-border/60 object-cover"
             />
           ))}
       </div>
