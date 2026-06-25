@@ -230,6 +230,28 @@ docker exec bizu-hub npm run db:migrate:rollback -- --steps=1
 
 ---
 
+### Baseline de Migrations (quando schema já existe)
+
+Se o schema do banco já foi criado manualmente (via SQL no Portainer, por exemplo), mas o Drizzle não tem registro em `__drizzle_migrations`, use:
+
+```bash
+# Registra todas as migrations até um tag no journal (SEM executar SQL)
+npm run db:migrate:baseline -- 0002_your_migration_tag
+
+# Exemplo: registrar até a migration de posts
+npm run db:migrate:baseline -- 0002_add_blog_tables
+
+# Depois rode:
+npm run db:migrate:prod
+```
+
+**Quando usar:**
+- Schema criado manualmente no Portainer → baseline até última migration
+- Banco restaurado de backup → baseline para sincronizar journal com schema real
+- Primeira vez rodando migrations em DB existente → baseline tudo, depois `db:migrate:prod`
+
+---
+
 ## Seeds (Dados Iniciais do Blog)
 
 Scripts idempotentes — podem ser executados múltiplas vezes sem duplicar dados.

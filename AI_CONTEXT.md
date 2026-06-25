@@ -175,7 +175,13 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - **Arquitetura dos scripts de seed:** funções exportadas (`seedOriginalPosts`, `seedTestPost`) recebem `PostgresJsDatabase` — conexão gerenciada pelo chamador. Guard ESM `import.meta.url === pathToFileURL(process.argv[1]).href` evita execução ao importar. Tabelas relacionadas usam delete+reinsert para idempotência determinística.
 - `src/lib/content/posts.ts` marcado `@deprecated` — remover após validação em produção.
 
+## Scripts de Migrations (Jun 2026)
+
+- **`npm run db:migrate:prod`** — aplica migrations pendentes via `DIRECT_URL` (prod) ou `DATABASE_URL` (dev). Idempotente: verifica `__drizzle_migrations` antes de executar.
+- **`npm run db:migrate:baseline`** — registra migrations já aplicadas manualmente no journal SEM executar SQL. Uso: quando schema foi criado via Portainer/SQL direto e precisa sincronizar com Drizzle.
+- **`npm run db:migrate:rollback`** — reverte últimas N migrations (default: 1) removendo registros do journal. Suporte a `--steps=N --dry-run --force`.
+- **Scripts em `scripts/`:** `migrate-production.ts`, `migrate-baseline.ts`, `migrate-rollback.ts` — ESM com guard module-is-main, mascaramento de credenciais em logs.
+
 ## Pendências Técnicas Conhecidas
 
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
-- Migrations: método recomendado — **Portainer Console** no container `bizu-hub_postgres` (sem SSH).

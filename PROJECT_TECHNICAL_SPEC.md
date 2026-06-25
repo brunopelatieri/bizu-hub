@@ -209,7 +209,8 @@ servicos server-only.
 | `npm run db:seed` | Seed 3 posts originais (idempotente) |
 | `npm run db:seed:test` | Seed 1 post de teste com galeria + mídia + anexos |
 | `npm run db:seed:full` | Seed completo: test post + 3 originais (4 posts) |
-| `npm run db:migrate:prod` | Aplica migrations em produção via `DIRECT_URL` |
+| `npm run db:migrate:prod` | Aplica migrations em produção via `DIRECT_URL` (idempotente) |
+| `npm run db:migrate:baseline` | Registra migrations já aplicadas manualmente no journal (sem executar SQL) |
 | `npm run db:migrate:rollback` | Reverte última migration (suporte a `--steps=N --dry-run`) |
 
 ---
@@ -370,6 +371,31 @@ Regra arquitetural:
 - Dados da aplicacao ficam no Postgres proprio via Drizzle.
 - Nao usar `supabase.from()` para CRUD da app.
 - Supabase Auth `user.id` pode ser FK futura em tabelas Drizzle.
+
+### Scripts de Migrations (Jun 2026)
+
+Três scripts ESM em `scripts/` para gerenciar schema em dev/prod:
+
+**1. `migrate-production.ts`** (`npm run db:migrate:prod`)
+   - Aplica migrations pendentes via Drizzle migrator.
+   - Conecta por `DIRECT_URL` (prod) ou `DATABASE_URL` (dev).
+   - Idempotente: verifica `drizzle.__drizzle_migrations` antes de executar.
+   - Log detalhado: timestamp, DB masked, NODE_ENV, hashes das migrations.
+   - Erro "relation already exists" → sugestão de usar baseline.
+
+**2. `migrate-baseline.ts`** (`npm run db:migrate:baseline -- <tag>`)
+   - Registra migrations já aplicadas manualmente no journal.
+   - NÃO executa SQL — apenas cria registros em `__drizzle_migrations`.
+   - Uso: schema criado via Portainer/SQL direto, ou primeiro run em DB existente.
+   - Lê journal (`drizzle/meta/_journal.json`), calcula hash SHA256 de cada arquivo `.sql`, registra até tag especificada.
+   - Exemplo: `npm run db:migrate:baseline -- 0002_add_blog_tables`
+
+**3. `migrate-rollback.ts`** (`npm run db:migrate:rollback -- [--steps=N] [--dry-run] [--force]`)
+   - Reverte últimas N migrations removendo registros de `__drizzle_migrations`.
+   - Default: 1 step. Suporte a `--steps=3` para múltiplas.
+   - `--dry-run` mostra o que seria revertido sem executar.
+   - `--force` pula confirmação interativa (ex: CI/CD).
+   - ⚠️ Não desfaz CREATE TABLE/ALTER automaticamente — SQL reverso é manual.
 
 ---
 
