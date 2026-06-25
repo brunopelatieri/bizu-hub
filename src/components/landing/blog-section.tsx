@@ -36,10 +36,10 @@ export function BlogSection() {
                 <img
                   src={post.cover}
                   alt=""
-                  className="h-44 w-full object-cover"
+                  className="aspect-[4/5] w-full object-cover"
                 />
               ) : (
-                <div className="h-44 bg-gradient-to-br from-brand-blue/15 via-brand-indigo/10 to-transparent" />
+                <div className="aspect-[4/5] bg-gradient-to-br from-brand-blue/15 via-brand-indigo/10 to-transparent" />
               )}
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-2">
@@ -56,7 +56,7 @@ export function BlogSection() {
                 <h3 className="mb-2 flex-1 text-base font-semibold leading-snug text-white transition group-hover:text-brand-blue">
                   {post.title}
                 </h3>
-                <p className="mb-4 text-sm leading-relaxed text-slate-400">
+                <p className="mb-4 text-base leading-relaxed text-slate-400">
                   {post.excerpt}
                 </p>
                 <time
