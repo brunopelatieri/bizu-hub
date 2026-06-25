@@ -149,13 +149,22 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 
 ## Google Tag Manager + Google Analytics 4 (adicionado Jun 2026)
 
-- **GTM Container:** `GTM-KXX8MMKS` (substituir com seu ID no setup)
+- **GTM Container:** `GTM-KXX8MMKS`
 - **Componente:** `src/components/gtm/google-tag-manager.tsx` — injeta script de GTM no client
 - **Eventos:** `src/lib/gtm/events.ts` — 6 helpers (`trackContactFormSubmission`, `trackCTAClick`, etc.)
 - **Integração:** `src/root.tsx` renderiza `GoogleTagManager` + tracking de conversão no form de contato
-- **Setup:** Veja `GTM_SETUP.md` para conectar à conta Google e criar GA4
-- **Variável:** `VITE_GTM_ID` em `.env.local` e variáveis de ambiente Portainer
-- **Status:** Pronto pra produção — aguardando setup em Google Tag Manager e Google Analytics
+- **Variável:** `VITE_GTM_ID=GTM-KXX8MMKS` — embutida no bundle via `--build-arg` (build time, não runtime Portainer)
+- **Status:** ✅ Ativo em produção — GTM container criado, GA4 conectado, tag publicada e aplicada
+
+## SEO Técnico (Jun 2026)
+
+- **`src/lib/seo.ts`** — `buildMeta()` centralizado. Gera: canonical, og:*, twitter:card/site/creator, robots meta. Default de robots: `index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`. Bug de URL dupla corrigido (strip trailing slash de `siteConfig.url`).
+- **Todas as rotas públicas** usam `buildMeta()` — incluindo `/blog` e `/blog/:slug` (antes tinham meta manual incompleto).
+- **JSON-LD `@graph` em `src/root.tsx`** — `WebSite` + `Person` (Bruno Pelatieri Goulart, Campinas/SP, sameAs 8 redes) injetado no `<head>` via `<script dangerouslySetInnerHTML>` — SSR-safe, sem hydration mismatch.
+- **JSON-LD `TechArticle` em `src/routes/blog-post.tsx`** — dinâmico por post, com `author/@id` e `publisher/@id` referenciando o `@graph` global. Renderizado via fragment no corpo do componente.
+- **`public/robots.txt`** — `Disallow: /login`, `/auth/`, `/dashboard/`. Aponta para sitemap.
+- **`public/sitemap.xml`** — rotas estáticas (home, sobre, projetos, blog, contato). Posts do blog não estão incluídos dinamicamente — atualizar manualmente ao publicar posts relevantes.
+- **Alt em imagens de conteúdo:** `post.cover` em `blog-section.tsx` (home preview) e `blog-post.tsx` (artigo) usam `alt={\`Capa do post: ${post.title}\`}` — dinâmico e descritivo.
 
 ## Blog Dinâmico com Mídia Relacional (spec 001 — Jun 2026)
 

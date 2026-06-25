@@ -17,6 +17,54 @@ import { siteConfig } from "@/lib/constants/navigation";
 import { GoogleTagManager } from "@/components/gtm/google-tag-manager";
 import stylesheet from "@/index.css?url";
 
+const SITE_STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://brunogoulart.com.br/#website",
+      url: "https://brunogoulart.com.br",
+      name: "Bruno Goulart",
+      publisher: { "@id": "https://brunogoulart.com.br/#author" },
+    },
+    {
+      "@type": "Person",
+      "@id": "https://brunogoulart.com.br/#author",
+      name: "Bruno Pelatieri Goulart",
+      alternateName: "Bruno Pelatieri",
+      jobTitle: "AI Automation Specialist & Full Stack Developer",
+      url: "https://brunogoulart.com.br",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Campinas",
+        addressRegion: "SP",
+        addressCountry: "BR",
+      },
+      sameAs: [
+        "https://github.com/brunopelatieri",
+        "https://gitlab.com/brunopelatieri",
+        "https://www.linkedin.com/in/bruno-pelatieri-goulart/",
+        "https://www.youtube.com/@brunopelatieri",
+        "https://www.tiktok.com/@brunopelatieri",
+        "https://x.com/brunopelatieri",
+        "https://www.instagram.com/brunopelatieri/",
+        "https://www.facebook.com/bruno.pelatierigoulart",
+      ],
+      knowsAbout: [
+        "AI Orchestration",
+        "n8n",
+        "Dify",
+        "React Router v7",
+        "Drizzle ORM",
+        "Docker",
+        "Supabase",
+        "TypeScript",
+        "Python",
+      ],
+    },
+  ],
+};
+
 export const links: LinksFunction = () => [
   { rel: "icon", href: siteConfig.favicon, type: "image/x-icon" },
   { rel: "shortcut icon", href: siteConfig.favicon },
@@ -51,6 +99,12 @@ export function Layout({ children }: { children: ReactNode }) {
         <link rel="shortcut icon" href={siteConfig.favicon} />
         <Meta />
         <Links />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(SITE_STRUCTURED_DATA),
+          }}
+        />
       </head>
       <body>
         {children}

@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroBackground } from "@/components/ui/hero-background";
+import { trackCTAClick } from "@/lib/gtm/events";
 
 const stackBadges = [
   "LangChain",
@@ -42,6 +43,7 @@ export function HeroSection() {
             <Button
               size="lg"
               className="min-w-48 bg-brand-blue text-base font-semibold text-white shadow-lg shadow-brand-blue/25 hover:bg-brand-blue/90"
+              onClick={() => trackCTAClick("cta_hero_fale_especialista")}
             >
               Iniciar um projeto
               <ArrowRight className="ml-1 h-4 w-4" />

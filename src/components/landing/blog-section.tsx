@@ -35,7 +35,7 @@ export function BlogSection() {
               {post.cover ? (
                 <img
                   src={post.cover}
-                  alt=""
+                  alt={`Capa do post: ${post.title}`}
                   className="aspect-[4/5] w-full object-cover"
                 />
               ) : (

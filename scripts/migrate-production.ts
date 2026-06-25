@@ -56,7 +56,23 @@ async function runMigrations(): Promise<void> {
     await migrate(db, { migrationsFolder });
   } catch (err) {
     console.error("\n❌ Migration failed:");
-    console.error(err instanceof Error ? err.message : String(err));
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(message);
+    if (err instanceof Error && err.cause instanceof Error) {
+      console.error(`   Cause: ${err.cause.message}`);
+    }
+    if (/already exists|duplicate/i.test(message)) {
+      console.error(
+        "\n💡 A tabela/objeto já existe no banco, mas o Drizzle não tem registro em drizzle.__drizzle_migrations.",
+      );
+      console.error(
+        "   Se aplicou SQL manualmente (Portainer), faça baseline e rode de novo:",
+      );
+      console.error(
+        "   npm run db:migrate:baseline -- 0000_cloudy_miracleman",
+      );
+      console.error("   npm run db:migrate:prod\n");
+    }
     await client.end();
     process.exit(1);
   }

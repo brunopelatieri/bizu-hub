@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/constants/navigation";
+import { trackCTAClick } from "@/lib/gtm/events";
 
 export function CtaSection() {
   return (
@@ -39,6 +40,7 @@ export function CtaSection() {
               <Button
                 size="lg"
                 className="min-w-48 bg-brand-blue text-base font-semibold text-white shadow-lg shadow-brand-blue/25 hover:bg-brand-blue/90"
+                onClick={() => trackCTAClick("cta_section_fale_especialista")}
               >
                 Falar comigo
                 <ArrowRight className="ml-1 h-4 w-4" />

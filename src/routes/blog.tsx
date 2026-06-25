@@ -3,22 +3,20 @@ import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/layout/page-hero";
 import { getAllPosts } from "@/lib/content/posts.server";
 import { siteConfig } from "@/lib/constants/navigation";
+import { buildMeta } from "@/lib/seo";
 import type { Route } from "./+types/blog";
 
 export async function loader() {
   return { posts: await getAllPosts() };
 }
 
-export const meta: Route.MetaFunction = () => [
-  { title: `Blog — ${siteConfig.title}` },
-  {
-    name: "description",
-    content:
+export const meta: Route.MetaFunction = () =>
+  buildMeta({
+    title: `Blog — ${siteConfig.name}`,
+    description:
       "Insights sobre automação com IA, n8n, agentes LLM, arquitetura full-stack e produtividade técnica.",
-  },
-  { property: "og:title", content: `Blog — ${siteConfig.title}` },
-  { property: "og:type", content: "website" },
-];
+    path: "/blog",
+  });
 
 export default function Blog({ loaderData }: Route.ComponentProps) {
   const { posts } = loaderData;

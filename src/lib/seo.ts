@@ -9,8 +9,12 @@ type SeoInput = {
   robots?: string;
 };
 
+const ROBOTS_DEFAULT =
+  "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
 export function absoluteAsset(path: string) {
-  return path.startsWith("http") ? path : `${siteConfig.url}${path}`;
+  const base = siteConfig.url.replace(/\/$/, "");
+  return path.startsWith("http") ? path : `${base}${path}`;
 }
 
 export function buildMeta({
@@ -19,9 +23,10 @@ export function buildMeta({
   path = "/",
   type = "website",
   image,
-  robots,
+  robots = ROBOTS_DEFAULT,
 }: SeoInput) {
-  const url = path === "/" ? siteConfig.url : `${siteConfig.url}${path}`;
+  const base = siteConfig.url.replace(/\/$/, "");
+  const url = path === "/" ? `${base}/` : `${base}${path}`;
   const ogImageUrl = image ?? absoluteAsset(siteConfig.ogImage);
 
   const imageTags = [
@@ -34,7 +39,7 @@ export function buildMeta({
   return [
     { title },
     { name: "description", content: description },
-    ...(robots ? [{ name: "robots", content: robots }] : []),
+    { name: "robots", content: robots },
     { property: "og:site_name", content: siteConfig.name },
     { property: "og:locale", content: "pt_BR" },
     { property: "og:type", content: type },
@@ -42,6 +47,7 @@ export function buildMeta({
     { property: "og:description", content: description },
     { property: "og:url", content: url },
     ...imageTags,
+    { name: "twitter:site", content: "@brunopelatieri" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@brunopelatieri" },

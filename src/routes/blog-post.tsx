@@ -6,7 +6,7 @@ import { PostGallery } from "@/components/blog/post-gallery";
 import { PostMedia } from "@/components/blog/post-media";
 import { getPostBySlug } from "@/lib/content/posts.server";
 import { siteConfig } from "@/lib/constants/navigation";
-import { absoluteAsset } from "@/lib/seo";
+import { buildMeta, absoluteAsset } from "@/lib/seo";
 import type { Route } from "./+types/blog-post";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -27,23 +27,41 @@ export const meta: Route.MetaFunction = ({ data }) => {
   const { post } = data;
 
   return [
-    { title: `${post.title} — ${siteConfig.name}` },
-    { name: "description", content: post.excerpt },
-    { property: "og:title", content: post.title },
-    { property: "og:description", content: post.excerpt },
-    { property: "og:type", content: "article" },
+    ...buildMeta({
+      title: `${post.title} — ${siteConfig.name}`,
+      description: post.excerpt,
+      path: `/blog/${post.slug}`,
+      type: "article",
+      ...(post.cover ? { image: absoluteAsset(post.cover) } : {}),
+    }),
     { property: "article:published_time", content: post.publishedAt },
-    ...(post.cover
-      ? [{ property: "og:image", content: absoluteAsset(post.cover) }]
-      : []),
+    { property: "article:author", content: "https://brunogoulart.com.br/#author" },
   ];
 };
 
 export default function BlogPost({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData;
+  const baseUrl = siteConfig.url.replace(/\/$/, "");
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    url: `${baseUrl}/blog/${post.slug}`,
+    author: { "@id": "https://brunogoulart.com.br/#author" },
+    publisher: { "@id": "https://brunogoulart.com.br/#website" },
+    ...(post.cover ? { image: absoluteAsset(post.cover) } : {}),
+  };
 
   return (
-    <article className="px-6 py-16">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <article className="px-6 py-16">
       <div className="mx-auto max-w-3xl">
         <Link
           to="/blog"
@@ -75,7 +93,7 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
         {post.cover ? (
           <img
             src={post.cover}
-            alt=""
+            alt={`Capa do post: ${post.title}`}
             className="mb-10 aspect-[4/5] w-full rounded-xl border border-border/60 object-cover"
           />
         ) : null}
@@ -87,5 +105,6 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
         <PostAttachments attachments={post.attachments} />
       </div>
     </article>
+    </>
   );
 }

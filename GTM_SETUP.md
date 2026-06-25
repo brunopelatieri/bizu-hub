@@ -91,7 +91,7 @@ O projeto agora está integrado com **Google Tag Manager (GTM)** que injeta e ge
    npm run dev
    ```
 
-4. Abra o site em `http://localhost:5173` e teste no **Google Tag Manager Preview Mode**:
+4. Abra o site em `http://localhost:3000` e teste no **Google Tag Manager Preview Mode**:
    - No GTM, clique em **"Preview"** e siga as instruções
    - Veja o dataLayer sendo populado em tempo real
 

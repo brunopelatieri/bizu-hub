@@ -12,17 +12,13 @@
 ## 🔐 Variáveis de Ambiente
 
 ### Desenvolvimento
-```bash
-cp .env.example .env.local
-# Edite .env.local e adicione:
-VITE_GTM_ID=GTM-XXXXXXX
-```
+- [x] `.env.local` — `VITE_GTM_ID=GTM-KXX8MMKS`
 
-### Produção (Portainer)
-```yaml
-environment:
-  VITE_GTM_ID: "GTM-XXXXXXX"
-```
+### Produção (Docker build)
+- [x] `scripts/docker-build.mjs` — passa `--build-arg VITE_GTM_ID=GTM-KXX8MMKS`
+- [x] `Dockerfile` — `ARG VITE_GTM_ID` + `ENV VITE_GTM_ID=$VITE_GTM_ID`
+
+> ⚠️ `VITE_*` são embutidos no bundle em **build time** — não configurar em runtime no Portainer.
 
 ## 🚀 Deploy
 
@@ -36,16 +32,16 @@ npm run docker:push  # Push para produção
 ## 📊 Verificação Google
 
 ### Google Tag Manager
-1. [ ] Container criado
-2. [ ] GA4 Configuration Tag adicionada
-3. [ ] Tag publicada
-4. [ ] Preview Mode funcionando
+1. [x] Container criado — `GTM-KXX8MMKS`
+2. [x] GA4 Configuration Tag adicionada
+3. [x] Tag publicada
+4. [ ] Preview Mode — validar após próximo deploy
 
 ### Google Analytics 4
-1. [ ] Propriedade GA4 criada
-2. [ ] GA4 ID copiado para GTM
-3. [ ] Dados em tempo real aparecendo
-4. [ ] Conversão rastreada em "Eventos"
+1. [x] Propriedade GA4 criada
+2. [x] GA4 ID copiado para GTM
+3. [ ] Dados em tempo real — aguardar 24-48h
+4. [ ] Conversão `generate_lead` rastreada em "Eventos"
 
 ## 🔍 QA Local
 
@@ -73,4 +69,4 @@ window.dataLayer
 
 ---
 
-**Status:** Pronto para setup. Proceda com `GTM_SETUP.md`.
+**Status:** ✅ Ativo em produção (`GTM-KXX8MMKS`). Aguardando volume de dados no GA4 (24-48h).

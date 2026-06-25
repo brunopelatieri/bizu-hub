@@ -1053,7 +1053,8 @@ Arquivos:
 - `src/lib/gtm/config.ts` — configuração centralizada (GTM_ID)
 - `src/lib/gtm/events.ts` — helpers de eventos (6 eventos: conversão, erro, click, scroll, etc.)
 - `src/components/gtm/google-tag-manager.tsx` — componente que injeta script no `<head>`
-- `GTM_SETUP.md` — guia passo-a-passo para conectar à conta Google
+- `GTM_SETUP.md` — guia passo-a-passo
+- `GTM_CHECKLIST.md` — checklist de setup
 
 Eventos rastreados:
 
@@ -1063,26 +1064,65 @@ Eventos rastreados:
 - `click` — clique em CTA ou link externo
 - `scroll` — profundidade de scroll
 
-Integração no `src/root.tsx`:
-
-```tsx
-<GoogleTagManager />  // renderizado no <App />
-```
-
-No form de contato (`src/components/contact/contact-form.tsx`):
-
-```tsx
-trackContactFormSubmission({ name, email })  // sucesso
-trackContactFormError(errorMsg)               // erro
-```
-
-Variável de ambiente: `VITE_GTM_ID=GTM-XXXXXXX` (`.env.local` ou Portainer).
-
-Se vazio, GTM/GA4 são desabilitados (safe fallback).
+Variável: `VITE_GTM_ID=GTM-KXX8MMKS` — embutida no bundle via `--build-arg` (build time, não runtime Portainer).
 
 ### Status
 
-Código pronto — aguardando setup em [Google Tag Manager](https://tagmanager.google.com/) + Google Analytics 4. Ver `GTM_SETUP.md`.
+✅ Ativo em produção — GTM container criado, GA4 conectado, tag publicada e aplicada.
+
+---
+
+## 17b. SEO Técnico (Jun 2026)
+
+### Infraestrutura
+
+- `src/lib/seo.ts` — `buildMeta()` centralizado: canonical, og:*, twitter:*, robots meta.
+  - **robots default:** `index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1` aplicado automaticamente a todas as rotas públicas.
+  - **twitter:site + twitter:creator:** `@brunopelatieri` em todas as rotas.
+  - **Bug de URL dupla corrigido:** `siteConfig.url.replace(/\/$/, "")` antes de concatenar path.
+
+### Metadados por rota
+
+Todas as rotas públicas usam `buildMeta()`: canonical, og:site_name, og:locale (pt_BR), og:type, og:title, og:description, og:url, og:image, twitter:card (summary_large_image), twitter:site, twitter:creator, robots.
+
+- `/blog` — migrado para `buildMeta` (estava com meta manual incompleto).
+- `/blog/:slug` — usa `buildMeta` + `article:published_time` + `article:author`.
+
+### JSON-LD Structured Data
+
+**`src/root.tsx` — `@graph` global (WebSite + Person):**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": ".../#website", "name": "Bruno Goulart" },
+    { "@type": "Person", "@id": ".../#author", "name": "Bruno Pelatieri Goulart",
+      "jobTitle": "AI Automation Specialist & Full Stack Developer",
+      "sameAs": ["github", "gitlab", "linkedin", "youtube", "tiktok", "x", "instagram", "facebook"],
+      "knowsAbout": ["AI Orchestration", "n8n", "Dify", "React Router v7", "Drizzle ORM", "Docker", "Supabase", "TypeScript", "Python"]
+    }
+  ]
+}
+```
+
+Renderizado via `<script type="application/ld+json" dangerouslySetInnerHTML={...} />` no `<head>` do `Layout` — SSR-safe, sem hydration mismatch.
+
+**`src/routes/blog-post.tsx` — `TechArticle` dinâmico por post:**
+
+```json
+{ "@type": "TechArticle", "headline": "...", "author": { "@id": ".../#author" },
+  "publisher": { "@id": ".../#website" }, "datePublished": "..." }
+```
+
+Renderizado no corpo do componente via fragment — Google aceita JSON-LD em head ou body.
+
+### Rastreabilidade
+
+- `public/robots.txt` — `Allow: /`, `Disallow: /login`, `Disallow: /auth/`, `Disallow: /dashboard/`, Sitemap.
+- `public/sitemap.xml` — rotas estáticas principais (home, sobre, projetos, blog, contato). Atualizar manualmente ao publicar posts relevantes.
+- **H1 por página:** Auditado — todas as 6 rotas públicas têm exatamente 1 `<h1>`. ✅
+- **Alt em imagens:** `post.cover` em `src/components/landing/blog-section.tsx` e `src/routes/blog-post.tsx` usa `alt` dinâmico (`"Capa do post: {title}"`). Antes estava `alt=""`. ✅
 
 ---
 
