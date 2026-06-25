@@ -110,10 +110,99 @@ npm run docker:push  # build + push GitLab Registry
 
 ## Documentação
 
-- `deploy/README.md` — build, push, Portainer, DNS, Supabase Auth, migrations SQL (Portainer Console).
-- `AI_CONTEXT.md` — visão rápida para agentes de IA.
-- `PROJECT_TECHNICAL_SPEC.md` — arquitetura, rotas, deploy e decisões.
+- `deploy/README.md` — build, push, Portainer, DNS, Supabase Auth, migrations.
+- `.context/onboarding/AI_CONTEXT.md` — visão rápida para agentes de IA.
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md` — arquitetura, rotas, deploy e regras em ~200 linhas.
 
+
+---
+
+## ⚠️ Governança de Contexto (AI Software Engineering)
+
+Este projeto adota a metodologia de **AI Software Engineering**: toda documentação
+relevante para desenvolvimento — especialmente a produzida com ou para LLMs e
+agentes de IA — segue regras explícitas de localização. Isso garante que qualquer
+agente (ou humano) que abra o repo encontre o contexto certo, no lugar certo,
+sem ambiguidade.
+
+### Estrutura de pastas de contexto
+
+Duas pastas coexistem com propósitos distintos:
+
+#### `.context/` — documentação manual de contexto vivo
+
+Criada e mantida por humanos (ou agentes, sob instrução). Organizada por natureza
+do documento:
+
+```
+.context/
+  onboarding/   Ponto de entrada para LLMs — AI_CONTEXT.md, status e regras de atualização
+  spec/         Especificações técnicas: compact (leitura rápida), legada, arquivo histórico
+  adr/          Architecture Decision Records — decisões com contexto, alternativas e consequências
+  pdr/          Product Decision Records — decisões de produto, escopo e priorização
+  docs/         Infra, integrações e ferramentas — GTM, Postgres externo, guias de setup
+  rules/        Regras e convenções além das .cursor/rules/ (específicas deste projeto)
+  workflows/    Runbooks, processos recorrentes, guias operacionais passo-a-passo
+```
+
+**O que vai em `.context/`:**
+- Qualquer `.md` de documentação técnica criado durante o desenvolvimento
+- Guias de setup de ferramentas (ex: `GTM_SETUP.md`, `GTM_CHECKLIST.md`)
+- Documentação de infraestrutura (ex: `INFRA_POSTGRES_EXTERNAL_ACCESS.md`)
+- Notas de decisão arquitetural ou de produto
+- Specs criadas manualmente
+
+**O que NÃO vai em `.context/`:**
+- Output automatizado de tools (ver `specs/` abaixo)
+- Configs de ferramentas (`.cursor/`, `.specify/`, `.claude/`)
+- Código-fonte (`src/`, `scripts/`, `drizzle/`)
+
+#### `specs/` — output automatizado do SpecifyX
+
+Gerada e mantida pelo ciclo de **SpecifyX** (`.specify/`). Cada subpasta é uma
+feature spec numerada, produzida pelos comandos `/specify → /plan → /tasks → /implement`.
+
+```
+specs/
+  001-blog-dinamico-com/   spec.md + tasks.md (feature já implementada)
+  002-proxima-feature/     ...
+```
+
+> Esta pasta é output de tool — não edite manualmente a menos que esteja
+> participando ativamente do ciclo SpecifyX para aquela feature.
+
+### Raiz do projeto
+
+Na raiz ficam **apenas** arquivos que ferramentas e convenções do ecossistema
+exigem nesse local:
+
+| Arquivo | Por quê fica na raiz |
+|---------|----------------------|
+| `CLAUDE.md` | Exigido pelo Claude Code para carregar contexto do projeto |
+| `README.md` | Convenção universal de onboarding — GitHub/GitLab renderiza na homepage |
+| `CHANGELOG.md` | Convenção de changelog — ferramentas e humanos esperam na raiz |
+| `package.json`, `Dockerfile`, `.gitignore`, etc. | Configs de tooling — exigidos na raiz |
+
+### Regra de decisão rápida
+
+> "Onde devo criar este arquivo de documentação?"
+
+1. É um **`.md` de documentação** produzido durante desenvolvimento? → `.context/<subpasta>`
+2. É uma **spec de feature** gerada pelo ciclo SpecifyX? → `specs/` (automático)
+3. É um **arquivo de config** de alguma ferramenta? → pasta da própria ferramenta (`.cursor/`, `.specify/`, `deploy/`, etc.)
+4. É `CLAUDE.md`, `README.md` ou `CHANGELOG.md`? → raiz
+
+### Quando atualizar contexto
+
+Toda vez que o projeto mudar de forma relevante (arquitetura, stack, deploy,
+banco, auth, dashboard, billing), atualize na mesma sessão:
+
+- `.context/onboarding/AI_CONTEXT.md` — resumo operacional
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md` — detalhes técnicos
+- `README.md` se afetar onboarding ou a governança aqui descrita
+- `.cursor/rules/*.mdc` se a mudança precisar orientar agentes futuros
+
+---
 
 ## Autor
 

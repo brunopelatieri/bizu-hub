@@ -18,11 +18,13 @@ Stack full-stack com metodologia de **AI Software Engineering**: contexto explí
 
 ## Arquivos Que Devem Ser Lidos Primeiro
 
-1. `AI_CONTEXT.md` — visão rápida e regras de atualização de contexto.
-2. `PROJECT_TECHNICAL_SPEC.md` — especificação técnica completa.
-3. `MIGRATION_NOTES.md` — decisões da migração para React Router Framework Mode.
-4. `.specify/memory/constitution.md` — constituição SpecifyX.
-5. `.cursor/rules/*.mdc` — regras operacionais do workspace.
+1. `.context/onboarding/AI_CONTEXT.md` — visão rápida e regras de atualização de contexto.
+2. `.context/spec/TECHNICAL_SPEC_COMPACT.md` — stack, arquitetura, rotas, deploy e regras em ~200 linhas. **Leitura obrigatória antes de qualquer mudança técnica.**
+3. `.context/spec/PROJECT_TECHNICAL_SPEC.md` — especificação técnica legada completa (mantida para referência).
+4. `.context/spec/technical-spec-full.md` — histórico de bugs resolvidos, roadmap detalhado, design system, SpecifyX/rules.
+5. `.context/adr/MIGRATION_NOTES.md` — decisões da migração para React Router Framework Mode.
+6. `.specify/memory/constitution.md` — constituição SpecifyX.
+7. `.cursor/rules/*.mdc` — regras operacionais do workspace.
 
 ## Arquitetura Atual
 
@@ -56,7 +58,7 @@ Dados:
 
 ## Quando Atualizar Contexto
 
-Atualize este arquivo e `PROJECT_TECHNICAL_SPEC.md` quando mudar:
+Atualize este arquivo e `.context/spec/TECHNICAL_SPEC_COMPACT.md` quando mudar:
 
 - Arquitetura.
 - Rotas.
@@ -94,7 +96,7 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
   ```bash
   DIRECT_URL="postgresql://bizu_hub:SENHA@212.85.19.156:5432/bizu_hub" npm run db:migrate:prod
   ```
-- Documentação completa de infra: `INFRA_POSTGRES_EXTERNAL_ACCESS.md`.
+- Documentação completa de infra: `.context/docs/INFRA_POSTGRES_EXTERNAL_ACCESS.md`.
 - Stack atualizada: `deploy/portainer-stack.yml` e `deploy/portainer-stack.npm.yml` incluem o bloco `ports` para o serviço `postgres`.
 - **Nota para agentes:** nunca expor `DIRECT_URL` com credenciais reais em commits. Usar `.env.local` (no `.gitignore`) ou variável de ambiente na sessão.
 

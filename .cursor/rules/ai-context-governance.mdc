@@ -13,9 +13,10 @@ rapidamente, mantendo decisões técnicas precisas e rastreáveis.
 
 Leia primeiro:
 
-- `AI_CONTEXT.md`
-- `PROJECT_TECHNICAL_SPEC.md`
-- `MIGRATION_NOTES.md`
+- `.context/onboarding/AI_CONTEXT.md`
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md`
+- `.context/spec/PROJECT_TECHNICAL_SPEC.md`
+- `.context/adr/MIGRATION_NOTES.md`
 - `.specify/memory/constitution.md`
 - regras em `.cursor/rules/`
 
@@ -35,8 +36,8 @@ Ao alterar qualquer item abaixo, atualize documentação na mesma sessão:
 
 Arquivos mínimos a considerar:
 
-- `AI_CONTEXT.md` para resumo operacional
-- `PROJECT_TECHNICAL_SPEC.md` para detalhes técnicos
+- `.context/onboarding/AI_CONTEXT.md` para resumo operacional
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md` para detalhes técnicos
 - `README.md` para onboarding
 - `.cursor/rules/*.mdc` para orientar agentes futuros
 
@@ -49,6 +50,23 @@ Arquivos mínimos a considerar:
 - Não expor dados sensíveis do dashboard em SSR/server loader.
 - Prefira schemas Zod compartilhados para APIs e formulários.
 - Preserve TypeScript estrito.
+
+## Governança da pasta `.context/`
+
+Toda documentação produzida com ou para LLMs/agentes deve ir em `.context/`,
+na subpasta mais adequada. Nunca criar esse tipo de arquivo na raiz.
+
+| Subpasta | Conteúdo |
+|----------|----------|
+| `onboarding/` | Entrada para LLMs — visão rápida, status, regras de atualização |
+| `spec/` | Specs técnicas e de features (SpecifyX) |
+| `adr/` | Architecture Decision Records |
+| `pdr/` | Product Decision Records |
+| `docs/` | Infra, integrações, guias de ferramentas (GTM, Postgres, deploy) |
+| `rules/` | Regras e convenções além das `.cursor/rules/` |
+| `workflows/` | Runbooks, processos recorrentes, guias operacionais |
+
+Na raiz ficam apenas: `CLAUDE.md`, `README.md`, `CHANGELOG.md` e configs.
 
 ## Método de trabalho
 

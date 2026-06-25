@@ -31,4 +31,4 @@ Regras:
 - Dashboard não deve expor dados sensíveis no SSR; use fetch/client state
 - Pagamentos, multi-tenant e features de produto exigem spec clara antes de implementar
 - Novas páginas exigem atualização de `src/lib/constants/navigation.ts`
-- Mudanças estruturais exigem atualização de `AI_CONTEXT.md` e `PROJECT_TECHNICAL_SPEC.md`
+- Mudanças estruturais exigem atualização de `.context/onboarding/AI_CONTEXT.md` e `.context/spec/TECHNICAL_SPEC_COMPACT.md`

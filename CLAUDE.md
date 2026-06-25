@@ -15,10 +15,12 @@ especificação primeiro, contexto vivo para LLMs e decisões técnicas document
 
 Antes de mudanças técnicas relevantes:
 
-- `AI_CONTEXT.md`
-- `PROJECT_TECHNICAL_SPEC.md`
-- `MIGRATION_NOTES.md`
-- `INFRA_POSTGRES_EXTERNAL_ACCESS.md` — acesso externo ao Postgres (migrations do PC de dev)
+- `.context/onboarding/AI_CONTEXT.md`
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md` — **consulta rápida obrigatória** (stack, rotas, deploy, regras)
+- `.context/spec/PROJECT_TECHNICAL_SPEC.md` — especificação técnica completa (legada, mantida para referência)
+- `.context/spec/technical-spec-full.md` — histórico, roadmap, design system detalhado
+- `.context/adr/MIGRATION_NOTES.md`
+- `.context/docs/INFRA_POSTGRES_EXTERNAL_ACCESS.md` — acesso externo ao Postgres (migrations do PC de dev)
 - `.specify/memory/constitution.md`
 - `.cursor/rules/*.mdc`
 
@@ -38,15 +40,46 @@ Antes de mudanças técnicas relevantes:
 Se alterar arquitetura, rotas, stack, deploy, banco, auth, billing, dashboard,
 rules ou SpecifyX, atualize também:
 
-- `AI_CONTEXT.md`
-- `PROJECT_TECHNICAL_SPEC.md`
+- `.context/onboarding/AI_CONTEXT.md`
+- `.context/spec/TECHNICAL_SPEC_COMPACT.md`
 - `README.md` se afetar onboarding
 - `.cursor/rules/*.mdc` se afetar decisões futuras de agentes
 
+## Governança da pasta `.context/`
+
+Toda documentação de desenvolvimento produzida com ou para LLMs/agentes de IA
+deve ser criada dentro de `.context/`, na subpasta que melhor representa sua
+natureza. **Nunca criar esse tipo de arquivo na raiz do projeto.**
+
+| Subpasta | O que vai aqui |
+|----------|----------------|
+| `onboarding/` | Ponto de entrada para LLMs — visão rápida, regras de atualização, status atual do projeto |
+| `spec/` | Especificações técnicas (compact, legada, arquivo histórico), incluindo specs de features novas geradas pelo fluxo SpecifyX |
+| `adr/` | Architecture Decision Records — decisões técnicas com contexto, alternativas e consequências |
+| `pdr/` | Product Decision Records — decisões de produto, escopo, posicionamento e priorização |
+| `docs/` | Documentação técnica de infraestrutura, integrações e ferramentas (ex: GTM setup, Postgres externo, deploy guides) |
+| `rules/` | Regras e diretrizes de desenvolvimento além das `.cursor/rules/` (ex: convenções específicas do projeto) |
+| `workflows/` | Processos recorrentes, automações, runbooks e guias operacionais passo-a-passo |
+
+**Exemplos de arquivos que pertencem a `.context/`:**
+- `GTM_SETUP.md`, `GTM_CHECKLIST.md` → `docs/`
+- `MIGRATION_NOTES.md`, registros de decisões de stack → `adr/`
+- Guias de deploy, infra e ferramentas → `docs/`
+- Runbooks, processos de release → `workflows/`
+
+**`specs/` é separado e não pertence a `.context/`:**
+- Output automatizado do ciclo SpecifyX (`/specify → /plan → /tasks → /implement`).
+- Cada subpasta é uma feature numerada com `spec.md` e `tasks.md`.
+- Não editar manualmente — é território da tool.
+
+**Na raiz ficam apenas:** `CLAUDE.md`, `README.md`, `CHANGELOG.md` e arquivos de config (`.gitignore`, `package.json`, `Dockerfile`, etc.).
+
+**Documentação completa desta governança:** `README.md` → seção "Governança de Contexto".
+
 ## Project Memory
-@AI_CONTEXT.md
-@PROJECT_TECHNICAL_SPEC.md
-@MIGRATION_NOTES.md
+@.context\onboarding\AI_CONTEXT.md
+@.context\spec\TECHNICAL_SPEC_COMPACT.md
+@.context\adr\MIGRATION_NOTES.md
 @.specify\memory\constitution.md
 
 ---

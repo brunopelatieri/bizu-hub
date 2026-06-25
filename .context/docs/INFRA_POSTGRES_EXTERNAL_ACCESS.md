@@ -1,6 +1,6 @@
 # Acesso Externo ao PostgreSQL — Bizu Hub (VPS Docker Swarm)
 
-> Documento de infraestrutura. Complementa `CLAUDE.md`, `AI_CONTEXT.md` e `PROJECT_TECHNICAL_SPEC.md`.
+> Documento de infraestrutura. Complementa `CLAUDE.md`, `.context/onboarding/AI_CONTEXT.md` e `.context/spec/TECHNICAL_SPEC_COMPACT.md`.
 > Escopo: como o banco PostgreSQL da stack `bizu-hub` passou a aceitar conexões externas (HeidiSQL, n8n e outras ferramentas), de forma segura, via firewall — sem depender de túnel SSH.
 
 ---
