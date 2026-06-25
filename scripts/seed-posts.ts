@@ -1,17 +1,12 @@
+import { pathToFileURL } from "url";
 import { config } from "dotenv";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../src/db/schema";
 
 config({ path: ".env.local" });
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL is not set");
-
-const client = postgres(connectionString, { max: 1 });
-const db = drizzle(client, { schema });
-
-const seedPosts: schema.NewPost[] = [
+const originalPosts: schema.NewPost[] = [
   {
     slug: "reduzir-mensagens-de-status",
     title: "Como reduzir 80% das mensagens de status dos seus clientes",
@@ -60,17 +55,36 @@ const seedPosts: schema.NewPost[] = [
   },
 ];
 
-async function seed() {
-  console.log("Seeding posts...");
+export async function seedOriginalPosts(db: PostgresJsDatabase<typeof schema>) {
+  console.log("🚀 Seeding original posts...");
+  console.time("seed-posts");
   await db
     .insert(schema.posts)
-    .values(seedPosts)
+    .values(originalPosts)
     .onConflictDoNothing({ target: schema.posts.slug });
-  console.log("Done. 3 posts seeded (idempotent).");
-  await client.end();
+  console.timeEnd("seed-posts");
+  console.log("✅ Done. 3 original posts seeded (idempotent).");
 }
 
-seed().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+async function main() {
+  const connectionString =
+    process.env.DATABASE_URL || process.env.DIRECT_URL;
+  if (!connectionString) throw new Error("DATABASE_URL or DIRECT_URL is not set");
+
+  const client = postgres(connectionString, { max: 1 });
+  const db = drizzle(client, { schema });
+
+  try {
+    await seedOriginalPosts(db);
+  } finally {
+    await client.end();
+  }
+}
+
+// Guard: only run when this file is the entry point, not when imported
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error("❌", err);
+    process.exit(1);
+  });
+}
