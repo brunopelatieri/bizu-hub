@@ -51,12 +51,10 @@ export function SiteFooter() {
           <div className="space-y-4">
             <SiteLogo size="lg" subtitle="AI Automation Specialist" />
             <p className="max-w-xs text-sm leading-relaxed text-slate-400">
-              Unindo 18+ anos de engenharia com a inteligência do futuro —
-              agentes de IA, automação com n8n e arquitetura full-stack do MVP
-              ao deploy em produção.
+              Unindo 18+ anos de experiência e atualmente escrevendo código com a inteligência do futuro. Agentes de IA, automação com n8n e arquitetura full-stack do MVP ao deploy em produção.
             </p>
             <span className="inline-block rounded-md border border-slate-800/60 bg-slate-900/60 px-3 py-1 font-mono text-[11px] tracking-wide text-brand-teal">
-              Desde 2006 · 18+ Anos de Código
+              Desde 2006 · 18+ Anos CODANDO
             </span>
           </div>
 

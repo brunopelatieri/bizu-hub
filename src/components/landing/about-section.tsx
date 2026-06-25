@@ -33,7 +33,7 @@ export function AboutSection() {
             Quem está por trás
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Engenharia consolidada unida à{" "}
+            Experiência consolidada unida à{" "}
             <span className="text-gradient-brand">inteligência do futuro</span>
           </h2>
           <p className="text-lg text-slate-400">

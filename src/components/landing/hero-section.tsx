@@ -21,7 +21,7 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-5xl px-6 py-28 text-center md:py-36">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-900/60 px-4 py-1.5 text-xs text-slate-300 backdrop-blur-md">
           <Sparkles className="h-3.5 w-3.5 text-brand-teal" />
-          <span className="font-mono">18+ anos de engenharia · desde 2006</span>
+          <span className="font-mono">18+ anos de CODANDO · desde 2006</span>
         </div>
 
         <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-white md:text-6xl">
@@ -33,7 +33,7 @@ export function HeroSection() {
         <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400 md:text-xl">
           Sou <strong className="text-slate-200">Bruno Goulart</strong>, AI
           Automation Specialist & Full Stack Developer. Uno a robustez de 18+
-          anos de engenharia à inteligência de LLMs, automação com n8n e
+          anos de código à inteligência de LLMs, automação com n8n e
           arquitetura full-stack — do MVP ao deploy em produção.
         </p>
 

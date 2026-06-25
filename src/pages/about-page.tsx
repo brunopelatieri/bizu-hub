@@ -47,7 +47,7 @@ const philosophy = [
 ];
 
 const stats = [
-  { value: "18+", label: "anos de engenharia" },
+  { value: "18+", label: "anos CODANDO" },
   { value: "2006", label: "início da carreira" },
   { value: "5", label: "LLMs em produção" },
   { value: "∞", label: "agentes rodando 24/7" },
@@ -223,7 +223,7 @@ export function AboutPage() {
       <section className="px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <blockquote className="text-xl font-medium italic text-white md:text-2xl">
-            &ldquo;Unindo 18 anos de engenharia com a inteligência do futuro —
+            &ldquo;Unindo 18 anos de código com a inteligência do futuro —
             construindo hoje o que o mercado precisará amanhã.&rdquo;
           </blockquote>
           <p className="mt-4 font-mono text-sm text-slate-500">
