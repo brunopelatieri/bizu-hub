@@ -21,6 +21,8 @@ Antes de mudanças técnicas relevantes:
 - `.specify/memory/constitution.md`
 - `.cursor/rules/*.mdc`
 
+**⚠️ Importante para agentes:** `.cursor/rules/git-gitlab-manual-actions.mdc` — define que operações de git/GitLab CI devem ser **solicitadas ao usuário**, nunca executadas automaticamente.
+
 ## Arquitetura atual
 
 - React Router v7 Framework Mode com `ssr: true`.

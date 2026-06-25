@@ -1,0 +1,179 @@
+# Git & GitLab Manual Actions — Always Request, Never Execute
+
+**Status:** Always apply
+**Scope:** All LLM agents, /implement, /guide, etc.
+
+---
+
+## Summary
+
+Do NOT execute git operations or GitLab CI/CD actions directly. These require:
+- SSH authentication (private keys, passphrases)
+- Credentials in registries (GitLab Container Registry)
+- Knowledge of the user's preferred workflow (squash vs. merge, branch naming, PR templates)
+
+**ALWAYS request the user to execute these manually.**
+
+---
+
+## Operations That Require Manual Execution
+
+### Git Operations
+
+| Operation | Why Manual | What to Provide |
+|-----------|-----------|-----------------|
+| `git commit` | May need SSH key prompt; user should verify commit message | Exact commit message to paste |
+| `git push` / `git push --force` | Requires auth; force push is destructive | Step-by-step instructions + warning for --force |
+| `git pull` / `git merge` | May have conflicts; user should resolve | Instructions for resolving conflicts |
+| `git rebase` | Rewriting history; user should verify | Instructions for interactive rebase if needed |
+| Create/delete branches | User workflow preference | Tell user: "Create branch: `git checkout -b feature-name`" |
+| Create pull request | GitLab/GitHub UI is better UX | Provide: title, description, target branch |
+
+### GitLab CI/CD & Registry
+
+| Operation | Why Manual | What to Provide |
+|-----------|-----------|-----------------|
+| `docker login registry.gitlab.com` | Requires personal access token (PAT) | Instructions: where to generate token, command to run |
+| `npm run docker:build` | Builds locally; may need VITE_* env vars | Instructions: set env vars, then run command |
+| `npm run docker:push` | Pushes to registry; requires login | Instruction: "First login, then run docker:push" |
+| GitLab CI pipeline trigger | Happens on git push; user should verify | Tell user: "Commit + push will trigger CI (check .gitlab-ci.yml)" |
+| Manual redeploy on production | Critical; production-affecting | Clear instructions: what will happen, how to rollback |
+
+---
+
+## Template: How to Request Manual Actions
+
+### ✅ DO THIS
+
+```
+## Next: Manual Git Operations
+
+1. **Commit the changes:**
+   ```bash
+   git add src/db/schema.ts scripts/seed-posts.ts
+   git commit -m "$(cat <<'EOF'
+   feat(blog): implement dynamic blog with Drizzle + media relations
+
+   - Add 4 tables: posts, post_images, post_media, post_attachments
+   - Implement getAllPosts() and getPostBySlug() with Drizzle queries
+   - Add read-time calculation (200 words/min)
+   - Integrate Markdown rendering with react-markdown
+   - Add components: PostGallery, PostMedia, PostAttachments
+   - Update loaders for /blog and /blog/:slug to filter published only
+
+   Fixes #001
+   EOF
+   )"
+   ```
+
+2. **Push to origin:**
+   ```bash
+   git push origin main
+   ```
+   This will trigger GitLab CI → build Docker image → push to registry.
+
+3. **Check pipeline status:**
+   - Go to GitLab → CI/CD → Pipelines
+   - Wait for image build to complete (green checkmark)
+```
+
+### ❌ DON'T DO THIS
+
+```
+I will now commit and push these changes to GitLab...
+[executes git commit && git push]
+```
+
+---
+
+## Special Cases
+
+### Pull Requests (GitHub / Merge Requests on GitLab)
+
+**Always provide:**
+- PR title (concise, under 70 chars)
+- PR description/body (markdown formatted)
+- Target branch (main, develop, etc.)
+- Any review guidelines or merge strategy
+
+**Example:**
+```
+## Create a Pull Request
+
+Title:
+  "feat(blog): implement Drizzle schema + seed + components"
+
+Description:
+  "## Changes
+  - Migrated blog from static array to Drizzle + Postgres
+  - Added 4 new tables with cascade deletes
+  - Updated loaders for SSR with published filter
+  - Integrated Markdown + media components
+
+  ## Testing
+  - [x] typecheck passes
+  - [x] build passes
+  - [x] /blog and /blog/:slug load correctly
+  - [x] draft posts return 404
+
+  Closes #001"
+
+Command:
+  gh pr create --title "..." --body "..."
+  # OR open GitLab UI and fill form manually
+```
+
+### Docker Build & Push
+
+**Always provide step-by-step:**
+```
+1. Set environment variables in terminal:
+   export VITE_SUPABASE_URL="https://..."
+   export VITE_SUPABASE_PUBLISHABLE_KEY="pk_..."
+
+2. Login to GitLab Container Registry (one time):
+   docker login registry.gitlab.com
+   # Use Personal Access Token with 'write_registry' scope
+
+3. Build and push:
+   npm run docker:push
+   # Or: docker build -t registry.gitlab.com/... . && docker push ...
+
+4. Verify image pushed:
+   docker images | grep bizu-hub
+```
+
+### Portainer Redeploy
+
+**Provide clear instructions:**
+```
+1. Open Portainer UI (https://your-vps:9000)
+2. Navigate to Stacks → bizu-hub
+3. Click "Update the stack"
+4. Confirm settings (should pull new image automatically)
+5. Check container logs for startup errors
+```
+
+---
+
+## When Unsure
+
+If an operation involves **credentials**, **destructive changes**, or **production impact**,
+**always ask the user** rather than assume. Frame it as:
+
+> "The next step requires [action].
+>
+> You can either:
+> 1. **I provide instructions** — you execute manually
+> 2. **You tell me your preference** — I'll adapt the approach
+>
+> Which would you prefer?"
+
+---
+
+## Links for Reference
+
+- `.gitlab-ci.yml` — GitLab CI/CD pipeline config
+- `deploy/README.md` — VPS deployment guide
+- `Dockerfile` — Docker build context
+- `drizzle.config.ts` — Database migration config
