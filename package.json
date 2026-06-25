@@ -14,6 +14,10 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx scripts/seed-posts.ts",
+    "db:seed:test": "tsx scripts/seed-test-post.ts",
+    "db:seed:full": "tsx scripts/seed-full.ts",
+    "db:migrate:prod": "tsx scripts/migrate-production.ts",
+    "db:migrate:rollback": "tsx scripts/migrate-rollback.ts",
     "docker:build": "node scripts/docker-build.mjs",
     "docker:push": "node scripts/docker-build.mjs --push"
   },
