@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import './styles/theme.css';
+@import './styles/blog-prose.css';
+@import './styles/post-gallery-lightbox.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -16,7 +18,7 @@
   }
 
   body {
-    @apply min-h-svh w-full bg-background text-foreground antialiased;
+    @apply min-h-svh w-full bg-background text-base leading-relaxed text-foreground antialiased font-inter;
     /* When sidebar inset variant is active, body takes sidebar background */
     background-color: var(--background);
   }

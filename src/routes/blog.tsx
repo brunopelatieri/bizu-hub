@@ -59,7 +59,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
                 <h2 className="mb-2 flex-1 text-base font-semibold leading-snug text-foreground transition group-hover:text-primary">
                   {post.title}
                 </h2>
-                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                <p className="mb-4 text-base leading-relaxed text-muted-foreground">
                   {post.excerpt}
                 </p>
                 <time

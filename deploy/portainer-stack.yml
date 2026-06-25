@@ -15,6 +15,11 @@ services:
       - bizu_hub_postgres_data:/var/lib/postgresql/data
     networks:
       - bru
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
+        mode: host
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

@@ -18,6 +18,7 @@ Antes de mudanças técnicas relevantes:
 - `AI_CONTEXT.md`
 - `PROJECT_TECHNICAL_SPEC.md`
 - `MIGRATION_NOTES.md`
+- `INFRA_POSTGRES_EXTERNAL_ACCESS.md` — acesso externo ao Postgres (migrations do PC de dev)
 - `.specify/memory/constitution.md`
 - `.cursor/rules/*.mdc`
 

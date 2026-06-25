@@ -1,5 +1,4 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { BlogMarkdown } from "@/components/blog/blog-markdown";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { PostAttachments } from "@/components/blog/post-attachments";
@@ -81,11 +80,7 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
           />
         ) : null}
 
-        <div className="prose prose-invert max-w-none text-base leading-relaxed text-muted-foreground">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {post.content}
-          </ReactMarkdown>
-        </div>
+        <BlogMarkdown content={post.content} />
 
         <PostGallery images={post.images} />
         <PostMedia items={post.media} />

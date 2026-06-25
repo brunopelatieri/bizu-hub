@@ -1,0 +1,135 @@
+/* Tipografia do conteúdo markdown do blog — dark, legível, alinhada ao design system */
+
+.blog-prose {
+  @apply text-base leading-relaxed text-slate-300;
+}
+
+/* Espaçamento entre blocos adjacentes */
+.blog-prose > * + * {
+  @apply mt-5;
+}
+
+.blog-prose > :first-child {
+  @apply mt-0;
+}
+
+/* Títulos — hierarquia a partir de h2 (h1 do markdown vira h2 visual) */
+.blog-prose-h2 {
+  @apply scroll-mt-24 border-b border-slate-800/80 pb-3 pt-8 text-2xl font-bold tracking-tight text-foreground first:pt-0 md:text-3xl;
+}
+
+.blog-prose-h3 {
+  @apply scroll-mt-24 pt-6 text-xl font-semibold tracking-tight text-slate-100 md:text-2xl;
+}
+
+.blog-prose-h4 {
+  @apply scroll-mt-24 pt-4 text-lg font-semibold text-slate-100;
+}
+
+.blog-prose-h5 {
+  @apply scroll-mt-24 pt-3 text-base font-semibold text-slate-200;
+}
+
+.blog-prose-h6 {
+  @apply scroll-mt-24 pt-2 font-mono text-sm font-medium uppercase tracking-widest text-brand-teal;
+}
+
+.blog-prose-p {
+  @apply text-base leading-[1.75] text-slate-300;
+}
+
+.blog-prose-a {
+  @apply font-medium text-brand-blue underline decoration-brand-blue/30 underline-offset-4 transition-colors hover:text-brand-teal hover:decoration-brand-teal/50;
+}
+
+.blog-prose-strong {
+  @apply font-semibold text-slate-100;
+}
+
+.blog-prose-em {
+  @apply italic text-slate-200;
+}
+
+/* Listas */
+.blog-prose-ul {
+  @apply list-disc space-y-2 pl-6 marker:text-brand-teal/70;
+}
+
+.blog-prose-ol {
+  @apply list-decimal space-y-2 pl-6 marker:font-medium marker:text-brand-blue/80;
+}
+
+.blog-prose-li {
+  @apply pl-1 leading-[1.75] text-slate-300;
+}
+
+.blog-prose-li > .blog-prose-ul,
+.blog-prose-li > .blog-prose-ol {
+  @apply mt-2;
+}
+
+/* Citação */
+.blog-prose-blockquote {
+  @apply my-6 border-l-4 border-brand-teal/60 bg-slate-900/40 py-4 pl-5 pr-4 italic text-slate-200 backdrop-blur-sm;
+}
+
+.blog-prose-blockquote > .blog-prose-p {
+  @apply my-0 text-slate-200;
+}
+
+/* Separador */
+.blog-prose-hr {
+  @apply my-10 border-0 border-t border-slate-800;
+}
+
+/* Código */
+.blog-prose-code-inline {
+  @apply rounded-md border border-slate-700/60 bg-slate-900/80 px-1.5 py-0.5 font-mono text-[0.9em] text-brand-teal;
+}
+
+.blog-prose-pre {
+  @apply my-6 overflow-x-auto rounded-xl border border-slate-800/80 bg-slate-950/90 p-4 shadow-inner;
+}
+
+.blog-prose-code-block {
+  @apply block font-mono text-sm leading-relaxed text-slate-200;
+}
+
+/* Tabelas GFM */
+.blog-prose-table-wrap {
+  @apply my-6 overflow-x-auto rounded-xl border border-slate-800/80;
+}
+
+.blog-prose-table {
+  @apply w-full min-w-full border-collapse text-sm;
+}
+
+.blog-prose-thead {
+  @apply bg-slate-900/60;
+}
+
+.blog-prose-th {
+  @apply border-b border-slate-800 px-4 py-3 text-left font-semibold text-slate-100;
+}
+
+.blog-prose-td {
+  @apply border-b border-slate-800/60 px-4 py-3 text-slate-300;
+}
+
+.blog-prose-tr:last-child .blog-prose-td {
+  @apply border-b-0;
+}
+
+/* Imagens inline no markdown */
+.blog-prose-img {
+  @apply my-6 w-full rounded-xl border border-slate-800/60 object-cover shadow-lg shadow-black/20;
+}
+
+/* Checkbox lists (GFM task lists) */
+.blog-prose .contains-task-list {
+  @apply list-none pl-0;
+}
+
+.blog-prose input[type="checkbox"] {
+  @apply mr-2 accent-brand-blue;
+}

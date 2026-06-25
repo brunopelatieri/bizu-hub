@@ -198,7 +198,7 @@ export function ProjectsPage() {
                 <h3 className="mb-2 text-xl font-semibold text-white">
                   {p.title}
                 </h3>
-                <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-400">
+                <p className="mb-5 flex-1 text-base leading-relaxed text-slate-400">
                   {p.description}
                 </p>
                 <TagList tags={p.tags} />
@@ -227,7 +227,7 @@ export function ProjectsPage() {
               >
                 <span className="mb-4 block text-3xl">{p.emoji}</span>
                 <h3 className="mb-2 font-semibold text-white">{p.title}</h3>
-                <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-400">
+                <p className="mb-4 flex-1 text-base leading-relaxed text-slate-400">
                   {p.description}
                 </p>
                 <TagList tags={p.tags} />
@@ -247,7 +247,7 @@ export function ProjectsPage() {
               <h2 className="mb-2 text-xl font-semibold text-white">
                 {thisPlatform.title}
               </h2>
-              <p className="mb-5 text-sm leading-relaxed text-slate-400">
+              <p className="mb-5 text-base leading-relaxed text-slate-400">
                 {thisPlatform.description}
               </p>
               <TagList tags={thisPlatform.tags} />
@@ -314,7 +314,7 @@ export function ProjectsPage() {
                   {item.label}
                   <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
                 </h3>
-                <p className="text-sm leading-relaxed text-slate-400">
+                <p className="text-base leading-relaxed text-slate-400">
                   {item.desc}
                 </p>
               </a>

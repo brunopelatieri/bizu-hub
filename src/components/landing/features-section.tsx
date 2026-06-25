@@ -65,7 +65,7 @@ export function FeaturesSection() {
             >
               <span className="mb-4 block text-3xl">{s.icon}</span>
               <h3 className="mb-2 font-semibold text-white">{s.title}</h3>
-              <p className="mb-4 text-sm leading-relaxed text-slate-400">
+              <p className="mb-4 text-base leading-relaxed text-slate-400">
                 {s.body}
               </p>
               <div className="flex flex-wrap gap-1.5">

@@ -21,7 +21,7 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-5xl px-6 py-28 text-center md:py-36">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-900/60 px-4 py-1.5 text-xs text-slate-300 backdrop-blur-md">
           <Sparkles className="h-3.5 w-3.5 text-brand-teal" />
-          <span className="font-mono">18+ anos de CODANDO · desde 2006</span>
+          <span className="font-mono">18+ anos CODANDO · desde 2006</span>
         </div>
 
         <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-white md:text-6xl">

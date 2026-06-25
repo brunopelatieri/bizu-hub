@@ -124,7 +124,7 @@ export function AboutPage() {
               <p className="font-mono text-3xl font-bold text-gradient-brand">
                 {s.value}
               </p>
-              <p className="mt-1 text-sm text-slate-400">{s.label}</p>
+              <p className="mt-1 text-base text-slate-400">{s.label}</p>
             </div>
           ))}
         </div>
@@ -183,7 +183,7 @@ export function AboutPage() {
                 <h3 className="mb-1 text-lg font-semibold text-white">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-slate-400">
+                <p className="text-base leading-relaxed text-slate-400">
                   {item.body}
                 </p>
               </div>
@@ -210,7 +210,7 @@ export function AboutPage() {
                 className="rounded-2xl border border-slate-800/50 bg-slate-900/40 p-6 backdrop-blur-md"
               >
                 <h3 className="mb-2 font-semibold text-white">{p.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-400">
+                <p className="text-base leading-relaxed text-slate-400">
                   {p.body}
                 </p>
               </div>

@@ -56,7 +56,7 @@ export function AboutSection() {
               <h3 className="mb-2 text-lg font-semibold text-white">
                 {p.title}
               </h3>
-              <p className="text-sm leading-relaxed text-slate-400">{p.body}</p>
+              <p className="text-base leading-relaxed text-slate-400">{p.body}</p>
             </div>
           ))}
         </div>

@@ -3,7 +3,8 @@
 # Use esta variante se o reverse proxy for Nginx Proxy Manager em vez de Traefik.
 # No NPM: Proxy Host → brunogoulart.com.br → http://app:3000 (rede Docker `bizu-hub`)
 #
-# A stack NÃO publica porta no host — apenas rede interna + proxy externo opcional.
+# Porta 5432 publicada no host para acesso externo (HeidiSQL, n8n, migrations do PC de dev).
+# ⚠️  Proteja com ufw: permite apenas IPs autorizados — veja INFRA_POSTGRES_EXTERNAL_ACCESS.md
 
 services:
   postgres:
@@ -17,6 +18,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - bizu-hub
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
     healthcheck:
       test:
         [

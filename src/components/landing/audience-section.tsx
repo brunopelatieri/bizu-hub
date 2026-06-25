@@ -46,7 +46,7 @@ export function AudienceSection() {
             >
               <span className="mb-4 block text-3xl">{a.icon}</span>
               <h3 className="mb-2 font-semibold text-white">{a.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-400">{a.body}</p>
+              <p className="text-base leading-relaxed text-slate-400">{a.body}</p>
             </div>
           ))}
         </div>

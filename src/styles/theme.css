@@ -64,6 +64,7 @@
   --font-inter: 'Inter', 'sans-serif';
   --font-manrope: 'Manrope', 'sans-serif';
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-sans: var(--font-inter);
 
   /* Design System 2026 — paleta fixa da logo */
   --color-brand-blue: #1096e6;

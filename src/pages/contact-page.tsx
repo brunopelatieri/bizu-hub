@@ -123,7 +123,7 @@ export function ContactPage() {
             <h2 className="mb-1 text-xl font-semibold text-white">
               Envie uma mensagem
             </h2>
-            <p className="mb-7 text-sm text-slate-400">
+            <p className="mb-7 text-base text-slate-400">
               Resposta normalmente em até 24h úteis.
             </p>
             <ContactForm />
@@ -187,7 +187,7 @@ export function ContactPage() {
               <p className="font-mono text-sm text-brand-teal">
                 Disponível para projetos remotos
               </p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              <p className="mt-2 text-base leading-relaxed text-slate-400">
                 Base em {siteConfig.author.location}. Atendo startups, empresas e
                 times técnicos no Brasil e no exterior.
               </p>

@@ -60,7 +60,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
         </span>
       </button>
       {open && (
-        <div className="pb-5 text-sm leading-relaxed text-slate-400">
+        <div className="pb-5 text-base leading-relaxed text-slate-400">
           {answer}
         </div>
       )}

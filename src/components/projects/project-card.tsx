@@ -19,7 +19,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <CardTitle>{project.title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm leading-relaxed text-muted-foreground">
+        <p className="text-base leading-relaxed text-muted-foreground">
           {project.description}
         </p>
         <div className="flex flex-wrap gap-2">
