@@ -84,6 +84,20 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - Scripts `npm run docker:build` / `docker:push` em `scripts/docker-build.mjs`.
 - CI/CD GitLab (`.gitlab-ci.yml`) — build + push automático na branch principal.
 
+## Acesso Externo ao PostgreSQL (Jun 2026)
+
+- **Porta 5432 exposta no host** da VPS (`212.85.19.156`) via Docker Swarm `mode: host`.
+- **Firewall ufw** com allowlist de IP: apenas IPs autorizados (ex: IP do PC de dev) acessam o banco — tudo mais é `DENY`.
+- Ferramentas **internas ao Swarm** (container `app`, serviços na rede `bru`) continuam usando o hostname interno `bizu-hub_postgres:5432` — sem mudança.
+- Ferramentas **externas** (HeidiSQL, n8n externo, PC de desenvolvimento) conectam via `212.85.19.156:5432` com IP liberado no ufw.
+- **Migrations em produção** agora rodam do PC de dev sem SSH:
+  ```bash
+  DIRECT_URL="postgresql://bizu_hub:SENHA@212.85.19.156:5432/bizu_hub" npm run db:migrate:prod
+  ```
+- Documentação completa de infra: `INFRA_POSTGRES_EXTERNAL_ACCESS.md`.
+- Stack atualizada: `deploy/portainer-stack.yml` e `deploy/portainer-stack.npm.yml` incluem o bloco `ports` para o serviço `postgres`.
+- **Nota para agentes:** nunca expor `DIRECT_URL` com credenciais reais em commits. Usar `.env.local` (no `.gitignore`) ou variável de ambiente na sessão.
+
 ## Header Público Responsivo (adicionado Jun 2026)
 
 - `src/components/layout/site-nav-links.tsx` — `NavLink` com estado ativo + prop `onNavigate` para fechar Sheet.
@@ -154,7 +168,11 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - **Loaders:** `getAllPosts()` e `getPostBySlug()` em `src/lib/content/posts.server.ts` (Drizzle). Filtram `status = 'published'` — drafts retornam 404.
 - **Componentes:** `PostGallery`, `PostMedia`, `PostAttachments` em `src/components/blog/`.
 - **Markdown:** renderizado com `react-markdown` + `remark-gfm`.
-- **Seed:** `npm run db:seed` — idempotente, preserva slugs originais.
+- **Seeds (3 scripts — Jun 2026):**
+  - `npm run db:seed` → 3 posts originais (`onConflictDoNothing` por slug).
+  - `npm run db:seed:test` → 1 post de teste com galeria (3 imgs), mídia (mp3/mp4/iframe YouTube) e anexos (zip/docx/pdf).
+  - `npm run db:seed:full` → test post + 3 originais; test post é o mais recente (`publishedAt DESC`).
+- **Arquitetura dos scripts de seed:** funções exportadas (`seedOriginalPosts`, `seedTestPost`) recebem `PostgresJsDatabase` — conexão gerenciada pelo chamador. Guard ESM `import.meta.url === pathToFileURL(process.argv[1]).href` evita execução ao importar. Tabelas relacionadas usam delete+reinsert para idempotência determinística.
 - `src/lib/content/posts.ts` marcado `@deprecated` — remover após validação em produção.
 
 ## Pendências Técnicas Conhecidas

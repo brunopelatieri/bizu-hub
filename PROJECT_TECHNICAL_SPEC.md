@@ -206,6 +206,11 @@ servicos server-only.
 | `npm run db:migrate` | Aplica migrations |
 | `npm run db:push` | Push direto do schema |
 | `npm run db:studio` | Abre Drizzle Studio |
+| `npm run db:seed` | Seed 3 posts originais (idempotente) |
+| `npm run db:seed:test` | Seed 1 post de teste com galeria + mídia + anexos |
+| `npm run db:seed:full` | Seed completo: test post + 3 originais (4 posts) |
+| `npm run db:migrate:prod` | Aplica migrations em produção via `DIRECT_URL` |
+| `npm run db:migrate:rollback` | Reverte última migration (suporte a `--steps=N --dry-run`) |
 
 ---
 
@@ -249,7 +254,11 @@ servicos server-only.
 - Conteudo armazenado como Markdown; renderizado com `react-markdown` + `remark-gfm`.
 - Componentes de midia: `PostGallery`, `PostMedia`, `PostAttachments` em
   `src/components/blog/`.
-- Seed idempotente: `npm run db:seed` — preserva os 3 slugs originais.
+- **Scripts de seed (3 variantes — Jun 2026):**
+  - `npm run db:seed` — 3 posts originais; `onConflictDoNothing` por slug.
+  - `npm run db:seed:test` — 1 post de teste com galeria (3 imgs), mídia (mp3 file + mp4 file + YouTube embed) e anexos (zip/docx/pdf).
+  - `npm run db:seed:full` — test post + 3 originais (4 posts; test post primeiro por `publishedAt DESC`).
+- **Arquitetura de seed:** `scripts/seed-posts.ts` exporta `seedOriginalPosts(db)`; `scripts/seed-test-post.ts` exporta `seedTestPost(db)`. Ambos recebem `PostgresJsDatabase<typeof schema>` e usam guard ESM (`import.meta.url === pathToFileURL(process.argv[1]).href`) para não executar `main()` ao importar. Tabelas relacionadas usam delete+reinsert (sem unique constraint em `postId+position`).
 - `src/lib/content/posts.ts` marcado `@deprecated` — remover apos validacao em producao.
 - Open Graph e meta SSR permanecem via `meta` function do React Router (inalterado).
 
@@ -700,7 +709,9 @@ Dev local → docker build (VITE_* no build) → docker push (login) → GitLab 
                                                                         ↓
 VPS Portainer Stack → pull anonimo → app:3000 ← Traefik/NPM + TLS
                               ↓
-                         postgres:5432
+                         postgres:5432 (exposto no host via ufw allowlist)
+                              ↑
+                    Dev PC (DIRECT_URL) → npm run db:migrate:prod
 ```
 
 Destino:
@@ -767,11 +778,16 @@ Runtime (container app):
 - `PORT=3000`
 - `DATABASE_URL` (montada pela stack: `postgresql://...@postgres:5432/...`)
 
-Migrations (fora do container; sem repo na VPS):
+Migrations (script automático `npm run db:migrate:prod`):
 
-- **Recomendado:** Portainer → `bizu-hub_postgres` → Console → `psql -U bizu_hub -d bizu_hub` → colar SQL de `drizzle/`
-- Alternativa: `curl` do raw GitHub + `docker exec psql` (SSH)
-- Alternativa dev: `npm run db:migrate` com `DATABASE_URL`/`DIRECT_URL` apontando para o Postgres
+- **Preferido — PC de dev** (porta 5432 exposta + IP liberado no ufw):
+  ```bash
+  DIRECT_URL="postgresql://bizu_hub:SENHA@212.85.19.156:5432/bizu_hub" npm run db:migrate:prod
+  ```
+- **Via Docker exec** (dentro da VPS): `docker exec bizu-hub npm run db:migrate:prod`
+- **Rollback**: `npm run db:migrate:rollback -- --steps=1 --dry-run` (ver `scripts/migrate-rollback.ts`)
+- Acesso externo ao Postgres: documentado em `INFRA_POSTGRES_EXTERNAL_ACCESS.md`
+- Idempotente: pode rodar múltiplas vezes; Drizzle aplica apenas as migrations pendentes
 
 Supabase Auth (dashboard Supabase):
 
@@ -783,6 +799,53 @@ Pagamentos/e-mail futuros:
 - `STRIPE_SECRET_KEY`
 - `VITE_STRIPE_PUBLISHABLE_KEY`
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`
+
+---
+
+## 14b. Acesso Externo ao PostgreSQL (Jun 2026)
+
+### Contexto
+
+O servico `postgres` da stack expoe a porta `5432` no host da VPS (`212.85.19.156`)
+via Docker Swarm `mode: host`. O acesso e controlado por firewall `ufw` com allowlist de IP.
+
+### Por que
+
+- Ferramentas de desenvolvimento (HeidiSQL, DBeaver, etc.) precisam de acesso direto.
+- n8n externo pode usar `bizu-hub_postgres:5432` (interno, se na mesma rede `bru`) ou
+  IP externo (se fora da VPS).
+- Migrations agora rodam do PC de dev sem necessidade de SSH.
+
+### Decisao tecnica
+
+Em Docker Swarm, portas publicadas sempre ficam em `0.0.0.0` (todas as interfaces),
+independentemente de configurar `host_ip`. A camada de restricao confiavel e o `ufw` do host.
+
+### Regras de acesso
+
+| Origem | Caminho | Liberado |
+|--------|---------|---------|
+| Containers na rede `bru` (mesma VPS) | DNS interno `bizu-hub_postgres:5432` | Sempre |
+| IP de desenvolvimento (fixo) | `212.85.19.156:5432` | Sim (ufw allowlist) |
+| Qualquer outro IP | `212.85.19.156:5432` | `DENY` |
+
+### Como rodar migrations em producao (preferido)
+
+```bash
+# PC de desenvolvimento (IP autorizado no ufw)
+DIRECT_URL="postgresql://bizu_hub:SENHA@212.85.19.156:5432/bizu_hub" npm run db:migrate:prod
+
+# Rollback (1 step, com confirmacao)
+DIRECT_URL="postgresql://bizu_hub:SENHA@212.85.19.156:5432/bizu_hub" npm run db:migrate:rollback
+```
+
+Documentacao completa: `INFRA_POSTGRES_EXTERNAL_ACCESS.md` e `deploy/README.md`.
+
+### Scripts de migrations (Jun 2026)
+
+- `scripts/migrate-production.ts` — aplica migrations via Drizzle migrator, idempotente.
+- `scripts/migrate-rollback.ts` — reverte registros de `__drizzle_migrations` (nao desfaz SQL automaticamente).
+- `package.json`: `db:migrate:prod` e `db:migrate:rollback`.
 
 ---
 
@@ -922,22 +985,21 @@ Status:
 - Aplicado `zValidator("json", contactMessageSchema)` em `src/api/app.ts`.
 - Formulario de contato reutiliza `contactMessageSchema.safeParse`.
 
-### RISK-002 — Migrations nao estao no runtime Docker
+### RISK-002 — Migrations nao estao no runtime Docker (RESOLVIDO Jun 2026)
 
-Estado atual:
+Estado anterior:
 
-- `.dockerignore` exclui `drizzle/`.
+- `.dockerignore` excluia `drizzle/`.
 - Runtime Docker usa `npm ci --omit=dev`, portanto nao inclui `drizzle-kit`.
 
-Impacto:
+Status:
 
-- O container de app nao executa migrations.
-- Isso e aceitavel se migrations forem uma etapa separada no deploy.
-
-Acao recomendada:
-
-- Documentar explicitamente no README/Portainer: migrations devem rodar em job
-  separado ou pipeline.
+- **Resolvido** com `scripts/migrate-production.ts` (`npm run db:migrate:prod`).
+- O script usa `drizzle-orm/postgres-js/migrator` (nao `drizzle-kit`) — disponivel
+  nas `dependencies` de producao. Pode rodar dentro ou fora do container.
+- Migrations sao executadas do PC de dev via `DIRECT_URL` apontando para
+  `212.85.19.156:5432` (acesso externo liberado) — nao precisam de SSH nem Portainer.
+- Documentacao: `deploy/README.md` secao Migrations.
 
 ### RISK-003 — Blog ainda e estatico
 

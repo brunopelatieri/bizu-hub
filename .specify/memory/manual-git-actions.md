@@ -55,7 +55,9 @@ npm run docker:push
 psql -U portal -d portal -f drizzle/0001_flippant_marvel_apes.sql
 
 # Seed (via container console or npm):
-npm run db:seed
+npm run db:seed           # 3 original posts
+npm run db:seed:test      # 1 test post (gallery + media + attachments)
+npm run db:seed:full      # 4 posts (test post + 3 originals)
 ```
 
 ---
