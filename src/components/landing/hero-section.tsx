@@ -32,10 +32,10 @@ export function HeroSection() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400 md:text-xl">
-          Sou <strong className="text-slate-200">Bruno Goulart</strong>, AI
-          Automation Specialist & Full Stack Developer. Uno a robustez de 18+
-          anos de código à inteligência de LLMs, automação com n8n e
-          arquitetura full-stack — do MVP ao deploy em produção.
+          Sou <strong className="text-slate-200">Bruno Pelatieri Goulart</strong>, 
+          AI Automation Specialist & Full Stack Developer. Uno a robustez de 18+ anos 
+          de código à inteligência de LLMs, ferramentas hype de automação, 
+          DevOps e arquitetura full-stack, do MVP ao deploy em produção.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">

@@ -1,14 +1,16 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, type ReactNode } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
-import { Loader2, Lock, Mail, Phone, User } from "lucide-react";
+import { Loader2, Lock, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInputField } from "@/components/ui/phone-input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { mobilePhoneSchema } from "@/lib/schemas/contact";
 import { cn } from "@/lib/utils";
 import { getSupabase } from "@/lib/supabase/client";
 
@@ -20,11 +22,7 @@ const loginSchema = z.object({
 const signupSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
   email: z.string().trim().email("E-mail inválido."),
-  phone: z
-    .string()
-    .trim()
-    .min(10, "Telefone inválido.")
-    .regex(/^\d[\d\s().+-]{8,}$/, "Telefone inválido."),
+  phone: mobilePhoneSchema,
   password: z.string().min(6, "Mínimo de 6 caracteres."),
 });
 
@@ -33,6 +31,8 @@ type SignupValues = z.infer<typeof signupSchema>;
 
 const fieldInputClass =
   "h-11 w-full border-white/10 bg-white/5 pl-10 text-foreground placeholder:text-white/30 focus-visible:border-sky-400/50 focus-visible:ring-sky-400/20";
+
+const authPhoneInputClass = "phone-input-field--auth";
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
@@ -46,7 +46,7 @@ function FieldError({ message }: { message?: string }) {
 type FieldProps = {
   id: string;
   label: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   error?: string;
   children: ReactNode;
 };
@@ -58,9 +58,11 @@ function AuthField({ id, label, icon, error, children }: FieldProps) {
         {label}
       </Label>
       <div className="relative w-full">
-        <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-white/35">
-          {icon}
-        </span>
+        {icon ? (
+          <span className="pointer-events-none absolute top-1/2 left-3 z-10 -translate-y-1/2 text-white/35">
+            {icon}
+          </span>
+        ) : null}
         {children}
       </div>
       <FieldError message={error} />
@@ -154,8 +156,17 @@ function SignupForm({ nextPath }: { nextPath: string }) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
-  } = useForm<SignupValues>({ resolver: zodResolver(signupSchema) });
+  } = useForm<SignupValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
 
   async function onSubmit(values: SignupValues) {
     try {
@@ -222,18 +233,23 @@ function SignupForm({ nextPath }: { nextPath: string }) {
 
       <AuthField
         id="signup-phone"
-        label="Telefone celular"
-        icon={<Phone className="h-4 w-4" />}
+        label="Telefone Celular"
         error={errors.phone?.message}
       >
-        <Input
-          id="signup-phone"
-          type="tel"
-          autoComplete="tel"
-          placeholder="(11) 99999-9999"
-          aria-invalid={!!errors.phone}
-          className={fieldInputClass}
-          {...register("phone")}
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputField
+              id="signup-phone"
+              value={field.value || undefined}
+              onChange={(value) => field.onChange(value ?? "")}
+              onBlur={field.onBlur}
+              disabled={isSubmitting}
+              aria-invalid={!!errors.phone}
+              className={authPhoneInputClass}
+            />
+          )}
         />
       </AuthField>
 

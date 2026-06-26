@@ -6,7 +6,7 @@ export const siteConfig = {
   locale: "pt-BR",
   url: "https://brunogoulart.com.br/",
   logo: "/bruno_goulart_logo_horizontal_v1.png",
-  favicon: "/favicon.ico",
+  favicon: "/bruno_goulart_logo_horizontal_v1.png",
   ogImage: "/og-image.webp",
   screenshot: "/bizu_bru_ia_screenshot.webp",
   author: {

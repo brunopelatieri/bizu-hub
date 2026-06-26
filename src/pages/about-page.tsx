@@ -7,7 +7,7 @@ const timeline = [
   {
     year: "2006",
     title: "O início com PHP clássico",
-    body: "Primeiros sistemas robustos com PHP, CodeIgniter, Zend Framework e Laravel — base sólida em desenvolvimento web e arquitetura de sistemas.",
+    body: "Primeiros sistemas robustos com PHP, CodeIgniter, Zend Framework e Laravel. Base sólida em desenvolvimento web e arquitetura de sistemas.",
   },
   {
     year: "2012+",
@@ -27,7 +27,7 @@ const timeline = [
   {
     year: "2025",
     title: "AI Automation Specialist",
-    body: "Foco em automação inteligente aplicada a crédito, saúde e food service — agentes autônomos que atendem, qualificam e convertem 24/7.",
+    body: "Foco em automação inteligente aplicada a crédito, saúde e food service. Agentes autônomos que atendem, qualificam e convertem 24/7.",
   },
 ];
 
@@ -42,7 +42,7 @@ const philosophy = [
   },
   {
     title: "Contexto vivo para LLMs",
-    body: "Arquitetura preparada para desenvolvimento assistido por IA — documentação rastreável que humanos e agentes entendem.",
+    body: "Arquitetura preparada para desenvolvimento assistido por IA. Documentação rastreável que humanos e agentes entendem.",
   },
 ];
 
@@ -101,7 +101,7 @@ export function AboutPage() {
               <span className="text-gradient-brand">Full Stack Developer</span>
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-slate-400">
-              Desenvolvedor Full Stack com 18+ anos de experiência — da era do
+              Desenvolvedor Full Stack com 18+ anos de experiência, da era do
               PHP clássico à arquitetura moderna de AI Agents. Projeto e entrego
               soluções que unem engenharia de software consolidada ao que há de
               mais atual em Inteligência Artificial, automação e Web3.
@@ -140,7 +140,7 @@ export function AboutPage() {
           <p>
             Comecei em 2006 construindo sistemas robustos com PHP, Laravel,
             CodeIgniter e Zend Framework. Ao longo dos anos, expandi para
-            tecnologias modernas de alto impacto — do backend ao frontend,
+            tecnologias modernas de alto impacto. Do backend ao frontend,
             automação inteligente, engenharia de IA e blockchain.
           </p>
           <p>
@@ -223,8 +223,7 @@ export function AboutPage() {
       <section className="px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <blockquote className="text-xl font-medium italic text-white md:text-2xl">
-            &ldquo;Unindo 18 anos de código com a inteligência do futuro —
-            construindo hoje o que o mercado precisará amanhã.&rdquo;
+            &ldquo;Unindo 18 anos de código com a inteligência do futuro. Construindo hoje o que o mercado precisará amanhã.&rdquo;
           </blockquote>
           <p className="mt-4 font-mono text-sm text-slate-500">
             {siteConfig.author.role}

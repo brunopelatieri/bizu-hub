@@ -1,0 +1,98 @@
+/* react-phone-number-input — dark theme aligned with contact form */
+
+.phone-input-field {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(51 65 85 / 0.6);
+  background-color: rgb(2 6 23 / 0.4);
+  padding: 0 0.625rem;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.phone-input-field:focus-within {
+  border-color: rgb(16 150 230 / 0.5);
+  box-shadow: 0 0 0 3px rgb(16 150 230 / 0.2);
+}
+
+.phone-input-field[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+
+.phone-input-field .PhoneInputCountry {
+  margin-right: 0.25rem;
+}
+
+.phone-input-field .PhoneInputCountrySelect {
+  color: rgb(226 232 240);
+  background-color: rgb(15 23 42);
+}
+
+.phone-input-field .PhoneInputCountrySelectArrow {
+  color: rgb(148 163 184);
+  opacity: 1;
+}
+
+.phone-input-field__number,
+.phone-input-field .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: rgb(241 245 249);
+  outline: none;
+}
+
+.phone-input-field__number::placeholder,
+.phone-input-field .PhoneInputInput::placeholder {
+  color: rgb(100 116 139);
+}
+
+.phone-input-field .PhoneInputInput:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 767px) {
+  .phone-input-field__number,
+  .phone-input-field .PhoneInputInput {
+    font-size: 16px;
+  }
+}
+
+/* Login / signup — glass card theme */
+.phone-input-field--auth {
+  min-height: 2.75rem;
+  border-color: rgb(255 255 255 / 0.1);
+  background-color: rgb(255 255 255 / 0.05);
+  padding-inline: 0.75rem;
+}
+
+.phone-input-field--auth:focus-within {
+  border-color: rgb(56 189 248 / 0.5);
+  box-shadow: 0 0 0 3px rgb(56 189 248 / 0.2);
+}
+
+.phone-input-field--auth[aria-invalid="true"] {
+  border-color: rgb(248 113 113 / 0.6);
+}
+
+.phone-input-field--auth .PhoneInputCountrySelect {
+  color: rgb(226 232 240);
+  background-color: rgb(15 23 42);
+}
+
+.phone-input-field--auth .PhoneInputInput {
+  color: rgb(241 245 249);
+}
+
+.phone-input-field--auth .PhoneInputInput::placeholder {
+  color: rgb(255 255 255 / 0.3);
+}

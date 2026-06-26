@@ -39,7 +39,7 @@ const openSource: Project[] = [
     emoji: "🤖",
     title: "MCP Server para n8n",
     description:
-      "Servidor MCP que conecta o Cursor AI ao n8n via chat — cria, edita e executa workflows de automação em linguagem natural. Deploy em Docker Swarm com autenticação por usuário.",
+      "Servidor MCP que conecta o Cursor AI ao n8n via chat: cria, edita e executa workflows de automação em linguagem natural. Deploy em Docker Swarm com autenticação por usuário.",
     tags: ["MCP", "n8n", "Docker Swarm"],
     href: siteConfig.links.github,
   },
@@ -155,7 +155,7 @@ export function ProjectsPage() {
             <span className="text-gradient-brand">full-stack em produção</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-slate-400">
-            Projetos reais — comerciais e open source — em IA, automação, Web3 e
+            Projetos reais comerciais e open source em IA, automação, Web3 e
             arquitetura full-stack. Código verificável no GitHub e imagens
             publicadas no Docker Hub.
           </p>
@@ -185,7 +185,7 @@ export function ProjectsPage() {
             Cases comerciais
           </h2>
           <p className="mb-10 max-w-2xl text-slate-400">
-            IA operacional aplicada a verticais reais — crédito, saúde e food
+            IA operacional aplicada a verticais reais: crédito, saúde e food service.
             service.
           </p>
           <div className="grid gap-6 md:grid-cols-2">
@@ -216,8 +216,8 @@ export function ProjectsPage() {
             Open source & experimentos
           </h2>
           <p className="mb-10 max-w-2xl text-slate-400">
-            Repositórios públicos documentados — de servidores MCP a smart
-            contracts.
+            Repositórios públicos documentados de servidores MCP a Smart
+            Contracts, em Node.js e Python.
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {openSource.map((p) => (

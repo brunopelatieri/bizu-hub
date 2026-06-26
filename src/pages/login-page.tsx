@@ -1,9 +1,9 @@
 import { Link, Navigate } from "react-router";
 import { Sparkles } from "lucide-react";
 import { AuthForm } from "@/components/auth/auth-form";
+import { SiteLogo } from "@/components/layout/site-logo";
 import { HeroBackground } from "@/components/ui/hero-background";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { siteConfig } from "@/lib/constants/navigation";
 import { useAuth } from "@/providers/auth-provider";
 
 export function LoginPage() {
@@ -28,18 +28,18 @@ export function LoginPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Brand — acima do card */}
         <div className="mb-8 text-center">
-          <img
-            src={siteConfig.favicon}
-            alt={siteConfig.name}
-            width={56}
-            height={56}
-            className="mx-auto mb-4 h-14 w-14 rounded-xl object-contain"
+          <SiteLogo
+            asLink={false}
+            size="lg"
+            className="mx-auto mb-4 flex w-fit flex-col items-center [&_img]:h-12"
           />
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/50 backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 text-sky-400" />
-            Engineering AI Design
+          <div className="mx-auto mb-3 block w-fit rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/50 backdrop-blur-sm">
+            <span className="flex items-center gap-2">
+              <Sparkles className="h-3.5 w-3.5 text-sky-400" />
+              Engineering AI Design
+            </span>
           </div>
-          <p className="text-sm text-white/40">
+          <p className="block text-sm text-white/40">
             Área restrita — clientes e projetos
           </p>
         </div>

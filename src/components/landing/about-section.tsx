@@ -37,10 +37,10 @@ export function AboutSection() {
             <span className="text-gradient-brand">inteligência do futuro</span>
           </h2>
           <p className="text-lg text-slate-400">
-            Da era do PHP clássico à arquitetura moderna de AI Agents. Projeto e
-            entrego soluções escaláveis, seguras e inovadoras — integrando LLMs
-            em produtos existentes e construindo do zero arquiteturas orientadas
-            a agentes autônomos.
+            Da era do PHP clássico à arquitetura moderna de AI Agents. 
+            Projeto e entrego soluções escaláveis, seguras e inovadoras, 
+            integrando LLMs em produtos existentes e construindo do zero 
+            arquiteturas orientadas a agentes autônomos.
           </p>
         </div>
 

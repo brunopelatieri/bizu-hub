@@ -4,12 +4,14 @@ import {
   text,
   timestamp,
   uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const contactMessages = pgTable("contact_messages", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   email: text("email").notNull(),
+  phone: varchar("phone", { length: 20 }).notNull(),
   message: text("message").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
     .notNull()

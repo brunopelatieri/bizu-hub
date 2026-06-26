@@ -109,7 +109,7 @@ export function ContactPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
             Automação com IA, agentes autônomos, SaaS full-stack ou integração de
-            LLMs — descreva seu desafio e retorno com os próximos passos. WhatsApp
+            LLMs, descreva seu desafio e retorno com os próximos passos. WhatsApp
             é o canal mais rápido.
           </p>
         </div>

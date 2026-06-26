@@ -3,6 +3,7 @@
 @import './styles/theme.css';
 @import './styles/blog-prose.css';
 @import './styles/post-gallery-lightbox.css';
+@import './styles/phone-input.css';
 
 @custom-variant dark (&:is(.dark *));
 

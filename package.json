@@ -46,6 +46,7 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.80.0",
     "react-markdown": "^10.1.0",
+    "react-phone-number-input": "^3.4.17",
     "react-router": "^7.18.0",
     "react-router-hono-server": "^2.21.0",
     "recharts": "^3.8.1",
