@@ -47,14 +47,6 @@ export function SiteHeader() {
               Acessar
             </Button>
           </Link>
-          <Link to="/contato">
-            <Button
-              size="sm"
-              className="bg-brand-blue font-semibold text-white shadow-md shadow-brand-blue/20 hover:bg-brand-blue/90"
-            >
-              Fale com o Especialista
-            </Button>
-          </Link>
         </div>
 
         {/* Mobile — hambúrguer + sheet */}
@@ -93,18 +85,13 @@ export function SiteHeader() {
                 />
               </nav>
 
-              <div className="mt-auto space-y-2 border-t border-slate-800/50 p-4">
+              <div className="mt-auto border-t border-slate-800/50 p-4">
                 <Link to="/login" onClick={() => setOpen(false)}>
                   <Button
                     variant="outline"
                     className="w-full border-slate-700/60 bg-slate-900/40 text-slate-300 hover:border-brand-teal/40 hover:text-brand-teal"
                   >
                     Acessar
-                  </Button>
-                </Link>
-                <Link to="/contato" onClick={() => setOpen(false)}>
-                  <Button className="w-full bg-brand-blue font-semibold text-white hover:bg-brand-blue/90">
-                    Fale com o Especialista
                   </Button>
                 </Link>
               </div>

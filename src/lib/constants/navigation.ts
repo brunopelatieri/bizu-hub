@@ -5,8 +5,8 @@ export const siteConfig = {
     "Bruno Goulart — AI Automation Specialist & Full Stack Developer. Automação inteligente com IA, n8n, agentes LLM e arquitetura full-stack.",
   locale: "pt-BR",
   url: "https://brunogoulart.com.br/",
-  logo: "/bruno_goulart_logo_horizontal_v1.png",
-  favicon: "/bruno_goulart_logo_horizontal_v1.png",
+  logo: "/bruno_goulart_logo_light.webp",
+  favicon: "/favicon.ico",
   ogImage: "/og-image.webp",
   screenshot: "/bizu_bru_ia_screenshot.webp",
   author: {
@@ -39,6 +39,7 @@ export const headerNavItems = [
   { href: "/", label: "Home" },
   { href: "/sobre", label: "Sobre" },
   { href: "/projetos", label: "Projetos" },
+  { href: "/blog", label: "Blog" },
   { href: "/contato", label: "Contato" },
 ] as const;
 
