@@ -107,12 +107,13 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - Anti-overflow: `shrink-0` no logo, `min-w-0` no container de nav, `px-4 sm:px-6` adaptável.
 - **`headerNavItems` vs `navItems`**: o header contém apenas Home/Sobre/Projetos/Contato (4 itens) para manter compactação visual. Blog é vitrine secundária — acessível na landing via `BlogSection`, no footer e via link direto. Essa distinção mantém a navegação principal focada em conversão (Contato/Fale com Especialista).
 
-## Infraestrutura Client-side (adicionada Jun 2026)
+## Infraestrutura Client-side (atualizada Jun 26 2026)
 
 - **TanStack Query** (`QueryClientProvider`) em `src/root.tsx` — instância segura via `useState` para evitar cache leak no SSR.
 - **TooltipProvider** (shadcn/ui) adicionado em `src/root.tsx`.
 - **react-hook-form + @hookform/resolvers/zod** no `AuthForm` (`src/components/auth/auth-form.tsx`).
 - **sonner** (toasts) para feedback de auth — sucesso e erro.
+- **Phone input validation (FIXED — Jun 26 2026):** `src/lib/validation/mobile-phone.ts` agora importa de `libphonenumber-js/mobile` (mobile bundle com metadata completo). Antes usava default bundle que nunca retornava `getType()` — agora mobile numbers passam na validação. E.164 format obrigatório (ex: `+5511987654321`), rejeita landlines.
 - Componentes shadcn disponíveis: `avatar`, `dropdown-menu`, `sheet`, `skeleton`, `tooltip` (além dos já existentes).
 
 ## Estrutura do Dashboard (atualizada Jun 2026)
@@ -123,12 +124,14 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 - User menu com `DropdownMenu` (avatar → logout, site público).
 - Convenção mantida: sem loaders SSR com dados sensíveis no dashboard.
 
-## Página de Login (atualizada Jun 2026)
+## Página de Login (atualizada Jun 26 2026)
 
 - Visual dark premium "Engineering AI Design": background `oklch(0.08_0.03_264)`, grid cibernético, glow radial.
 - Card glassmorphism com borda luminosa superior.
+- **Logo centralizado** em cima do card — `<SiteLogo asLink={false} size="lg" />` com `flex w-fit flex-col items-center mx-auto` para centering horizontal.
 - Tabs `Entrar` / `Criar conta` — formulário de cadastro com campos: Nome, E-mail, Telefone Celular, Senha.
 - Validação inline via zod + react-hook-form; notificações via sonner.
+- Favicon removido (`public/favicon.ico`); favicon agora é `/bruno_goulart_logo_horizontal_v1.png` (PNG horizontal logo).
 
 ## Tema único — Dark Mode Only (atualizado Jun 2026)
 
@@ -196,3 +199,21 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 ## Pendências Técnicas Conhecidas
 
 - Criar schemas compartilhados adicionais conforme novos forms/APIs surgirem.
+
+## Mudanças Jun 26, 2026
+
+**Phone Validation Fix:**
+- `src/lib/validation/mobile-phone.ts` agora usa `libphonenumber-js/mobile` (bundle mobile-aware).
+- Antes: default bundle retornava `undefined` para `getType()` — todas as numbers falhavam na validação mesmo sendo E.164 válidas.
+- Depois: mobile bundle retorna `MOBILE` para números de celular — validação funciona nos forms contact e auth signup.
+- E.164 obrigatório, rejeita landlines (FIXED_LINE/FIXED_LINE_OR_MOBILE).
+
+**Login Page:**
+- Logo (`<SiteLogo/>`) centralizada em cima do card com `flex w-fit flex-col items-center mx-auto`.
+- `public/favicon.ico` deletado; favicon agora `bruno_goulart_logo_horizontal_v1.png` (PNG).
+
+**Database Migrations:**
+- Baseline `0000` + `0001` nos dados do dev (tables já existiam, journal vazio).
+- `0002` aplicada (contact_messages phone column).
+- Script `npm run db:migrate:baseline` — registra migrations já aplicadas SEM executar SQL.
+- Script `npm run db:migrate:prod` — aplica apenas migrations pendentes (idempotente).

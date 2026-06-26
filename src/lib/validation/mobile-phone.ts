@@ -1,9 +1,12 @@
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { parsePhoneNumberFromString } from "libphonenumber-js/mobile";
 
 export const MOBILE_PHONE_ERROR = "Informe um número de celular válido.";
 
 /**
  * Validates E.164 mobile numbers only.
+ *
+ * Uses `libphonenumber-js/mobile` metadata so `getType()` resolves correctly
+ * (the default bundle returns `undefined` for type even on valid numbers).
  *
  * Rejects FIXED_LINE and FIXED_LINE_OR_MOBILE. Numbering plans such as NANP
  * (US/Canada) often return FIXED_LINE_OR_MOBILE because the plan does not

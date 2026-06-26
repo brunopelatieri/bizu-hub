@@ -155,9 +155,21 @@ Stack Portainer: `deploy/portainer-stack.yml` (Traefik) ou `deploy/portainer-sta
 - Migrations SQL: **Portainer Console** em `bizu-hub_postgres` → `psql -U bizu_hub -d bizu_hub` → colar SQL de `drizzle/` (ver `deploy/README.md`). Não exige repo na VPS.
 - Supabase Auth: Site URL e redirect `https://brunogoulart.com.br/auth/callback`.
 
----
+## 11. Atualizações Jun 26, 2026
 
-## 11. Como evoluir
+**Phone Validation Fix:**
+- `src/lib/validation/mobile-phone.ts` mudou de `libphonenumber-js` → `libphonenumber-js/mobile`.
+- Default bundle não tinha type metadata — `getType()` sempre `undefined`, rejeitava tudo.
+- Mobile bundle retorna `MOBILE` para celulares — validação E.164 funciona em contact + auth signup.
+
+**Database Migrations:**
+- `npm run db:migrate:baseline -- <tag>` — registra migrations já aplicadas (para DB pré-existentes).
+- `npm run db:migrate:prod` — aplica apenas migrations pendentes (confere hash em journal).
+- Exemplo: tabelas locais pré-existentes mas journal vazio → baseline `0001_flippant_marvel_apes` → `npm run db:migrate:prod` applies `0002_dusty_squadron_supreme`.
+
+**Login Page & Favicon:**
+- Logo centrada com `flex w-fit flex-col items-center mx-auto`.
+- `public/favicon.ico` → `/bruno_goulart_logo_horizontal_v1.png` (PNG).
 
 - **Blog no banco:** crie a tabela `posts` no schema Drizzle, gere a migration e
   troque o corpo de `getAllPosts`/`getPostBySlug` em `src/lib/content/posts.ts`

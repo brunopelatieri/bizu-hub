@@ -101,10 +101,10 @@ scripts/
 
 ---
 
-## 5. Schema Drizzle
+## Schema Drizzle
 
 ```
-contact_messages   id, name, email, message, created_at
+contact_messages   id, name, email, phone (varchar 20, NOT NULL), message, created_at
 posts              id, slug (unique), title, excerpt, content (MD), tag, date, publishedAt,
                    cover (nullable), status (published|draft), created_at, updated_at
 post_images        id, post_id FK→posts(cascade), url, alt, position, created_at
@@ -113,8 +113,14 @@ post_media         id, post_id FK→posts(cascade), media_type (mp3|mp4), delive
 post_attachments   id, post_id FK→posts(cascade), name, description, url, position, created_at
 ```
 
+**Migrations (Jun 26 2026):**
+- `0000`: initial (contact_messages without phone)
+- `0001`: posts + related tables
+- `0002`: contact_messages phone column (DELETE old rows, ADD COLUMN phone NOT NULL)
+
 **Variáveis:** `DATABASE_URL` (runtime/API) · `DIRECT_URL` (migrations/Drizzle Kit).
 **Regra:** dados da app = Postgres próprio via Drizzle. `supabase.from()` proibido para CRUD da app.
+**Local dev setup:** baseline `0000_cloudy_miracleman` e `0001_flippant_marvel_apes` (já applied), then `npm run db:migrate:prod` applies `0002_dusty_squadron_supreme`.
 
 ---
 
@@ -144,6 +150,15 @@ CORS removido — mesma origem. Reintroduzir se expor a outra origem no futuro.
 - Container: `GTM-KXX8MMKS` · Variável: `VITE_GTM_ID=GTM-KXX8MMKS` (build-time).
 - Componente: `src/components/gtm/google-tag-manager.tsx` (injetado em `src/root.tsx`).
 - 6 helpers de eventos: `src/lib/gtm/events.ts`.
+
+**Phone Validation (FIXED Jun 26 2026):**
+- `src/lib/validation/mobile-phone.ts` agora usa `libphonenumber-js/mobile` (mobile bundle).
+- Antes: default bundle retornava `undefined` para `getType()` — validação falhava.
+- Depois: mobile bundle retorna `MOBILE` — validação funciona em contact + auth signup.
+
+**Login Page (Jun 26 2026):**
+- Logo (`<SiteLogo/>`) centralizada com `flex w-fit flex-col items-center mx-auto`.
+- Favicon: `public/favicon.ico` deletado; novo favicon é PNG horizontal logo.
 
 ---
 
@@ -195,3 +210,20 @@ Supabase Auth: Site URL `https://brunogoulart.com.br` · Redirect `https://bruno
 - Não importar Stripe server-side ou Nodemailer em componentes client.
 - Usar `meta` nativo do React Router para SEO/OG.
 - Usar Drizzle migrations para mudanças de schema (nunca `db:push` em produção).
+
+## 11. Atualizações Jun 26, 2026
+
+**Phone Validation Fix:**
+- `src/lib/validation/mobile-phone.ts` mudou de `libphonenumber-js` (default) → `libphonenumber-js/mobile`.
+- Default bundle não tinha metadata de tipo — `getType()` sempre retornava `undefined`.
+- Mobile bundle traz metadata completo — agora `getType()` retorna `MOBILE` para celulares.
+- Validação E.164 obrigatória, rejeita landlines. Ambos os forms (contact + auth signup) agora funcionam.
+
+**Database Migrations:**
+- `npm run db:migrate:baseline -- <tag>` registra migrations já aplicadas no journal sem executar SQL.
+- `npm run db:migrate:prod` aplica apenas migrations pendentes (idempotente — confere `__drizzle_migrations`).
+- Local dev com tabelas pré-existentes mas journal vazio: baseline `0000_cloudy_miracleman` + `0001_flippant_marvel_apes`, then `npm run db:migrate:prod` applies `0002_dusty_squadron_supreme` (phone column).
+
+**Login Page & UI:**
+- Logo (`<SiteLogo/>`) centralizada em cima do card com `flex w-fit flex-col items-center mx-auto`.
+- `public/favicon.ico` deletado; favicon agora `/bruno_goulart_logo_horizontal_v1.png` (PNG).
