@@ -7,6 +7,7 @@ import {
   postMedia,
   posts,
 } from "@/db/schema";
+import { attachCategoriesToPosts } from "./post-categories.server";
 import { calculateReadTime } from "./read-time";
 import type { PostWithRelations } from "./types";
 
@@ -18,8 +19,14 @@ export async function getAllPosts(): Promise<PostWithRelations[]> {
     .where(eq(posts.status, "published"))
     .orderBy(desc(posts.publishedAt));
 
+  const categoryMap = await attachCategoriesToPosts(
+    db,
+    rows.map((post) => post.id),
+  );
+
   return rows.map((post) => ({
     ...post,
+    categories: categoryMap.get(post.id) ?? [],
     images: [],
     media: [],
     attachments: [],
@@ -41,7 +48,7 @@ export async function getPostBySlug(
   const post = postRows[0];
   if (!post || post.status !== "published") return undefined;
 
-  const [images, media, attachments] = await Promise.all([
+  const [images, media, attachments, categoryMap] = await Promise.all([
     db
       .select()
       .from(postImages)
@@ -57,10 +64,12 @@ export async function getPostBySlug(
       .from(postAttachments)
       .where(eq(postAttachments.postId, post.id))
       .orderBy(asc(postAttachments.position)),
+    attachCategoriesToPosts(db, [post.id]),
   ]);
 
   return {
     ...post,
+    categories: categoryMap.get(post.id) ?? [],
     images,
     media,
     attachments,

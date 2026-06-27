@@ -7,8 +7,13 @@ import { FeaturesSection } from "@/components/landing/features-section";
 import { HeroSection } from "@/components/landing/hero-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { StackSection } from "@/components/landing/stack-section";
+import type { PostWithRelations } from "@/lib/content/types";
 
-export function HomePage() {
+type HomePageProps = {
+  recentPosts: PostWithRelations[];
+};
+
+export function HomePage({ recentPosts }: HomePageProps) {
   return (
     <>
       <HeroSection />
@@ -17,7 +22,7 @@ export function HomePage() {
       <HowItWorksSection />
       <StackSection />
       <AudienceSection />
-      <BlogSection />
+      <BlogSection posts={recentPosts} />
       <FaqSection />
       <CtaSection />
     </>

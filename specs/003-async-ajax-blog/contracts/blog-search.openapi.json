@@ -1,0 +1,94 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bizu Hub Blog Search API",
+    "version": "1.0.0",
+    "description": "Read-only search for published blog posts (spec 003)"
+  },
+  "paths": {
+    "/api/blog/search": {
+      "get": {
+        "summary": "Search published blog posts",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "minLength": 3, "maxLength": 200 },
+            "description": "Search term (title, excerpt, content — case insensitive)"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "todos" },
+            "description": "Category filter: todos | sem-categoria | category slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching posts (may be empty array)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["posts"],
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/BlogPostSummary" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query (q too short)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PostCategorySummary": {
+        "type": "object",
+        "required": ["slug", "name", "position"],
+        "properties": {
+          "slug": { "type": "string" },
+          "name": { "type": "string" },
+          "position": { "type": "integer" }
+        }
+      },
+      "BlogPostSummary": {
+        "type": "object",
+        "required": ["slug", "title", "excerpt", "date", "publishedAt", "readTime", "categories"],
+        "properties": {
+          "slug": { "type": "string" },
+          "title": { "type": "string" },
+          "excerpt": { "type": "string" },
+          "date": { "type": "string" },
+          "publishedAt": { "type": "string" },
+          "cover": { "type": "string", "nullable": true },
+          "readTime": { "type": "string" },
+          "categories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PostCategorySummary" }
+          }
+        }
+      }
+    }
+  }
+}

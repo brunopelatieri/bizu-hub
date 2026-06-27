@@ -2,9 +2,16 @@ import { pathToFileURL } from "url";
 import { config } from "dotenv";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { linkPostToCategories } from "./lib/link-post-categories";
 import * as schema from "../src/db/schema";
 
 config({ path: ".env.local" });
+
+const POST_CATEGORY_LINKS: Record<string, string[]> = {
+  "reduzir-mensagens-de-status": ["produtividade"],
+  "precificacao-para-freelancers-2026": ["negocios"],
+  "stack-ideal-portais-de-clientes": ["ferramentas"],
+};
 
 const originalPosts: schema.NewPost[] = [
   {
@@ -12,7 +19,6 @@ const originalPosts: schema.NewPost[] = [
     title: "Como reduzir 80% das mensagens de status dos seus clientes",
     excerpt:
       "Comunicação proativa não é um diferencial — é uma necessidade. Veja como um portal centralizado muda a dinâmica dos seus projetos.",
-    tag: "Produtividade",
     date: "12 Jun 2026",
     publishedAt: "2026-06-12T00:00:00+00:00",
     cover: "/bizu_bru_ia_blog1.webp",
@@ -28,7 +34,6 @@ const originalPosts: schema.NewPost[] = [
     title: "Precificação para freelancers: o guia definitivo de 2026",
     excerpt:
       "Saber cobrar pelo valor real do seu trabalho começa por entender sua proposta de valor. Veja como estruturar seus planos.",
-    tag: "Negócios",
     date: "3 Jun 2026",
     publishedAt: "2026-06-03T00:00:00+00:00",
     cover: "/bizu_bru_ia_blog2.webp",
@@ -43,7 +48,6 @@ const originalPosts: schema.NewPost[] = [
     title: "Stack ideal para portais de clientes em 2026",
     excerpt:
       "React, shadcn/ui, Supabase e Drizzle — como essa combinação entrega uma experiência premium sem complexidade desnecessária.",
-    tag: "Ferramentas",
     date: "28 Mai 2026",
     publishedAt: "2026-05-28T00:00:00+00:00",
     cover: "/bizu_bru_ia_blog3.webp",
@@ -62,6 +66,11 @@ export async function seedOriginalPosts(db: PostgresJsDatabase<typeof schema>) {
     .insert(schema.posts)
     .values(originalPosts)
     .onConflictDoNothing({ target: schema.posts.slug });
+
+  for (const [slug, categorySlugs] of Object.entries(POST_CATEGORY_LINKS)) {
+    await linkPostToCategories(db, slug, categorySlugs);
+  }
+
   console.timeEnd("seed-posts");
   console.log("✅ Done. 3 original posts seeded (idempotent).");
 }
@@ -81,7 +90,6 @@ async function main() {
   }
 }
 
-// Guard: only run when this file is the entry point, not when imported
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((err) => {
     console.error("❌", err);

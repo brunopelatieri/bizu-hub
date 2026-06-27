@@ -1,6 +1,7 @@
 import {
   integer,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uuid,
@@ -21,14 +22,27 @@ export const contactMessages = pgTable("contact_messages", {
 export type ContactMessage = typeof contactMessages.$inferSelect;
 export type NewContactMessage = typeof contactMessages.$inferInsert;
 
-// T002 — posts
+// T002 — categories
+export const categories = pgTable("categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Category = typeof categories.$inferSelect;
+export type NewCategory = typeof categories.$inferInsert;
+
+// T003 — posts
 export const posts = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom(),
   slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   excerpt: text("excerpt").notNull(),
   content: text("content").notNull(),
-  tag: text("tag").notNull(),
   date: text("date").notNull(),
   publishedAt: timestamp("published_at", {
     withTimezone: true,
@@ -47,7 +61,24 @@ export const posts = pgTable("posts", {
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
 
-// T003 — post_images
+// T004 — post_categories (M2M)
+export const postCategories = pgTable(
+  "post_categories",
+  {
+    postId: uuid("post_id")
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),
+    categoryId: uuid("category_id")
+      .notNull()
+      .references(() => categories.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.postId, t.categoryId] })],
+);
+
+export type PostCategory = typeof postCategories.$inferSelect;
+export type NewPostCategory = typeof postCategories.$inferInsert;
+
+// T005 — post_images
 export const postImages = pgTable("post_images", {
   id: uuid("id").primaryKey().defaultRandom(),
   postId: uuid("post_id")

@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { getDb } from "@/db";
 import { contactMessages } from "@/db/schema";
+import { searchPublishedPosts } from "@/lib/content/search.server";
+import { blogSearchQuerySchema } from "@/lib/schemas/blog-search";
 import { contactMessageSchema } from "@/lib/schemas/contact";
 
 /**
@@ -13,6 +15,31 @@ import { contactMessageSchema } from "@/lib/schemas/contact";
 export const api = new Hono();
 
 api.get("/api/health", (c) => c.json({ ok: true }));
+
+api.get(
+  "/api/blog/search",
+  zValidator("query", blogSearchQuerySchema, (result, c) => {
+    if (!result.success) {
+      return c.json(
+        {
+          error:
+            result.error.issues[0]?.message ?? "Parâmetros de busca inválidos.",
+        },
+        400,
+      );
+    }
+  }),
+  async (c) => {
+    const { q, category } = c.req.valid("query");
+
+    try {
+      const posts = await searchPublishedPosts(q, category);
+      return c.json({ posts });
+    } catch {
+      return c.json({ error: "Falha na busca." }, 500);
+    }
+  },
+);
 
 api.post(
   "/api/contact",

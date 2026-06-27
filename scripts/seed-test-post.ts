@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import postgres from "postgres";
+import { linkPostToCategories } from "./lib/link-post-categories";
 import * as schema from "../src/db/schema";
 
 config({ path: ".env.local" });
@@ -14,7 +15,6 @@ const testPost: schema.NewPost = {
   title: "Bruno Pelatieri Goulart — Documento de Teste Markdown",
   excerpt:
     "Full Stack Developer & AI Automation Specialist — 18+ anos de experiência, desde 2006.",
-  tag: "Teste",
   date: "25 Jun 2026",
   publishedAt: "2026-06-25T00:00:00+00:00",
   cover:
@@ -212,6 +212,8 @@ export async function seedTestPost(db: PostgresJsDatabase<typeof schema>) {
     .insert(schema.postAttachments)
     .values(testAttachments.map((a) => ({ ...a, postId: post.id })));
   console.log("📊 Seeded 3 attachments");
+
+  await linkPostToCategories(db, TEST_POST_SLUG, ["teste", "produtividade"]);
 
   console.timeEnd("seed-test-post");
   console.log("✅ Test post seeded (3 images, 3 media, 3 attachments)");

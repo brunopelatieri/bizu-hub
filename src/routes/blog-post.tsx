@@ -1,6 +1,6 @@
 import { BlogMarkdown } from "@/components/blog/blog-markdown";
+import { PostCategoryBadges } from "@/components/blog/post-category-badges";
 import { Link } from "react-router";
-import { Badge } from "@/components/ui/badge";
 import { PostAttachments } from "@/components/blog/post-attachments";
 import { PostGallery } from "@/components/blog/post-gallery";
 import { PostMedia } from "@/components/blog/post-media";
@@ -70,10 +70,8 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
           ← Voltar para o blog
         </Link>
 
-        <div className="mb-4 flex items-center gap-2">
-          <Badge variant="secondary" className="text-xs">
-            {post.tag}
-          </Badge>
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <PostCategoryBadges categories={post.categories} />
           <span className="text-xs text-muted-foreground">
             {post.readTime} de leitura
           </span>

@@ -1,10 +1,12 @@
 import { Link } from "react-router";
-import { Badge } from "@/components/ui/badge";
-import { getAllPosts } from "@/lib/content/posts";
+import { PostCategoryBadges } from "@/components/blog/post-category-badges";
+import type { PostWithRelations } from "@/lib/content/types";
 
-export function BlogSection() {
-  const posts = getAllPosts().slice(0, 3);
+type BlogSectionProps = {
+  posts: PostWithRelations[];
+};
 
+export function BlogSection({ posts }: BlogSectionProps) {
   return (
     <section className="border-b border-slate-800/50 bg-slate-900 py-24">
       <div className="mx-auto max-w-5xl px-6">
@@ -43,12 +45,10 @@ export function BlogSection() {
               )}
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="bg-slate-800 font-mono text-xs text-slate-300"
-                  >
-                    {post.tag}
-                  </Badge>
+                  <PostCategoryBadges
+                    categories={post.categories}
+                    badgeClassName="bg-slate-800 font-mono text-xs text-slate-300"
+                  />
                   <span className="font-mono text-xs text-slate-500">
                     {post.readTime} de leitura
                   </span>

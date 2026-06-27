@@ -173,21 +173,26 @@ Se a mudança afetar agentes/LLMs, atualize também `.cursor/rules/`.
 
 ## Blog Dinâmico com Mídia Relacional (spec 001 — Jun 2026)
 
-- **Schema Drizzle:** 4 tabelas — `posts`, `post_images`, `post_media`, `post_attachments`.
-- `posts`: slug (unique), title, excerpt, content (Markdown), tag, date (display), publishedAt (ISO), cover (URL/path opcional), status (`published` | `draft`).
+- **Schema Drizzle:** 6 tabelas — `posts`, `post_images`, `post_media`, `post_attachments`, `categories`, `post_categories`.
+- `posts`: slug (unique), title, excerpt, content (Markdown), date (display), publishedAt (ISO), cover (URL/path opcional), status (`published` | `draft`). **Sem `tag`** (spec 002).
+- `categories`: slug (unique), name, position — seed via migration; gestão externa (sem CRUD na app).
+- `post_categories`: M2M posts ↔ categories (composite PK, cascade delete).
 - `post_images`: postId (FK cascade), url, alt (obrigatório), position.
 - `post_media`: postId (FK cascade), mediaType (`mp3`|`mp4`), deliveryMode (`embed`|`file`), url, title, position.
 - `post_attachments`: postId (FK cascade), name, description, url, position.
 - **readTime:** calculado em `src/lib/content/read-time.ts` (200 palavras/min). Não armazenado.
-- **Loaders:** `getAllPosts()` e `getPostBySlug()` em `src/lib/content/posts.server.ts` (Drizzle). Filtram `status = 'published'` — drafts retornam 404.
-- **Componentes:** `PostGallery`, `PostMedia`, `PostAttachments` em `src/components/blog/`.
+- **Loaders:** `getAllPosts()`, `getPostBySlug()` em `posts.server.ts`; `getCategoriesForBlogMenu()` em `categories.server.ts`. Filtram `status = 'published'`.
+- **Blog `/blog`:** busca assíncrona (`GET /api/blog/search`, debounce 300 ms, ≥3 chars); preview dropdown + grid; combina com filtro client-side por categoria (`BlogCategoryFilter`); sentinela `sem-categoria` para posts sem categorias; badges via `PostCategoryBadges`.
+- **Landing:** `home.tsx` loader → `BlogSection` com posts do Drizzle (não usa `posts.ts`).
+- **Componentes:** `PostGallery`, `PostMedia`, `PostAttachments`, `PostCategoryBadges`, `BlogCategoryFilter`, `BlogSearchCombobox`, `BlogPostGrid` em `src/components/blog/`.
+- **Hook busca:** `useBlogSearch` em `src/lib/blog/use-blog-search.ts` (AbortController, estados idle/typing/loading/results/empty/error).
 - **Markdown:** renderizado com `react-markdown` + `remark-gfm`.
 - **Seeds (3 scripts — Jun 2026):**
   - `npm run db:seed` → 3 posts originais (`onConflictDoNothing` por slug).
   - `npm run db:seed:test` → 1 post de teste com galeria (3 imgs), mídia (mp3/mp4/iframe YouTube) e anexos (zip/docx/pdf).
   - `npm run db:seed:full` → test post + 3 originais; test post é o mais recente (`publishedAt DESC`).
 - **Arquitetura dos scripts de seed:** funções exportadas (`seedOriginalPosts`, `seedTestPost`) recebem `PostgresJsDatabase` — conexão gerenciada pelo chamador. Guard ESM `import.meta.url === pathToFileURL(process.argv[1]).href` evita execução ao importar. Tabelas relacionadas usam delete+reinsert para idempotência determinística.
-- `src/lib/content/posts.ts` marcado `@deprecated` — remover após validação em produção.
+- `src/lib/content/posts.ts` marcado `@deprecated` — landing migrada para loader SSR (spec 002); remover após validação em produção.
 
 ## Scripts de Migrations (Jun 2026)
 

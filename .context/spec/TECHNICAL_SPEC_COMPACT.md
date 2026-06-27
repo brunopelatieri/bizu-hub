@@ -62,7 +62,8 @@ src/
 │   └── index.ts            client
 ├── lib/
 │   ├── content/
-│   │   ├── posts.server.ts getAllPosts(), getPostBySlug() — Drizzle
+│   │   ├── posts.server.ts getAllPosts(), getPostBySlug() — Drizzle + categories[]
+│   │   ├── categories.server.ts getCategoriesForBlogMenu()
 │   │   ├── read-time.ts
 │   │   └── types.ts        PostWithRelations
 │   ├── gtm/events.ts       helpers de tracking
@@ -105,8 +106,10 @@ scripts/
 
 ```
 contact_messages   id, name, email, phone (varchar 20, NOT NULL), message, created_at
-posts              id, slug (unique), title, excerpt, content (MD), tag, date, publishedAt,
+categories         id, slug (unique), name, position, created_at
+posts              id, slug (unique), title, excerpt, content (MD), date, publishedAt,
                    cover (nullable), status (published|draft), created_at, updated_at
+post_categories    post_id FK→posts(cascade), category_id FK→categories(cascade), PK(post_id, category_id)
 post_images        id, post_id FK→posts(cascade), url, alt, position, created_at
 post_media         id, post_id FK→posts(cascade), media_type (mp3|mp4), delivery_mode (embed|file),
                    url, title, position, created_at
@@ -117,6 +120,11 @@ post_attachments   id, post_id FK→posts(cascade), name, description, url, posi
 - `0000`: initial (contact_messages without phone)
 - `0001`: posts + related tables
 - `0002`: contact_messages phone column (DELETE old rows, ADD COLUMN phone NOT NULL)
+- `0003`: categories + post_categories; seed categorias; migra `tag` → M2M; drop `posts.tag`
+
+**Blog categorias (spec 002):** menu `/blog` com Todos / Sem categoria / categorias com posts publicados; filtro client-side; sem CRUD de categorias.
+
+**Blog busca (spec 003):** `GET /api/blog/search?q=&category=` — ILIKE em title/excerpt/content; debounce 300 ms no client; preview (max 10) + grid; combina com filtro de categoria ativo.
 
 **Variáveis:** `DATABASE_URL` (runtime/API) · `DIRECT_URL` (migrations/Drizzle Kit).
 **Regra:** dados da app = Postgres próprio via Drizzle. `supabase.from()` proibido para CRUD da app.
@@ -131,6 +139,7 @@ Arquivo: `src/api/app.ts`
 | Método | Rota | Validação |
 |--------|------|-----------|
 | GET | `/api/health` | — |
+| GET | `/api/blog/search` | `zValidator("query", blogSearchQuerySchema)` — `q` (min 3), `category` (default `todos`) |
 | POST | `/api/contact` | `zValidator("json", contactMessageSchema)` |
 
 CORS removido — mesma origem. Reintroduzir se expor a outra origem no futuro.
